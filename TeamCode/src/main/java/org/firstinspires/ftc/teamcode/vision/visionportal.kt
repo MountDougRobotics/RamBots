@@ -17,11 +17,11 @@ import java.util.Locale
 
 
 class visionportal {
-
+    // global vars
     private lateinit var aprilTag : AprilTagProcessor
-    private lateinit var visionPortal : VisionPortal
+    lateinit var visionPortal : VisionPortal
 
-    private fun initVisionPortal() {
+    fun init() {
         // Create the AprilTag processor and assign it to a variable.
         aprilTag  = AprilTagProcessor.Builder()
             .build()
@@ -31,10 +31,10 @@ class visionportal {
             .setCamera(hardwareMap.get(WebcamName::class.java, "Webcam 1"))
             .addProcessor(aprilTag)
             .build()
-    }
+    } // end method init()
 
 
-    private fun telemetryAprilTag() {
+    fun aprilTagTelemetry() {
         val currentDetections: List<AprilTagDetection> = aprilTag.detections
         telemetry.addData("# AprilTags Detected", currentDetections.size)
 
@@ -45,7 +45,7 @@ class visionportal {
                     String.format(
                         Locale("en"),
                         "\n==== (ID %d) %s",
-                        detection.id,
+                        detection.id, // TODO: pretty sure one of these 2 what we'll be using to detect
                         detection.metadata.name
                     )
                 )
@@ -70,7 +70,6 @@ class visionportal {
                 telemetry.addLine(
                     String.format(
                         Locale("en"),
-
                         "RBE %6.1f %6.1f %6.1f  (inch, deg, deg)",
                         detection.ftcPose.range,
                         detection.ftcPose.bearing,
@@ -82,7 +81,6 @@ class visionportal {
                 telemetry.addLine(
                     String.format(
                         Locale("en"),
-
                         "Center %6.0f %6.0f   (pixels)",
                         detection.center.x,
                         detection.center.y
@@ -95,7 +93,7 @@ class visionportal {
         telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.")
         telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)")
         telemetry.addLine("RBE = Range, Bearing & Elevation")
-    } // end method telemetryAprilTag()
+    } // end method aprilTagTelemetry()
 
 
 }
