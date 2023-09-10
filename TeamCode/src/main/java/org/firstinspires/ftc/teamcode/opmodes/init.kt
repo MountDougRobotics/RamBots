@@ -1,4 +1,10 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
-class init {
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+
+class init : LinearOpMode() {
+    override fun runOpMode() {
+
+
+    }
 }
