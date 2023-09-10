@@ -27,12 +27,12 @@ dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 
-    implementation 'org.openftc:easyopencv:1.7.0' // EasyOpenCV
+    // implementation 'org.openftc:easyopencv:1.7.0' // EasyOpenCV (Removed in favour of Vision Portal)
     implementation 'org.ftclib.ftclib:core:2.0.1' // FTCLib
     implementation 'org.ftclib.ftclib:vision:2.0.1' // FTCLib vision
 
     // follow 3 are for Roadrunner
     implementation 'org.apache.commons:commons-math3:3.6.1'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
-    implementation 'com.acmerobotics.roadrunner:core:1.0.0'
+    implementation 'com.acmerobotics.roadrunner:core:1.0.0-beta2'
 }
