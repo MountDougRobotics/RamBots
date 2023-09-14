@@ -8,28 +8,41 @@
 
 package org.firstinspires.ftc.teamcode.movement
 
-import com.qualcomm.robotcore.hardware.DcMotor
+import com.arcrobotics.ftclib.drivebase.HDrive
+import com.arcrobotics.ftclib.hardware.motors.Motor
+import com.arcrobotics.ftclib.hardware.motors.MotorEx
+import com.qualcomm.robotcore.hardware.DcMotorEx
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 
+
 class drive {
-    lateinit var frontLeft: DcMotor
-    lateinit var frontRight: DcMotor
-    lateinit var backLeft: DcMotor
-    lateinit var backRight: DcMotor
+    lateinit var frontLeft: MotorEx
+    lateinit var frontRight: MotorEx
+    lateinit var backLeft: MotorEx
+    lateinit var backRight: MotorEx
+    lateinit var drive: HDrive
+
 
     fun init() {
-        frontLeft = hardwareMap.get(DcMotor::class.java, "a")
-        frontRight = hardwareMap.get(DcMotor::class.java, "b")
-        backLeft = hardwareMap.get(DcMotor::class.java, "c")
-        backRight = hardwareMap.get(DcMotor::class.java, "d")
-        // Run with encoder & use brake mode
-        frontLeft.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        frontRight.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        backLeft.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        backRight.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        frontLeft.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        frontRight.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        backLeft.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        backRight.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        frontLeft = MotorEx(hardwareMap, "fL")
+        frontRight = MotorEx(hardwareMap, "fR")
+        backLeft = MotorEx(hardwareMap, "bL")
+        backRight = MotorEx(hardwareMap, "bR")
+
+        // Motor settings & use brake mode
+        frontLeft.setRunMode(Motor.RunMode.RawPower)
+        frontRight.setRunMode(Motor.RunMode.RawPower)
+        backLeft.setRunMode(Motor.RunMode.RawPower)
+        backRight.setRunMode(Motor.RunMode.RawPower)
+        frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
+        frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
+        backLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
+        backRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
+
+        // setup drive
+        drive = HDrive(
+            frontLeft, frontRight,
+            backLeft, backRight
+        )
     }
 }

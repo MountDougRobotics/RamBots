@@ -13,3 +13,7 @@ This is where all scripts + opmodes will be.
 └─ [auto](opmodes/auto.kt) (autonomous opmode)
 
 └─ [teleop](opmodes/teleop.kt) (teleop opmode)
+
+
+### vision (contains VisionPortal and other vision related helper files)
+└─ [visionportal](vision/visionportal.kt) (visionportal helper)

@@ -9,16 +9,19 @@ package org.firstinspires.ftc.teamcode.vision
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
-import kotlin.String
+import org.firstinspires.ftc.vision.tfod.TfodProcessor
 import java.util.Locale
 
 
 class visionportal {
     // global vars
     private lateinit var aprilTag : AprilTagProcessor
+    private lateinit var TFODProcessor : TfodProcessor
+
     lateinit var visionPortal : VisionPortal
 
     fun init() {
@@ -26,10 +29,15 @@ class visionportal {
         aprilTag  = AprilTagProcessor.Builder()
             .build()
 
+        // Create the TensorFlow processor by using a builder.
+        TFODProcessor = TfodProcessor.Builder()
+            .build()
+
         // create vision portal
         visionPortal = VisionPortal.Builder()
             .setCamera(hardwareMap.get(WebcamName::class.java, "Webcam 1"))
             .addProcessor(aprilTag)
+            .addProcessor(TFODProcessor)
             .build()
     } // end method init()
 
@@ -94,6 +102,26 @@ class visionportal {
         telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)")
         telemetry.addLine("RBE = Range, Bearing & Elevation")
     } // end method aprilTagTelemetry()
+
+    fun telemetryTfod() {
+        val currentRecognitions: List<Recognition> = TFODProcessor.getRecognitions()
+        telemetry.addData("# Objects Detected", currentRecognitions.size)
+
+        // Step through the list of recognitions and display info for each one.
+        for (recognition in currentRecognitions) {
+            val x = ((recognition.left + recognition.right) / 2).toDouble()
+            val y = ((recognition.top + recognition.bottom) / 2).toDouble()
+            telemetry.addData("", " ")
+            telemetry.addData(
+                "Image",
+                "%s (%.0f %% Conf.)",
+                recognition.label,
+                recognition.confidence * 100
+            )
+            telemetry.addData("- Position", "%.0f / %.0f", x, y)
+            telemetry.addData("- Size", "%.0f x %.0f", recognition.width, recognition.height)
+        } // end for() loop
+    } // end method telemetryTfod()
 
 
 }
