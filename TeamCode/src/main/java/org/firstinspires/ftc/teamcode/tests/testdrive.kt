@@ -1,66 +1,47 @@
+/*
+* TestDrive - A simple stand-alone holonomic drive program
+*
+*  */
+
+
 package org.firstinspires.ftc.teamcode.opmodes
 
-import com.arcrobotics.ftclib.drivebase.HDrive
 import com.arcrobotics.ftclib.gamepad.GamepadEx
-import com.arcrobotics.ftclib.hardware.motors.Motor
-import com.arcrobotics.ftclib.hardware.motors.MotorEx
-import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion
-import kotlin.math.pow
+import ftc.rogue.blacksmith.BlackOp
+import ftc.rogue.blacksmith.Scheduler
+import ftc.rogue.blacksmith.listeners.ReforgedGamepad
+import org.firstinspires.ftc.teamcode.components.meta.createTeleOpBotComponents
 
 
-class testdrive : OpMode() {
-    lateinit var frontLeft: MotorEx
-    lateinit var frontRight: MotorEx
-    lateinit var backLeft: MotorEx
-    lateinit var backRight: MotorEx
-    lateinit var drive: HDrive
+abstract class testdrive : BlackOp() {
+    protected val driver   by createOnGo<ReforgedGamepad> { gamepad1 }
+    protected val codriver by createOnGo<ReforgedGamepad> { gamepad2 }
+
+//    protected val robot by createOnGo<robot>()
+    protected val bot by evalOnGo(::createTeleOpBotComponents)
+
+    protected var powerMulti = 0.0
+
 
     lateinit var driverOp: GamepadEx
-    override fun init() {
-        frontLeft = MotorEx(BlocksOpModeCompanion.hardwareMap, "fL")
-        frontRight = MotorEx(BlocksOpModeCompanion.hardwareMap, "fR")
-        backLeft = MotorEx(BlocksOpModeCompanion.hardwareMap, "bL")
-        backRight = MotorEx(BlocksOpModeCompanion.hardwareMap, "bR")
 
-        // Motor settings & use brake mode
-        frontLeft.setRunMode(Motor.RunMode.RawPower)
-        frontRight.setRunMode(Motor.RunMode.RawPower)
-        backLeft.setRunMode(Motor.RunMode.RawPower)
-        backRight.setRunMode(Motor.RunMode.RawPower)
-        frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
-        frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
-        backLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
-        backRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
+    override fun go() { // go() instead of runOpMode()
+        Scheduler.launchOnStart(this) {
+            mTelemetry.addData("Hello", "World!") // Logs to both driver station and FTCDashboard
+        }
 
-        // setup drive
-        drive = HDrive(
-                frontLeft, frontRight,
-                backLeft, backRight
-        )
-        driverOp = GamepadEx(gamepad1);
+        waitForStart()
+
+        Scheduler.debug({ opModeIsActive() && !isStopRequested }) {
+            bot.drivetrain.drive(driver.gamepad, powerMulti)
+            bot.updateComponents(useLiftDeadzone = true)
+
+            // bot.lift.printLiftTelem()
+            mTelemetry.addData("Loop time", loopTime)
+            mTelemetry.update()
+        }
     }
 
-    override fun init_loop() {
 
-    }
-
-    override fun start() {
-
-    }
-    private fun cube(x : Float) : Double { return x.toDouble().pow(3.0)
-    }
-
-    override fun loop() {
-        drive.driveRobotCentric(
-                driverOp.getLeftX(),
-                driverOp.getLeftY(),
-                driverOp.getRightY()
-        );
-    }
-
-    override fun stop() {
-
-    }
 
 }

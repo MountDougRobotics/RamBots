@@ -3,6 +3,7 @@ repositories {
     google() // Needed for androidx
 
     maven { url = 'https://maven.brott.dev/' } // maven import
+    maven { url = 'https://jitpack.io' } // blacksmith maven import
 }
 
 dependencies {
@@ -22,6 +23,10 @@ dependencies {
 
 
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.12' // ftc Dashboard
+
+    implementation 'com.github.RR-9527:robot-code-v2:1.0.0' // blacksmith dependency
+
+
 
 }
 
