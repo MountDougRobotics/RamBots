@@ -7,13 +7,20 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import ftc.rogue.blacksmith.BlackOp
 import ftc.rogue.blacksmith.Scheduler
 import ftc.rogue.blacksmith.listeners.ReforgedGamepad
 import org.firstinspires.ftc.teamcode.components.meta.createTeleOpBotComponents
 
+@TeleOp(name = "TeleOP / v2.3.0", group = "Robot")
+abstract class TestDriver : BlackOp() {
 
-abstract class testdrive : BlackOp() {
+    /*
+    * This is a test opmode using the BlackSmith BlackOp opmode system.
+    * As an extension of the linear opmode provided by the FTC RC, this program uses a linear progress system instead of the asynchronous Iterative Opmode.
+    */
+
     protected val driver   by createOnGo<ReforgedGamepad> { gamepad1 }
     protected val codriver by createOnGo<ReforgedGamepad> { gamepad2 }
 
@@ -25,14 +32,14 @@ abstract class testdrive : BlackOp() {
 
     lateinit var driverOp: GamepadEx
 
-    override fun go() { // go() instead of runOpMode()
-        Scheduler.launchOnStart(this) {
-            mTelemetry.addData("Hello", "World!") // Logs to both driver station and FTCDashboard
+    override fun go() { // ? go() instead of runOpMode()
+        Scheduler.launchOnStart(this) { // * Standard Schedular model
+            mTelemetry.addData("Hello", "World!") // ? Logs to both driver station and FTCDashboard
         }
 
         waitForStart()
 
-        Scheduler.debug({ opModeIsActive() && !isStopRequested }) {
+        Scheduler.debug({ opModeIsActive() && !isStopRequested }) { // * Schedular model using debug for loop time and other extra info
             bot.drivetrain.drive(driver.gamepad, powerMulti)
             bot.updateComponents(useLiftDeadzone = true)
 

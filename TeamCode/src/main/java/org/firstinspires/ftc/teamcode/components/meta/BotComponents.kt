@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.components.meta
 
+// ! All the code in this file should not be tampered with
+
+
 import com.qualcomm.hardware.rev.RevColorSensorV3
 import ftc.rogue.blacksmith.BlackOp.Companion.hwMap
 import ftc.rogue.blacksmith.util.kt.invoke
 //import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
-import org.firstinspires.ftc.teamcode.components.*
 import org.firstinspires.ftc.teamcode.components.hardware.drivetrain
 
 
@@ -24,7 +26,7 @@ abstract class BaseBotComponents {
 
 fun createTeleOpBotComponents() =
     TeleOpBotComponents(
-        hwMap(deviceNames.COLOR_SENSOR),
+        hwMap(DeviceNames.COLOR_SENSOR),
         drivetrain(),
     )
 
