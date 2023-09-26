@@ -1,15 +1,15 @@
+package org.firstinspires.ftc.teamcode.components.vision
 /* Sample for Helping
-*
 * https://github.com/FIRST-Tech-Challenge/FtcRobotController/blob/f3a5a54f67688eb778a8f9a62d9ce1b6e728b836/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptAprilTag.java#L126
-* */
+*/
 
-
-package org.firstinspires.ftc.teamcode.vision
+// ! All the code in this file should not be tampered with unless one has knowledge about the VisionPortal and CV system
 
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition
+import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
@@ -17,7 +17,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor
 import java.util.Locale
 
 
-class visionportal {
+class VisionPortal {
     // global vars
     private lateinit var aprilTag : AprilTagProcessor
     private lateinit var TFODProcessor : TfodProcessor
@@ -35,7 +35,7 @@ class visionportal {
 
         // create vision portal
         visionPortal = VisionPortal.Builder()
-            .setCamera(hardwareMap.get(WebcamName::class.java, "Webcam 1"))
+            .setCamera(hardwareMap.get(WebcamName::class.java, DeviceNames.WEBCAM1))
             .addProcessor(aprilTag)
             .addProcessor(TFODProcessor)
             .build()

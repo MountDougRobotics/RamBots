@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.components.hardware
 
+// ! All the code in this file should not be tampered with
 
 import com.qualcomm.robotcore.hardware.Gamepad
 import kotlin.math.abs
