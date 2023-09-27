@@ -7,14 +7,12 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import ftc.rogue.blacksmith.BlackOp
 import ftc.rogue.blacksmith.Scheduler
 import ftc.rogue.blacksmith.listeners.ReforgedGamepad
 import org.firstinspires.ftc.teamcode.components.meta.createTeleOpBotComponents
 
-@TeleOp(name = "TeleOP / v2.3.0", group = "Robot")
-abstract class TestDriver : BlackOp() {
+abstract class baseOpMode : BlackOp() {
 
     /*
     * This is a test opmode using the BlackSmith BlackOp opmode system.
