@@ -15,8 +15,9 @@ import org.firstinspires.ftc.teamcode.components.meta.createTeleOpBotComponents
 abstract class baseOpMode : BlackOp() {
 
     /*
-    * This is a test opmode using the BlackSmith BlackOp opmode system.
+    * This is a base opmode using the BlackSmith BlackOp opmode system.
     * As an extension of the linear opmode provided by the FTC RC, this program uses a linear progress system instead of the asynchronous Iterative Opmode.
+    * To use, extend baseOpMode and override functions as needed
     */
 
     protected val driver   by createOnGo<ReforgedGamepad> { gamepad1 }
@@ -30,7 +31,10 @@ abstract class baseOpMode : BlackOp() {
 
     lateinit var driverOp: GamepadEx
 
-    override fun go() { // ? go() instead of runOpMode()
+    final override fun go() { // ? go() instead of runOpMode()
+
+        describeControls()
+
         Scheduler.launchOnStart(this) { // * Standard Schedular model
             mTelemetry.addData("Hello", "World!") // ? Logs to both driver station and FTCDashboard
         }
@@ -38,7 +42,7 @@ abstract class baseOpMode : BlackOp() {
         waitForStart()
 
         Scheduler.debug({ opModeIsActive() && !isStopRequested }) { // * Schedular model using debug for loop time and other extra info
-            bot.drivetrain.drive(driver.gamepad, powerMulti)
+            bot.drivetrain.drive(driver.gamepad, powerMulti) // * Drive Code Here
             bot.updateComponents(useLiftDeadzone = true)
 
             // bot.lift.printLiftTelem()
@@ -46,6 +50,9 @@ abstract class baseOpMode : BlackOp() {
             mTelemetry.update()
         }
     }
+
+    abstract fun describeControls()
+
 
 
 
