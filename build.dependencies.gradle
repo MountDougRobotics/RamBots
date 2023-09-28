@@ -24,7 +24,7 @@ dependencies {
 
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.12' // ftc Dashboard
 
-    implementation 'com.github.RR-9527:robot-code-v2:1.0.1' // blacksmith dependency
+    implementation 'com.github.RR-9527:robot-code-v2:1.0.2' // blacksmith dependency
 
 
 
