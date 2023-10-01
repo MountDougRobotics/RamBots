@@ -7,12 +7,14 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import ftc.rogue.blacksmith.BlackOp
 import ftc.rogue.blacksmith.Scheduler
 import ftc.rogue.blacksmith.listeners.ReforgedGamepad
+import org.firstinspires.ftc.teamcode.components.meta.TeleOpBotComponents
 import org.firstinspires.ftc.teamcode.components.meta.createTeleOpBotComponents
 
-abstract class baseOpMode : BlackOp() {
+open class baseOpMode : LinearOpMode() {
 
     /*
     * This is a base opmode using the BlackSmith BlackOp opmode system.
@@ -20,23 +22,26 @@ abstract class baseOpMode : BlackOp() {
     * To use, extend baseOpMode and override functions as needed
     */
 
-    protected val driver   by createOnGo<ReforgedGamepad> { gamepad1 }
-    protected val codriver by createOnGo<ReforgedGamepad> { gamepad2 }
+    lateinit var driver: ReforgedGamepad
+    lateinit var codriver: ReforgedGamepad
 
 //    protected val robot by createOnGo<robot>()
-    protected val bot by evalOnGo(::createTeleOpBotComponents)
+    lateinit var bot: TeleOpBotComponents//by evalOnGo(::createTeleOpBotComponents)
 
     protected var powerMulti = 0.0
 
 
     lateinit var driverOp: GamepadEx
 
-    final override fun go() { // ? go() instead of runOpMode()
+    final override fun runOpMode() {
+        driver = ReforgedGamepad(gamepad1)
+        codriver = ReforgedGamepad(gamepad2)
+        bot = createTeleOpBotComponents()
 
         describeControls()
 
         Scheduler.launchOnStart(this) { // * Standard Schedular model
-            mTelemetry.addData("Hello", "World!") // ? Logs to both driver station and FTCDashboard
+            telemetry.addData("Hello", "World!")
         }
 
         waitForStart()
@@ -46,12 +51,12 @@ abstract class baseOpMode : BlackOp() {
             bot.updateComponents(useLiftDeadzone = true)
 
             // bot.lift.printLiftTelem()
-            mTelemetry.addData("Loop time", loopTime)
-            mTelemetry.update()
+            telemetry.addData("Loop time", loopTime)
+            telemetry.update()
         }
     }
 
-    abstract fun describeControls()
+    open fun describeControls() {}
 
 
 
