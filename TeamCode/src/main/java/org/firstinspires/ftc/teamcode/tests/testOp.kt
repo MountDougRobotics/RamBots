@@ -7,10 +7,6 @@ import org.firstinspires.ftc.teamcode.opmodes.baseOpMode
 
 @TeleOp //(name = "Test Op 1.0")
 class testOp : baseOpMode() {
-//    override fun go() {
-//        TODO("Not yet implemented")
-//    }
-
     override fun describeControls() {
         TODO("Not yet implemented")
     }
