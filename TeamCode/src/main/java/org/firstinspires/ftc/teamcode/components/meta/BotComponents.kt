@@ -12,14 +12,14 @@ import org.firstinspires.ftc.teamcode.components.vision.VisionPortal
 
 
 abstract class BaseBotComponents {
-    val claw   = Claw()
+    //val claw   = Claw()
 //    val intake = Intake()
 //    val arm    = Arm()
 //    val wrist  = Wrist()
 //    val lift   = Lift()
 
     open fun updateComponents(useLiftDeadzone: Boolean) {
-        claw.update()
+        //claw.update()
 //        arm.update()
 //        wrist.update()
     }
