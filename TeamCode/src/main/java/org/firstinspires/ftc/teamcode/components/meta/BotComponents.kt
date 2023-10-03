@@ -27,12 +27,12 @@ abstract class BaseBotComponents {
 
 fun createTeleOpBotComponents() =
     TeleOpBotComponents(
-        hwMap(DeviceNames.COLOR_SENSOR),
+        //hwMap(DeviceNames.COLOR_SENSOR),
         drivetrain(),
     )
 
 data class TeleOpBotComponents(
-    val rcs: RevColorSensorV3,
+    //val rcs: RevColorSensorV3,
     val drivetrain: drivetrain,
 ) : BaseBotComponents() {
     override fun updateComponents(useLiftDeadzone: Boolean) {
