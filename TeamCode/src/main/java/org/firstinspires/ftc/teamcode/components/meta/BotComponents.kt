@@ -4,22 +4,24 @@ package org.firstinspires.ftc.teamcode.components.meta
 
 
 import com.qualcomm.hardware.rev.RevColorSensorV3
+import com.qualcomm.robotcore.hardware.HardwareMap
 import ftc.rogue.blacksmith.BlackOp.Companion.hwMap
 import ftc.rogue.blacksmith.util.kt.invoke
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.components.hardware.*
 import org.firstinspires.ftc.teamcode.components.vision.VisionPortal
 
 
 abstract class BaseBotComponents {
-    val claw   = Claw()
+    //val claw   = Claw()
 //    val intake = Intake()
 //    val arm    = Arm()
 //    val wrist  = Wrist()
 //    val lift   = Lift()
 
     open fun updateComponents(useLiftDeadzone: Boolean) {
-        claw.update()
+        //claw.update()
 //        arm.update()
 //        wrist.update()
     }
@@ -27,12 +29,12 @@ abstract class BaseBotComponents {
 
 fun createTeleOpBotComponents() =
     TeleOpBotComponents(
-        hwMap(DeviceNames.COLOR_SENSOR),
+       // hwMap(DeviceNames.COLOR_SENSOR),
         drivetrain(),
     )
 
 data class TeleOpBotComponents(
-    val rcs: RevColorSensorV3,
+    //val rcs: RevColorSensorV3,
     val drivetrain: drivetrain,
 ) : BaseBotComponents() {
     override fun updateComponents(useLiftDeadzone: Boolean) {
@@ -43,7 +45,7 @@ data class TeleOpBotComponents(
 
 fun createAutoBotComponents() =
     AutoBotComponents(
-        SampleMecanumDrive(hwMap),
+        SampleMecanumDrive(hardwareMap),
         VisionPortal(),
     )
 

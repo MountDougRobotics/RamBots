@@ -17,15 +17,20 @@ import ftc.rogue.blacksmith.BlackOp.Companion.mTelemetry
 import ftc.rogue.blacksmith.util.kt.invoke
 import ftc.rogue.blacksmith.util.kt.maxMagnitudeAbs
 import ftc.rogue.blacksmith.util.kt.pow
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import kotlin.math.*
 
 
 class drivetrain {
-    private val frontLeft  = hwMap<DcMotorEx>(DeviceNames.DRIVE_FL).apply { direction = Direction.REVERSE }
-    private val frontRight = hwMap<DcMotorEx>(DeviceNames.DRIVE_FR)
-    private val backLeft   = hwMap<DcMotorEx>(DeviceNames.DRIVE_BL).apply { direction = Direction.REVERSE }
-    private val backRight  = hwMap<DcMotorEx>(DeviceNames.DRIVE_BR)
+//    private val frontLeft  = hwMap<DcMotorEx>(DeviceNames.DRIVE_FL).apply { direction = Direction.REVERSE }
+//    private val frontRight = hwMap<DcMotorEx>(DeviceNames.DRIVE_FR)
+//    private val backLeft   = hwMap<DcMotorEx>(DeviceNames.DRIVE_BL).apply { direction = Direction.REVERSE }
+//    private val backRight  = hwMap<DcMotorEx>(DeviceNames.DRIVE_BR)
+    private val frontLeft  = hardwareMap<DcMotorEx>(DeviceNames.DRIVE_FL).apply { direction = Direction.REVERSE }
+    private val frontRight = hardwareMap<DcMotorEx>(DeviceNames.DRIVE_FR)
+    private val backLeft   = hardwareMap<DcMotorEx>(DeviceNames.DRIVE_BL).apply { direction = Direction.REVERSE }
+    private val backRight  = hardwareMap<DcMotorEx>(DeviceNames.DRIVE_BR)
 
     init {
         withEachMotor {
