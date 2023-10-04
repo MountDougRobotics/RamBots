@@ -36,7 +36,7 @@ open class baseOpMode : LinearOpMode() {
     final override fun runOpMode() {
         driver = ReforgedGamepad(gamepad1)
         codriver = ReforgedGamepad(gamepad2)
-        bot = createTeleOpBotComponents()
+        bot = createTeleOpBotComponents(hardwareMap)
 
         describeControls()
 

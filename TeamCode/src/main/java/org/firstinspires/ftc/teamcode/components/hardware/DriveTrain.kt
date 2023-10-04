@@ -12,25 +12,30 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction
 import com.qualcomm.robotcore.hardware.Gamepad
-import ftc.rogue.blacksmith.BlackOp.Companion.hwMap
+import com.qualcomm.robotcore.hardware.HardwareMap
 import ftc.rogue.blacksmith.BlackOp.Companion.mTelemetry
 import ftc.rogue.blacksmith.util.kt.invoke
 import ftc.rogue.blacksmith.util.kt.maxMagnitudeAbs
 import ftc.rogue.blacksmith.util.kt.pow
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
+//import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
-import kotlin.math.*
+import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.hypot
+import kotlin.math.sin
 
 
-class drivetrain {
+class drivetrain (hardwareMap: HardwareMap){
 //    private val frontLeft  = hwMap<DcMotorEx>(DeviceNames.DRIVE_FL).apply { direction = Direction.REVERSE }
 //    private val frontRight = hwMap<DcMotorEx>(DeviceNames.DRIVE_FR)
 //    private val backLeft   = hwMap<DcMotorEx>(DeviceNames.DRIVE_BL).apply { direction = Direction.REVERSE }
 //    private val backRight  = hwMap<DcMotorEx>(DeviceNames.DRIVE_BR)
-    private val frontLeft  = hardwareMap<DcMotorEx>(DeviceNames.DRIVE_FL).apply { direction = Direction.REVERSE }
-    private val frontRight = hardwareMap<DcMotorEx>(DeviceNames.DRIVE_FR)
-    private val backLeft   = hardwareMap<DcMotorEx>(DeviceNames.DRIVE_BL).apply { direction = Direction.REVERSE }
-    private val backRight  = hardwareMap<DcMotorEx>(DeviceNames.DRIVE_BR)
+    private val frontLeft  = hardwareMap.get(DcMotorEx::class.java, DeviceNames.DRIVE_FL).apply { direction = Direction.REVERSE }
+    private val frontRight = hardwareMap.get(DcMotorEx::class.java, DeviceNames.DRIVE_FR)
+    private val backLeft   = hardwareMap.get(DcMotorEx::class.java, DeviceNames.DRIVE_BL).apply { direction = Direction.REVERSE }
+    private val backRight  = hardwareMap.get(DcMotorEx::class.java, DeviceNames.DRIVE_BR)
 
     init {
         withEachMotor {

@@ -7,7 +7,7 @@ import com.qualcomm.hardware.rev.RevColorSensorV3
 import com.qualcomm.robotcore.hardware.HardwareMap
 import ftc.rogue.blacksmith.BlackOp.Companion.hwMap
 import ftc.rogue.blacksmith.util.kt.invoke
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
+//import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.components.hardware.*
 import org.firstinspires.ftc.teamcode.components.vision.VisionPortal
@@ -27,10 +27,10 @@ abstract class BaseBotComponents {
     }
 }
 
-fun createTeleOpBotComponents() =
+fun createTeleOpBotComponents(hardwareMap: HardwareMap) =
     TeleOpBotComponents(
        // hwMap(DeviceNames.COLOR_SENSOR),
-        drivetrain(),
+        drivetrain(hardwareMap),
     )
 
 data class TeleOpBotComponents(
@@ -43,7 +43,7 @@ data class TeleOpBotComponents(
     }
 }
 
-fun createAutoBotComponents() =
+fun createAutoBotComponents(hardwareMap: HardwareMap) =
     AutoBotComponents(
         SampleMecanumDrive(hardwareMap),
         VisionPortal(),
