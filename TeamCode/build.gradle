@@ -9,6 +9,11 @@
 // before doing so.
 
 
+plugins {
+    id 'com.google.devtools.ksp' version '1.9.10-1.0.13'
+}
+
+
 // Custom definitions may go here
 
 // Include common definitions from above.
