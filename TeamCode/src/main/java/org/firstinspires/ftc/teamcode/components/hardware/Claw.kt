@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.components.hardware
 
 import com.acmerobotics.dashboard.config.Config
 import com.arcrobotics.ftclib.hardware.SimpleServo
-import ftc.rogue.blacksmith.BlackOp.Companion.hwMap
+import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 
 // ! Do not change these constants except when claw tuning
@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 @JvmField var CLAW_DEPOSIT       = 0.686
 @JvmField var CLAW_CLOSE         = 0.425
 
-class Claw {
-    private val clawServo = SimpleServo(hwMap, DeviceNames.CLAW_SERVO, 0.0, 180.0)
+class Claw (hardwareMap: HardwareMap) {
+    private val clawServo = SimpleServo(hardwareMap, DeviceNames.CLAW_SERVO, 0.0, 180.0)
 
     private var targetPos = CLAW_CLOSE
 

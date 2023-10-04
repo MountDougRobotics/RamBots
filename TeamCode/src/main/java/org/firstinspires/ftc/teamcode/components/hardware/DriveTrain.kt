@@ -13,14 +13,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction
 import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.hardware.HardwareMap
-import ftc.rogue.blacksmith.BlackOp.Companion.mTelemetry
-import ftc.rogue.blacksmith.util.kt.invoke
-import ftc.rogue.blacksmith.util.kt.maxMagnitudeAbs
-import ftc.rogue.blacksmith.util.kt.pow
-//import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
-import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import kotlin.math.PI
 import kotlin.math.abs
+import kotlin.math.pow
+import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
+import org.firstinspires.ftc.teamcode.utils.maxMagnitudeAbs
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.hypot
@@ -78,8 +75,6 @@ class drivetrain (hardwareMap: HardwareMap){
 //            }
 //        }
 //
-        mTelemetry.addData("X component: ", xComponent)
-        mTelemetry.addData("Y component: ", yComponent)
 
         val max = maxMagnitudeAbs<Double>(xComponent, yComponent, 1e-16)
 
@@ -96,7 +91,9 @@ class drivetrain (hardwareMap: HardwareMap){
 
         val _powerMulti = if (!gamepad.isAnyJoystickTriggered()) 0.0 else powerMulti
 
-        powers.mapInPlace { (it pow 3) * _powerMulti }
+        for (i in powers.indices) {
+            powers[i] = powers[i].pow(3.0)*_powerMulti
+        }
 
         withEachMotor {
             this.power = powers[it]

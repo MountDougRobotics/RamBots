@@ -5,8 +5,6 @@ package org.firstinspires.ftc.teamcode.components.meta
 
 import com.qualcomm.hardware.rev.RevColorSensorV3
 import com.qualcomm.robotcore.hardware.HardwareMap
-import ftc.rogue.blacksmith.BlackOp.Companion.hwMap
-import ftc.rogue.blacksmith.util.kt.invoke
 //import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.components.hardware.*
