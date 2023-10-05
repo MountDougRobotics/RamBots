@@ -3,6 +3,8 @@ repositories {
     google() // Needed for androidx
 
     maven { url = 'https://maven.brott.dev/' } // maven import
+    maven { url = 'https://jitpack.io' }
+
 }
 
 dependencies {
