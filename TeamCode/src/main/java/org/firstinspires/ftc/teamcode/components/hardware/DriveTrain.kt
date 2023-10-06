@@ -56,7 +56,7 @@ class DriveTrain (hardwareMap: HardwareMap) {
         val r = _r * .9f
 
         val theta = atan2(y, x)
-        val power = sqrt(x.pow(2) + y.pow(2)).coerceAtMost(1F) //hypot(x, y)
+        val power = hypot(x, y) // sqrt(x.pow(2) + y.pow(2)).coerceAtMost(1F)
 
         var xComponent = power * cos(theta - PI / 4)
         var yComponent = power * sin(theta - PI / 4)
@@ -75,14 +75,14 @@ class DriveTrain (hardwareMap: HardwareMap) {
 
         val powers = doubleArrayOf(
             power * (xComponent / max) + r,
-            -power * (yComponent / max) - r,
+            power * (yComponent / max) - r,
             power * (yComponent / max) + r,
-            -power * (xComponent / max) - r,
+            power * (xComponent / max) - r,
         )
 
-        if (power + abs(r) > 1) {
-            powers.mapInPlace { it / (power + abs(r)) }
-        }
+//        if (power + abs(r) > 1) {
+//            powers.mapInPlace { it / (power + abs(r)) }
+//        }
 
         val _powerMulti = if (!gamepad.isAnyJoystickTriggered()) 0.0 else powerMulti
 
