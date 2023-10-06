@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction
 import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.hardware.HardwareMap
-import ftc.rogue.blacksmith.util.kt.pow
+//import ftc.rogue.blacksmith.util.kt.pow
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.teamcode.components.utils.maxMagnitudeAbs
@@ -56,7 +56,7 @@ class DriveTrain (hardwareMap: HardwareMap) {
         val r = _r * .9f
 
         val theta = atan2(y, x)
-        val power = sqrt(x.pow(2.0) + y.pow(2.0)).coerceAtMost(1.0) //hypot(x, y)
+        val power = sqrt(x.pow(2) + y.pow(2)).coerceAtMost(1F) //hypot(x, y)
 
         var xComponent = power * cos(theta - PI / 4)
         var yComponent = power * sin(theta - PI / 4)
