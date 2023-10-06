@@ -80,9 +80,9 @@ class DriveTrain (hardwareMap: HardwareMap) {
             power * (xComponent / max) - r,
         )
 
-//        if (power + abs(r) > 1) {
-//            powers.mapInPlace { it / (power + abs(r)) }
-//        }
+        if (power + abs(r) > 1) {
+            powers.mapInPlace { it / (power + abs(r)) }
+        }
 
         val _powerMulti = if (!gamepad.isAnyJoystickTriggered()) 0.0 else powerMulti
 
