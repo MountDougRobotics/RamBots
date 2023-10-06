@@ -74,9 +74,9 @@ class DriveTrain (hardwareMap: HardwareMap) {
 
         val powers = doubleArrayOf(
             power * (xComponent / max) + r,
-            power * (yComponent / max) - r,
+            -power * (yComponent / max) - r,
             power * (yComponent / max) + r,
-            power * (xComponent / max) - r,
+            -power * (xComponent / max) - r,
         )
 
         if (power + abs(r) > 1) {
