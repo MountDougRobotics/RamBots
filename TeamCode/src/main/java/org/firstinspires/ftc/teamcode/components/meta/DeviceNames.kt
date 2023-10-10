@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.components.meta
 // ! All the code in this file should not be tampered with
 
 object DeviceNames {
-    const val ARM_SERVO    = "AR"
+    const val ARM_MOTOR    = "AR"
+    const val ARM_MOTOR2    = "AR2"
+
     const val CAM_SERVO    = "CA"
     const val CLAW_SERVO   = "CL"
     const val WRIST_SERVO  = "WR"
