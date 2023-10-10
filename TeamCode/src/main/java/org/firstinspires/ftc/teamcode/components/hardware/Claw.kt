@@ -15,27 +15,27 @@ import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 @JvmField var CLAW_CLOSE         = 0.425
 
 class Claw (hardwareMap: HardwareMap) {
-    private val clawServo = hardwareMap.get(Servo::class.java, DeviceNames.CLAW_SERVO)
-
-    private var targetPos = CLAW_CLOSE
-
-    fun openForIntakeNarrow() {
-        targetPos = CLAW_INTAKE_NARROW
-    }
-
-    fun openForIntakeWide() {
-        targetPos = CLAW_INTAKE_WIDE
-    }
-
-    fun openForDeposit() {
-        targetPos = CLAW_DEPOSIT
-    }
-
-    fun close() {
-        targetPos = CLAW_CLOSE
-    }
+//    private val clawServo = hardwareMap.get(Servo::class.java, DeviceNames.CLAW_SERVO)
+//
+//    private var targetPos = CLAW_CLOSE
+//
+//    fun openForIntakeNarrow() {
+//        targetPos = CLAW_INTAKE_NARROW
+//    }
+//
+//    fun openForIntakeWide() {
+//        targetPos = CLAW_INTAKE_WIDE
+//    }
+//
+//    fun openForDeposit() {
+//        targetPos = CLAW_DEPOSIT
+//    }
+//
+//    fun close() {
+//        targetPos = CLAW_CLOSE
+//    }
 
     fun update() {
-        clawServo.position = targetPos
+//        clawServo.position = targetPos
     }
 }
