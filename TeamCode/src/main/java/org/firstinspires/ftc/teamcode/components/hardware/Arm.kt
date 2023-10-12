@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.components.hardware
 
+import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.hardware.HardwareMap
@@ -12,9 +13,14 @@ class Arm (hardwareMap: HardwareMap, telemetry: Telemetry) {
 
     val telemetry = telemetry
 
+    init {
+        arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+
+    }
+
     fun update(gamepad: Gamepad) {
-        var up = if (gamepad.y) 0.3 else 0.0
-        var down = if (gamepad.a) 0.3 else 0.0
+        var up = if (gamepad.y) 0.8 else 0.0
+        var down = if (gamepad.a) 0.8 else 0.0
 
         arm.power = up-down
         arm2.power = up-down
