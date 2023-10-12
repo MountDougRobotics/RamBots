@@ -10,7 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction
 import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.hardware.HardwareMap
 //import ftc.rogue.blacksmith.util.kt.pow
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
+import org.firstinspires.ftc.teamcode.components.device.getDriveSticks
+import org.firstinspires.ftc.teamcode.components.device.isAnyJoystickTriggered
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.teamcode.components.utils.maxMagnitudeAbs
 import org.firstinspires.ftc.teamcode.components.utils.pow
