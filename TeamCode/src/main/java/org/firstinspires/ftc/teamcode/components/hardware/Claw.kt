@@ -16,6 +16,8 @@ import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 
 class Claw (hardwareMap: HardwareMap) {
 //    private val clawServo = hardwareMap.get(Servo::class.java, DeviceNames.CLAW_SERVO)
+//    private val clawServo = hardwareMap.get(Servo::class.java, DeviceNames.CLAW_SERVO2)
+
 //
 //    private var targetPos = CLAW_CLOSE
 //

@@ -54,7 +54,7 @@ class DriveTrain (hardwareMap: HardwareMap) {
 //        mTelemetry.addData("Angle a", 0.0)
 //        mTelemetry.addData("Angle b",b)
 
-        val r = _r * .9f
+        val r = _r * 1.0f
 
         val theta = atan2(y, x)
         val power = hypot(x, y) // sqrt(x.pow(2) + y.pow(2)).coerceAtMost(1F)
