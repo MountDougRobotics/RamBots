@@ -14,16 +14,36 @@ class Arm (hardwareMap: HardwareMap, telemetry: Telemetry) {
     val telemetry = telemetry
 
     init {
-        arm.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-
+        withEachMotor {
+            zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+            //mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        }
     }
 
     fun update(gamepad: Gamepad) {
-        var up = if (gamepad.y) 0.8 else 0.0
-        var down = if (gamepad.a) 0.8 else 0.0
+        var dir = 0
 
-        arm.power = up-down
-        arm2.power = up-down
+        if (gamepad.y) {
+            dir = 1
 
+        }//y ctrl
+        else if (gamepad.a) {
+            dir = -1
+        }//a ctrl
+//
+//        withEachMotor {
+//            targetPosition = currentPosition + ( (288 / 360) * 5 * dir ) // * 288
+//        }
+
+        withEachMotor {
+//            mode = DcMotor.RunMode.RUN_TO_POSITION
+            power = 0.8 * dir
+        }
+
+    }
+
+    private fun withEachMotor(transformation: DcMotorEx.(Int) -> Unit) {
+        arm .transformation(0)
+        arm2.transformation(1)
     }
 }
