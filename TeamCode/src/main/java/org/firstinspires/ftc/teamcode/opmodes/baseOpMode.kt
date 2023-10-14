@@ -35,6 +35,8 @@ open class baseOpMode : LinearOpMode() {
         while ( opModeIsActive() && !isStopRequested ) { // * Schedular model using debug for loop time and other extra info
             bot.drivetrain.drive(driver, 1.0) // * Drive Code Here
             bot.arm.update(driver)
+            bot.lift.update(driver)
+
             //bot.updateComponents(useLiftDeadzone = true)
         }
     }
