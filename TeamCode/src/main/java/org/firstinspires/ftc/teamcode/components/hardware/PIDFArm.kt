@@ -15,12 +15,14 @@ import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.teamcode.components.meta.TeleOpBotComponents
 import kotlin.math.cos
 
-@JvmField var p = 0.004
-@JvmField var i = 0.0
-@JvmField var d = 0.0001
-@JvmField var f = 0.1 // ? PID Constants
+@JvmField val p = 0.1
+@JvmField val i = 0.0
+@JvmField val d = 0.002
+@JvmField val f = 0.15 // ? PID Constants
 @JvmField var target = 0.0 // ? PID Target
 
+
+@Config
 class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
     val multipleTelemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
@@ -46,14 +48,19 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
         val pid = controller.calculate(pos, target)
 
         val ff = cos(Math.toRadians(target/(288/180.0))) * f
-        val p = pid + ff
+        val pow = pid + ff
 
         withEachMotor {
-            power = p
+            power = pow
         }
 
         multipleTelemetry.addData("pos, ", pos)
         multipleTelemetry.addData("target, ", target)
+        multipleTelemetry.addData("p, ", p)
+        multipleTelemetry.addData("i, ", i)
+        multipleTelemetry.addData("d, ", d)
+        multipleTelemetry.addData("f, ", f)
+
         multipleTelemetry.update()
     }
 
@@ -67,4 +74,5 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
         arm .transformation(0)
         arm2.transformation(1)
     }
+
 }
