@@ -15,14 +15,22 @@ import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.teamcode.components.meta.TeleOpBotComponents
 import kotlin.math.cos
 
+/*
 @JvmField val p = 0.1
 @JvmField val i = 0.0
 @JvmField val d = 0.002
 @JvmField val f = 0.15 // ? PID Constants
 @JvmField var target = 0.0 // ? PID Target
+* */
+
+@JvmField var p = 0.05
+@JvmField var i = 0.0
+@JvmField var d = 0.0
+@JvmField var f = 1//0.15 // ? PID Constants
+@JvmField var target = 0.0 // ? PID Target
 
 
-@Config
+//@Config
 class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
     val multipleTelemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
@@ -38,7 +46,8 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
 
         withEachMotor {
             zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-            //mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+
+            mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         }
     }
 
@@ -66,8 +75,8 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
 
     fun update(gamepad: Gamepad) {
         updatePID()
-        if (gamepad.a) target -= 1
-        else if (gamepad.y) target += 1
+        if (gamepad.a && target > -50) target -= 1
+        else if (gamepad.y && target < 0) target += 1
     }
 
     private fun withEachMotor(transformation: DcMotorEx.(Int) -> Unit) {
