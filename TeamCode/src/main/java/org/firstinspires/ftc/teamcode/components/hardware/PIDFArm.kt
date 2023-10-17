@@ -1,4 +1,4 @@
-@file:Config
+//@file:Config
 
 package org.firstinspires.ftc.teamcode.components.hardware
 
@@ -15,19 +15,8 @@ import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.teamcode.components.meta.TeleOpBotComponents
 import kotlin.math.cos
 
-/*
-@JvmField val p = 0.1
-@JvmField val i = 0.0
-@JvmField val d = 0.002
-@JvmField val f = 0.15 // ? PID Constants
-@JvmField var target = 0.0 // ? PID Target
-* */
 
-@JvmField var p = 0.05
-@JvmField var i = 0.0
-@JvmField var d = 0.0
-@JvmField var f = 1//0.15 // ? PID Constants
-@JvmField var target = 0.0 // ? PID Target
+
 
 
 //@Config
@@ -84,4 +73,21 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
         arm2.transformation(1)
     }
 
+    @Config
+    companion object {
+
+        @JvmField var p = 0.1
+        @JvmField var i = 0.0
+        @JvmField var d = 0.002
+        @JvmField var f = 0.15 // ? PID Constants
+        @JvmField var target = 0.0 // ? PID Target
+
+
+//        @JvmField var p = 0.05
+//        @JvmField var i = 0.0
+//        @JvmField var d = 0.0
+//        @JvmField var f = 1 // 0.15 // ? PID Constants
+//        @JvmField var target = 0.0 // ? PID Target
+
+    }
 }
