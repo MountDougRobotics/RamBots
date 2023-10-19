@@ -5,7 +5,7 @@ package org.firstinspires.ftc.teamcode.components.hardware
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
-import com.arcrobotics.ftclib.controller.PIDController
+import com.arcrobotics.ftclib.controller.PIDFController
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.Gamepad
@@ -28,8 +28,7 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
     private val arm2 = hardwareMap.get(DcMotorEx::class.java, DeviceNames.ARM_MOTOR2)
 
 
-
-    private val controller: PIDController = PIDController(p, i, d) // ? PID Controller
+    private val controller: PIDFController = PIDFController(p, i, d, f) // ? PID Controller
 
     init {
 
@@ -41,15 +40,13 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
     }
 
     fun updatePID() { // * PID Control
-        controller.setPID(p, i, d)
+        controller.setPIDF(p, i, d, f)
         val pos = arm.currentPosition.toDouble()
         val pid = controller.calculate(pos, target)
 
-        val ff = cos(Math.toRadians(target/(288/180.0))) * f
-        val pow = pid + ff
 
         withEachMotor {
-            power = pow
+            power = pid
         }
 
         multipleTelemetry.addData("pos, ", pos)
