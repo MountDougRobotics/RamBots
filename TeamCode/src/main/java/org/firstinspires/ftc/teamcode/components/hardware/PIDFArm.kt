@@ -5,7 +5,6 @@ package org.firstinspires.ftc.teamcode.components.hardware
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
-import com.arcrobotics.ftclib.controller.PIDController
 import com.arcrobotics.ftclib.controller.PIDFController
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -14,7 +13,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.teamcode.components.meta.TeleOpBotComponents
-import kotlin.math.abs
 import kotlin.math.cos
 
 
@@ -30,8 +28,7 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
     private val arm2 = hardwareMap.get(DcMotorEx::class.java, DeviceNames.ARM_MOTOR2)
 
 
-
-    private val controller: PIDFController = PIDFController(p, i, d, f.toDouble()) // ? PID Controller
+    private val controller: PIDFController = PIDFController(p, i, d, f) // ? PID Controller
 
     init {
 
@@ -43,15 +40,13 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
     }
 
     fun updatePID() { // * PID Control
-        controller.setPIDF(p, i, d, f.toDouble())
+        controller.setPIDF(p, i, d, f)
         val pos = arm.currentPosition.toDouble()
         val pid = controller.calculate(pos, target)
 
-        //val ff = cos(Math.toRadians(target/(288/180.0))) * f
-        val pow = pid// + ff
 
         withEachMotor {
-            power = pow
+            power = pid
         }
 
         multipleTelemetry.addData("pos, ", pos)
@@ -67,7 +62,7 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
     fun update(gamepad: Gamepad) {
         updatePID()
         if (gamepad.a && target > -50) target -= 1
-        else if (gamepad.y && target < 50) target += 1
+        else if (gamepad.y && target < 0) target += 1
     }
 
     private fun withEachMotor(transformation: DcMotorEx.(Int) -> Unit) {
@@ -78,18 +73,18 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
     @Config
     companion object {
 
-//        @JvmField var p = 0.1
-//        @JvmField var i = 0.0
-//        @JvmField var d = 0.002
-//        @JvmField var f = 0.15 // ? PID Constants
-//        @JvmField var target = 0.0 // ? PID Target
-
-
         @JvmField var p = 0.1
         @JvmField var i = 0.0
         @JvmField var d = 0.002
-        @JvmField var f = 0.5 // ? PID Constants
+        @JvmField var f = 0.15 // ? PID Constants
         @JvmField var target = 0.0 // ? PID Target
+
+
+//        @JvmField var p = 0.05
+//        @JvmField var i = 0.0
+//        @JvmField var d = 0.0
+//        @JvmField var f = 1 // 0.15 // ? PID Constants
+//        @JvmField var target = 0.0 // ? PID Target
 
     }
 }
