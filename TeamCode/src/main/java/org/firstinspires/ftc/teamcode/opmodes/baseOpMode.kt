@@ -24,7 +24,7 @@ open class baseOpMode : LinearOpMode() {
         codriver = gamepad2
         bot = createTeleOpBotComponents(hardwareMap, telemetry)
 
-        //describeControls()
+        describeControls()
 
         telemetry.addData("Hello", "World!")
 
@@ -40,7 +40,7 @@ open class baseOpMode : LinearOpMode() {
         }
     }
 
-    //open fun describeControls() {}
+    open fun describeControls() {}
 
 
 

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.components.hardware.*
 
 abstract class BaseBotComponents (hardwareMap: HardwareMap,telemetry: Telemetry) {
-//    val claw   = Claw(hardwareMap)
+    val claw   = Claw(hardwareMap)
 //    val intake = Intake()
     val arm    = PIDFArm(hardwareMap, telemetry)
     val lift    = Lift(hardwareMap, telemetry)
