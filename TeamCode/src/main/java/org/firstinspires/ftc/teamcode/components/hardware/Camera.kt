@@ -7,39 +7,79 @@ package org.firstinspires.ftc.teamcode.components.hardware
 
 
 import com.qualcomm.robotcore.hardware.HardwareMap
-import org.firstinspires.ftc.robotcontroller.external.samples.ConceptTelemetry
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition
+import org.firstinspires.ftc.teamcode.components.device.ColourMassDetectionProcessor
+import org.firstinspires.ftc.teamcode.components.device.ColourMassDetectionProcessor.PropPositions
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.vision.VisionPortal
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
-import org.firstinspires.ftc.vision.tfod.TfodProcessor
-import java.util.Locale
+import org.opencv.core.Scalar
 
 
 class Camera (hardwareMap: HardwareMap, telemetry: Telemetry) {
+
+    // the current range set by lower and upper is the full range
+    // HSV takes the form: (HUE, SATURATION, VALUE)
+    // which means to select our colour, only need to change HUE
+    // the domains are: ([0, 180], [0, 255], [0, 255])
+    // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
+    // and experiment to fine tune it for blue
+    var lowerRed = Scalar(150.0, 100.0, 100.0) // the lower hsv threshold for your detection
+    var upperRed = Scalar(180.0, 255.0, 255.0) // the upper hsv threshold for your detection
+    var lowerBlue = Scalar(0.0, 255.0, 255.0) // the lower hsv threshold for your detection
+    var upperBlue = Scalar(30.0, 255.0, 255.0) // the upper hsv threshold for your detection
+
+    var minArea = 100.0 // the minimum area for the detection to consider for your prop
+
+
     // global vars
     private var aprilTag : AprilTagProcessor = AprilTagProcessor.Builder()
         .build()
-    private var TFODProcessor : TfodProcessor = TfodProcessor.Builder()
-        .build()
+
+    private var colourMassDetectionProcessor: ColourMassDetectionProcessor = ColourMassDetectionProcessor(
+        lowerRed,
+        upperRed,
+        {minArea},
+        {213.0},
+        {426.0}
+    )
+
 
     var visionPortal : VisionPortal = VisionPortal.Builder()
         .setCamera(hardwareMap.get(WebcamName::class.java, DeviceNames.WEBCAM1))
         .addProcessor(aprilTag)
-        .addProcessor(TFODProcessor)
+        .addProcessor(colourMassDetectionProcessor)
         .build()
 
     private var telemetry = telemetry
 
-    fun update(): AprilTagDetection {
-        val currentDetections: List<AprilTagDetection> = aprilTag.detections
-        telemetry.addData("# AprilTags Detected", currentDetections.size)
-        return currentDetections[0]
 
+
+    fun detectLocation():PropPositions {
+        // gets the recorded prop position
+
+        // gets the recorded prop position
+        var recordedPropPosition = colourMassDetectionProcessor.recordedPropPosition
+
+        // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
+        // if it is UNFOUND, you can manually set it to any of the other positions to guess
+
+        // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
+        // if it is UNFOUND, you can manually set it to any of the other positions to guess
+        if (recordedPropPosition == PropPositions.UNFOUND) {
+            recordedPropPosition = PropPositions.MIDDLE
+        }
+
+        return recordedPropPosition
     }
+
+//    fun update(): AprilTagDetection {
+//        val currentDetections: List<AprilTagDetection> = aprilTag.detections
+//        telemetry.addData("# AprilTags Detected", currentDetections.size)
+//        return currentDetections[0]
+//
+//    }
 
 
 //    fun aprilTagTelemetry(telemetry: Telemetry) {
@@ -102,26 +142,6 @@ class Camera (hardwareMap: HardwareMap, telemetry: Telemetry) {
 //        telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)")
 //        telemetry.addLine("RBE = Range, Bearing & Elevation")
 //    } // end method aprilTagTelemetry()
-
-//    fun telemetryTfod(telemetry: Telemetry) {
-//        val currentRecognitions: List<Recognition> = TFODProcessor.getRecognitions()
-//        telemetry.addData("# Objects Detected", currentRecognitions.size)
-//
-//        // Step through the list of recognitions and display info for each one.
-//        for (recognition in currentRecognitions) {
-//            val x = ((recognition.left + recognition.right) / 2).toDouble()
-//            val y = ((recognition.top + recognition.bottom) / 2).toDouble()
-//            telemetry.addData("", " ")
-//            telemetry.addData(
-//                "Image",
-//                "%s (%.0f %% Conf.)",
-//                recognition.label,
-//                recognition.confidence * 100
-//            )
-//            telemetry.addData("- Position", "%.0f / %.0f", x, y)
-//            telemetry.addData("- Size", "%.0f x %.0f", recognition.width, recognition.height)
-//        } // end for() loop
-//    } // end method telemetryTfod()
 
 
 }
