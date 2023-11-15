@@ -62,7 +62,7 @@ data class AutoBotComponents(
     ) : BaseBotComponents(hardwareMap, telemetry) {
     override fun updateComponents(useLiftDeadzone: Boolean) {
         super.updateComponents(useLiftDeadzone)
-        camera.update()
+//        camera.update()
         drive.update()
 //        lift.updateAutoLiftNormalPID()
     }

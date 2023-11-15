@@ -1,10 +1,11 @@
-package org.firstinspires.ftc.teamcode.components.device;
+package org.firstinspires.ftc.teamcode.deprecated;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.components.device.ColourMassDetectionProcessor;
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.opencv.core.Scalar;

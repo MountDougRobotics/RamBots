@@ -22,13 +22,9 @@ open class autoBaseOpMode : LinearOpMode() {
 
     protected var powerMulti = 0.0
     final override fun runOpMode() {
-        driver = gamepad1
-        codriver = gamepad2
         bot = createAutoBotComponents(hardwareMap, telemetry)
 
         describeInit()
-
-        telemetry.addData("Hello", "World!")
 
 
         waitForStart()
