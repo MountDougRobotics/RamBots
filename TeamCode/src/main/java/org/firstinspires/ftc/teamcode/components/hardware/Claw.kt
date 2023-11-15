@@ -44,7 +44,7 @@ class Claw (hardwareMap: HardwareMap) {
 
     fun update() {
         clawServo.position = targetPos
-        clawServo2.position = targetPos
+        clawServo2.position = 1-targetPos
 
     }
 
@@ -56,5 +56,6 @@ class Claw (hardwareMap: HardwareMap) {
             if (targetPos == CLAW_DEPOSIT) targetPos = CLAW_INTAKE_NARROW
             else if (targetPos == CLAW_INTAKE_NARROW) targetPos = CLAW_CLOSE
         }
+        update()
     }
 }
