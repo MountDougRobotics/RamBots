@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode.components.hardware
 
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -37,7 +38,7 @@ class Arm (hardwareMap: HardwareMap, telemetry: Telemetry) {
 
         withEachMotor {
 //            mode = DcMotor.RunMode.RUN_TO_POSITION
-            power = 0.8 * dir
+            power = 1.0 * dir
         }
 
     }

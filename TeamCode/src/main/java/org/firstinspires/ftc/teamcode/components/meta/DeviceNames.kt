@@ -14,7 +14,7 @@ object DeviceNames {
     const val WRIST_SERVO  = "WR"
     const val WRIST_SERVO2  = "WR2"
 
-//    const val INTAKE_SERVO = "IN"
+    const val INTAKE_SERVO = "IN"
 
     const val DRIVE_FL = "FL"
     const val DRIVE_FR = "FR"

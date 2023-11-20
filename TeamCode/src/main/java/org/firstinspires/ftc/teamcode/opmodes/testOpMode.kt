@@ -5,10 +5,6 @@ import org.firstinspires.ftc.teamcode.opmodes.baseOpMode
 
 @TeleOp(name = "Test Op 1.0")
 class testOp : baseOpMode() {
-    override fun describeControls() {
-        bot.claw.clawControl(driver)
 
-        bot.claw.clawControl(codriver)
-    }
 
 }

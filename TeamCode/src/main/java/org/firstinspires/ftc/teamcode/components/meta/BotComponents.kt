@@ -8,14 +8,11 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.components.hardware.*
 
 abstract class BaseBotComponents (hardwareMap: HardwareMap,telemetry: Telemetry) {
-    val claw   = Claw(hardwareMap)
-//    val intake = Intake()
-    val arm    = PIDFArm(hardwareMap, telemetry)
-    val lift    = Lift(hardwareMap, telemetry)
+    //val claw   = Claw(hardwareMap)
+    //val intake = Intake(hardwareMap, telemetry)
+    //val arm    = Arm(hardwareMap, telemetry)
+    //val lift    = Lift(hardwareMap, telemetry)
 
-    //    val wrist  = Wrist()
-//    val lift   = Lift()
-//
     open fun updateComponents(useLiftDeadzone: Boolean) {
 //        claw.update()
 //        arm.update()
