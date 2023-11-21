@@ -1,5 +1,12 @@
 package org.firstinspires.ftc.teamcode.components.device
 
+/* ?
+! * Do not tamper!
+? * These are some helper functions for Gamepads
+? * Call this via import com.qualcomm.robotcore.hardware.Gamepad -> Gamepad
+? * Sourced from Blacksmith FTC Library
+ * TODO: N/A
+? */
 
 import com.qualcomm.robotcore.hardware.Gamepad
 import kotlin.math.abs

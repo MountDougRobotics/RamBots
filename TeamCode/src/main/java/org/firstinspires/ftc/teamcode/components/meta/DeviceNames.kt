@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode.components.meta
 
-// ! All the code in this file should not be tampered with
+/* ?
+? * Device Names
+! * All the code in this file should not be tampered with
+? *
+ * TODO: N/A
+? */
 
 object DeviceNames {
     const val ARM_MOTOR    = "AR"
@@ -21,7 +26,7 @@ object DeviceNames {
     const val DRIVE_BL = "BL"
     const val DRIVE_BR = "BR"
 
-//    const val LIFT_MOTOR   = "LI"
+    const val LIFT_MOTOR   = "LI"
 //    const val LIFT_ENCODER = "FR"
 
     const val WEBCAM1 = "Webcam 1"

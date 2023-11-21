@@ -1,21 +1,22 @@
 package org.firstinspires.ftc.teamcode.components.meta
 
-import com.qualcomm.hardware.rev.RevColorSensorV3
-import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.teamcode.components.device.Camera
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.components.hardware.*
 
 abstract class BaseBotComponents (hardwareMap: HardwareMap,telemetry: Telemetry) {
     val claw   = Claw(hardwareMap)
 //    val intake = Intake()
-    val arm    = Arm(hardwareMap, telemetry)
-//    val wrist  = Wrist()
+    val arm    = PIDFArm(hardwareMap, telemetry)
+    val lift    = Lift(hardwareMap, telemetry)
+
+    //    val wrist  = Wrist()
 //    val lift   = Lift()
 //
     open fun updateComponents(useLiftDeadzone: Boolean) {
-        claw.update()
+//        claw.update()
 //        arm.update()
 //        wrist.update()
     }
@@ -60,7 +61,7 @@ data class AutoBotComponents(
     ) : BaseBotComponents(hardwareMap, telemetry) {
     override fun updateComponents(useLiftDeadzone: Boolean) {
         super.updateComponents(useLiftDeadzone)
-        camera.update()
+//        camera.update()
         drive.update()
 //        lift.updateAutoLiftNormalPID()
     }

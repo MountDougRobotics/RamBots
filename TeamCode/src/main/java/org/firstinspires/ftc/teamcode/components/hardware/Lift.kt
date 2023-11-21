@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.components.hardware
 
 /* ?
-? * Arm Component
+? * Lift Component
 ! * Don't call this directly if using BotComponents
 ? *
- * TODO: Rerouting most work to PIDF if PIDF control is needed
+ * TODO: N/A
 ? */
 
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -14,11 +14,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 
-class Arm (hardwareMap: HardwareMap, telemetry: Telemetry) {
-    private val arm = hardwareMap.get(DcMotorEx::class.java, DeviceNames.ARM_MOTOR) // Arm variable
-    private val arm2 = hardwareMap.get(DcMotorEx::class.java, DeviceNames.ARM_MOTOR2)
+class Lift (hardwareMap: HardwareMap, telemetry: Telemetry) {
+    private val lift = hardwareMap.get(DcMotorEx::class.java, DeviceNames.LIFT_MOTOR) // lift var
 
-    private val telemetry = telemetry // telemetry variable
+    private val telemetry = telemetry
 
     init {
         withEachMotor {
@@ -27,26 +26,24 @@ class Arm (hardwareMap: HardwareMap, telemetry: Telemetry) {
         }
     }
 
-    fun update(gamepad: Gamepad) { // ? main update function
+    fun update(gamepad: Gamepad) { // ? update function
         var dir = 0
 
-        if (gamepad.y) { // * input
+        if (gamepad.dpad_up) { // input
             dir = 1
 
         }//y ctrl
-        else if (gamepad.a) {
+        else if (gamepad.dpad_down) {
             dir = -1
         }//a ctrl
 
-        withEachMotor { // * output
-//            mode = DcMotor.RunMode.RUN_TO_POSITION
+        withEachMotor { // output
             power = 0.8 * dir
         }
 
     }
 
     private fun withEachMotor(transformation: DcMotorEx.(Int) -> Unit) {
-        arm .transformation(0)
-        arm2.transformation(1)
+        lift .transformation(0)
     }
 }
