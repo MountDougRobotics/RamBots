@@ -1,5 +1,12 @@
 package org.firstinspires.ftc.teamcode.components.hardware
 
+/* ?
+? * Arm Component
+! * Don't call this directly if using BotComponents
+? *
+ * TODO: Rerouting most work to PIDF if PIDF control is needed
+? */
+
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.Gamepad
@@ -8,10 +15,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 
 class Arm (hardwareMap: HardwareMap, telemetry: Telemetry) {
-    private val arm = hardwareMap.get(DcMotorEx::class.java, DeviceNames.ARM_MOTOR)
+    private val arm = hardwareMap.get(DcMotorEx::class.java, DeviceNames.ARM_MOTOR) // Arm variable
     private val arm2 = hardwareMap.get(DcMotorEx::class.java, DeviceNames.ARM_MOTOR2)
 
-    val telemetry = telemetry
+    private val telemetry = telemetry // telemetry variable
 
     init {
         withEachMotor {
@@ -20,22 +27,18 @@ class Arm (hardwareMap: HardwareMap, telemetry: Telemetry) {
         }
     }
 
-    fun update(gamepad: Gamepad) {
+    fun update(gamepad: Gamepad) { // ? main update function
         var dir = 0
 
-        if (gamepad.y) {
+        if (gamepad.y) { // * input
             dir = 1
 
         }//y ctrl
         else if (gamepad.a) {
             dir = -1
         }//a ctrl
-//
-//        withEachMotor {
-//            targetPosition = currentPosition + ( (288 / 360) * 5 * dir ) // * 288
-//        }
 
-        withEachMotor {
+        withEachMotor { // * output
 //            mode = DcMotor.RunMode.RUN_TO_POSITION
             power = 0.8 * dir
         }

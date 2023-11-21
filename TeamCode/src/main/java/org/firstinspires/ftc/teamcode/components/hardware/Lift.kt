@@ -1,5 +1,12 @@
 package org.firstinspires.ftc.teamcode.components.hardware
 
+/* ?
+? * Lift Component
+! * Don't call this directly if using BotComponents
+? *
+ * TODO: N/A
+? */
+
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.Gamepad
@@ -8,9 +15,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 
 class Lift (hardwareMap: HardwareMap, telemetry: Telemetry) {
-    private val lift = hardwareMap.get(DcMotorEx::class.java, DeviceNames.LIFT_MOTOR)
+    private val lift = hardwareMap.get(DcMotorEx::class.java, DeviceNames.LIFT_MOTOR) // lift var
 
-    val telemetry = telemetry
+    private val telemetry = telemetry
 
     init {
         withEachMotor {
@@ -19,23 +26,18 @@ class Lift (hardwareMap: HardwareMap, telemetry: Telemetry) {
         }
     }
 
-    fun update(gamepad: Gamepad) {
+    fun update(gamepad: Gamepad) { // ? update function
         var dir = 0
 
-        if (gamepad.dpad_up) {
+        if (gamepad.dpad_up) { // input
             dir = 1
 
         }//y ctrl
         else if (gamepad.dpad_down) {
             dir = -1
         }//a ctrl
-//
-//        withEachMotor {
-//            targetPosition = currentPosition + ( (288 / 360) * 5 * dir ) // * 288
-//        }
 
-        withEachMotor {
-//            mode = DcMotor.RunMode.RUN_TO_POSITION
+        withEachMotor { // output
             power = 0.8 * dir
         }
 

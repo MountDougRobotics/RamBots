@@ -1,15 +1,23 @@
-package org.firstinspires.ftc.teamcode.components.hardware
+package org.firstinspires.ftc.teamcode.components.device
 
-/* Sample for Helping
+/* ?
+? * Camera
+! * Tinker with care!
+? * Simple Camera with Vision Portal. Currently equipped with AprilTag and CMDP
+ * TODO: Tune values for game prop
+? */
+
+
+/* ? Samples for Helping
 *
 * https://github.com/FIRST-Tech-Challenge/FtcRobotController/blob/f3a5a54f67688eb778a8f9a62d9ce1b6e728b836/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptAprilTag.java#L126
+* https://github.com/Froze-N-Milk/mercurialftcsample/blob/testing/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/vision/ColourMassDetectionOpMode.java
 * */
 
 
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-import org.firstinspires.ftc.teamcode.components.device.ColourMassDetectionProcessor
 import org.firstinspires.ftc.teamcode.components.device.ColourMassDetectionProcessor.PropPositions
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.vision.VisionPortal
@@ -25,8 +33,10 @@ class Camera (hardwareMap: HardwareMap, telemetry: Telemetry) {
     // the domains are: ([0, 180], [0, 255], [0, 255])
     // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
     // and experiment to fine tune it for blue
+    // ! THESE VALUE ARE NOT TUNED YET!
     var lowerRed = Scalar(150.0, 100.0, 100.0) // the lower hsv threshold for your detection
     var upperRed = Scalar(180.0, 255.0, 255.0) // the upper hsv threshold for your detection
+    // TODO: Allow Blue and Red Switching with Hardcoded Opmodes
     var lowerBlue = Scalar(0.0, 255.0, 255.0) // the lower hsv threshold for your detection
     var upperBlue = Scalar(30.0, 255.0, 255.0) // the upper hsv threshold for your detection
 
@@ -40,9 +50,9 @@ class Camera (hardwareMap: HardwareMap, telemetry: Telemetry) {
     private var colourMassDetectionProcessor: ColourMassDetectionProcessor = ColourMassDetectionProcessor(
         lowerRed,
         upperRed,
-        {minArea},
-        {213.0},
-        {426.0}
+        {minArea}, // min area of
+        {213.0}, // left dividing line
+        {426.0} // right dividing line
     )
 
 
@@ -56,7 +66,7 @@ class Camera (hardwareMap: HardwareMap, telemetry: Telemetry) {
 
 
 
-    fun detectLocation():PropPositions {
+    fun detectLocation() : PropPositions { // ? actual function used to detect Prop position, call this when needed
         // gets the recorded prop position
 
         // gets the recorded prop position
@@ -74,6 +84,8 @@ class Camera (hardwareMap: HardwareMap, telemetry: Telemetry) {
         return recordedPropPosition
     }
 
+
+    // ! deprecated AprilTag stuff - should detect tags but not coded for detecting the right ones :skull:
 //    fun update(): AprilTagDetection {
 //        val currentDetections: List<AprilTagDetection> = aprilTag.detections
 //        telemetry.addData("# AprilTags Detected", currentDetections.size)

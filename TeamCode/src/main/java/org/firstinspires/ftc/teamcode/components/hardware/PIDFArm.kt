@@ -2,6 +2,13 @@
 
 package org.firstinspires.ftc.teamcode.components.hardware
 
+/* ?
+? * PIDFArm Component
+! * Don't call this directly if using BotComponents
+? *
+ * TODO: Fix if needed
+? */
+
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
@@ -14,9 +21,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.teamcode.components.meta.TeleOpBotComponents
 import kotlin.math.cos
-
-
-
 
 
 //@Config
@@ -79,7 +83,7 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
         @JvmField var f = 0.15 // ? PID Constants
         @JvmField var target = 0.0 // ? PID Target
 
-
+        // ? old constants
 //        @JvmField var p = 0.05
 //        @JvmField var i = 0.0
 //        @JvmField var d = 0.0
