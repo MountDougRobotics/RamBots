@@ -1,45 +1,41 @@
 package org.firstinspires.ftc.teamcode.components.meta
 
+/* ?
+? * Bot Component
+? * Big bot component where all components all assembled
+ * TODO: N/A
+? */
+
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.components.device.Camera
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.components.hardware.*
 
-abstract class BaseBotComponents (hardwareMap: HardwareMap,telemetry: Telemetry) {
+abstract class BaseBotComponents (hardwareMap: HardwareMap,telemetry: Telemetry) { // ? Components for both TeleOp and Auton
     val claw   = Claw(hardwareMap)
-//    val intake = Intake()
     val arm    = PIDFArm(hardwareMap, telemetry)
     val lift    = Lift(hardwareMap, telemetry)
 
-    //    val wrist  = Wrist()
-//    val lift   = Lift()
-//
-    open fun updateComponents(useLiftDeadzone: Boolean) {
-//        claw.update()
-//        arm.update()
-//        wrist.update()
+    open fun updateComponents(useLiftDeadzone: Boolean) { // * Functions that update each tick
+
     }
 }
 
 fun createTeleOpBotComponents(hardwareMap: HardwareMap, telemetry: Telemetry) =
     TeleOpBotComponents(
-        //hardwareMap.get(RevColorSensorV3::class.java, DeviceNames.COLOR_SENSOR),
         DriveTrain(hardwareMap),
         hardwareMap,
         telemetry,
-    )
+    ) // ? TeleOp component builder
 
 data class TeleOpBotComponents (
-    //val rcs: RevColorSensorV3,
     val drivetrain: DriveTrain,
     val hardwareMap: HardwareMap,
     val telemetry: Telemetry,
-
-    ) : BaseBotComponents(hardwareMap, telemetry) {
+    ) : BaseBotComponents(hardwareMap, telemetry) { // ? TeleOp
     override fun updateComponents(useLiftDeadzone: Boolean) {
         super.updateComponents(useLiftDeadzone)
-//        lift.updateTeleopNormalPID(false)
     }
 }
 
@@ -51,18 +47,15 @@ fun createAutoBotComponents(hardwareMap: HardwareMap, telemetry: Telemetry) =
         Camera(hardwareMap, telemetry),
             hardwareMap,
             telemetry,
-    )
+    ) // ? Auton component builder
 
 data class AutoBotComponents(
     val drive: SampleMecanumDrive,
     val camera: Camera,
     val hardwareMap: HardwareMap,
     val telemetry: Telemetry,
-    ) : BaseBotComponents(hardwareMap, telemetry) {
+    ) : BaseBotComponents(hardwareMap, telemetry) { // ? Auton
     override fun updateComponents(useLiftDeadzone: Boolean) {
         super.updateComponents(useLiftDeadzone)
-//        camera.update()
-        drive.update()
-//        lift.updateAutoLiftNormalPID()
     }
 }
