@@ -47,11 +47,11 @@ class Claw (hardwareMap: HardwareMap) {
 
     }
 
-    fun clawControl(gamepad: Gamepad) { // ? Teleop claw control
-        if (gamepad.x){
+    fun clawControl(driver: Gamepad, codriver: Gamepad) { // ? Teleop claw control
+        if (codriver.right_bumper || driver.right_bumper){
             if (targetPos == CLAW_CLOSE) targetPos = CLAW_INTAKE_NARROW
             else if (targetPos == CLAW_INTAKE_NARROW) targetPos = CLAW_DEPOSIT
-        } else if (gamepad.b) {
+        } else if (codriver.left_bumper || driver.left_bumper) {
             if (targetPos == CLAW_DEPOSIT) targetPos = CLAW_INTAKE_NARROW
             else if (targetPos == CLAW_INTAKE_NARROW) targetPos = CLAW_CLOSE
         }

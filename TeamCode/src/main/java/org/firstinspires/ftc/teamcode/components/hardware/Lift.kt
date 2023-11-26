@@ -26,16 +26,12 @@ class Lift (hardwareMap: HardwareMap, telemetry: Telemetry) {
         }
     }
 
-    fun update(gamepad: Gamepad) { // ? update function
-        var dir = 0
+    fun update(driver: Gamepad, codriver: Gamepad) { // ? update function
+        var dir = 0.0
 
-        if (gamepad.dpad_up) { // input
-            dir = 1
 
-        }//y ctrl
-        else if (gamepad.dpad_down) {
-            dir = -1
-        }//a ctrl
+        if (codriver.left_stick_y != 0f) dir = codriver.left_stick_y.toDouble()
+
 
         withEachMotor { // output
             power = 0.8 * dir

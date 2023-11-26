@@ -27,16 +27,17 @@ class Arm (hardwareMap: HardwareMap, telemetry: Telemetry) {
         }
     }
 
-    fun update(gamepad: Gamepad) { // ? main update function
-        var dir = 0
+    fun update(driver: Gamepad, codriver: Gamepad) { // ? main update function
+        var dir = 0.0
 
-        if (gamepad.y) { // * input
-            dir = 1
+        if (codriver.dpad_up) { // * input
+            dir = 1.0
 
         }//y ctrl
-        else if (gamepad.a) {
-            dir = -1
+        else if (codriver.dpad_down) {
+            dir = -1.0
         }//a ctrl
+
 
         withEachMotor { // * output
 //            mode = DcMotor.RunMode.RUN_TO_POSITION

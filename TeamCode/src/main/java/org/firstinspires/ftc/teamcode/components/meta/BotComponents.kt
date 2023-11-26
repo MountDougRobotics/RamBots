@@ -6,6 +6,7 @@ package org.firstinspires.ftc.teamcode.components.meta
  * TODO: N/A
 ? */
 
+import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.components.device.Camera
@@ -22,20 +23,29 @@ abstract class BaseBotComponents (hardwareMap: HardwareMap,telemetry: Telemetry)
     }
 }
 
-fun createTeleOpBotComponents(hardwareMap: HardwareMap, telemetry: Telemetry) =
+fun createTeleOpBotComponents(hardwareMap: HardwareMap, telemetry: Telemetry, driver: Gamepad, codriver: Gamepad) =
     TeleOpBotComponents(
         DriveTrain(hardwareMap),
         hardwareMap,
         telemetry,
+        driver,
+        codriver
     ) // ? TeleOp component builder
 
 data class TeleOpBotComponents (
     val drivetrain: DriveTrain,
     val hardwareMap: HardwareMap,
     val telemetry: Telemetry,
+    val driver: Gamepad,
+    val codriver: Gamepad
     ) : BaseBotComponents(hardwareMap, telemetry) { // ? TeleOp
     override fun updateComponents(useLiftDeadzone: Boolean) {
         super.updateComponents(useLiftDeadzone)
+        this.drivetrain.drive(driver, 1.0) // * Drive Code Here
+        this.arm.update(driver, codriver)
+        this.lift.update(driver, codriver)
+        this.claw.clawControl(driver, codriver)
+
     }
 }
 

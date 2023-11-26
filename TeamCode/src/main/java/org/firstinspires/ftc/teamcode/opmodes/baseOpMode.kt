@@ -22,7 +22,7 @@ open class baseOpMode : LinearOpMode() {
     final override fun runOpMode() {
         driver = gamepad1
         codriver = gamepad2
-        bot = createTeleOpBotComponents(hardwareMap, telemetry)
+        bot = createTeleOpBotComponents(hardwareMap, telemetry, driver, codriver)
 
         describeControls()
 
@@ -32,9 +32,7 @@ open class baseOpMode : LinearOpMode() {
         waitForStart()
 
         while ( opModeIsActive() && !isStopRequested ) { // * Schedular model using debug for loop time and other extra info
-            bot.drivetrain.drive(driver, 1.0) // * Drive Code Here
-            bot.arm.update(driver)
-            bot.lift.update(driver)
+
 
             //bot.updateComponents(useLiftDeadzone = true)
         }

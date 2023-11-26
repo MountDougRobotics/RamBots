@@ -63,10 +63,10 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
         multipleTelemetry.update()
     }
 
-    fun update(gamepad: Gamepad) {
+    fun update(driver: Gamepad, codriver: Gamepad) {
         updatePID()
-        if (gamepad.a && target > -50) target -= 1
-        else if (gamepad.y && target < 0) target += 1
+        if (codriver.dpad_down && target > -50) target -= 1
+        else if (codriver.dpad_up && target < 0) target += 1
     }
 
     private fun withEachMotor(transformation: DcMotorEx.(Int) -> Unit) {
