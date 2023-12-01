@@ -51,16 +51,16 @@ data class TeleOpBotComponents (
 
 fun createAutoBotComponents(hardwareMap: HardwareMap, telemetry: Telemetry) =
     AutoBotComponents(
-        SampleMecanumDrive(
-            hardwareMap
-        ),
+//        SampleMecanumDrive(
+//            hardwareMap
+//        ),
         Camera(hardwareMap, telemetry),
             hardwareMap,
             telemetry,
     ) // ? Auton component builder
 
 data class AutoBotComponents(
-    val drive: SampleMecanumDrive,
+    //val drive: SampleMecanumDrive,
     val camera: Camera,
     val hardwareMap: HardwareMap,
     val telemetry: Telemetry,

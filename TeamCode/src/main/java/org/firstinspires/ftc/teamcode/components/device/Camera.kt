@@ -37,8 +37,8 @@ class Camera (hardwareMap: HardwareMap, telemetry: Telemetry) {
     var lowerRed = Scalar(150.0, 100.0, 100.0) // the lower hsv threshold for your detection
     var upperRed = Scalar(180.0, 255.0, 255.0) // the upper hsv threshold for your detection
     // TODO: Allow Blue and Red Switching with Hardcoded Opmodes
-    var lowerBlue = Scalar(0.0, 255.0, 255.0) // the lower hsv threshold for your detection
-    var upperBlue = Scalar(30.0, 255.0, 255.0) // the upper hsv threshold for your detection
+    var lowerBlue = Scalar(90.0, 100.0, 100.0) // the lower hsv threshold for your detection
+    var upperBlue = Scalar(120.0, 255.0, 255.0) // the upper hsv threshold for your detection
 
     var minArea = 100.0 // the minimum area for the detection to consider for your prop
 
@@ -48,8 +48,8 @@ class Camera (hardwareMap: HardwareMap, telemetry: Telemetry) {
         .build()
 
     private var colourMassDetectionProcessor: ColourMassDetectionProcessor = ColourMassDetectionProcessor(
-        lowerRed,
-        upperRed,
+        lowerBlue,
+        upperBlue,
         {minArea}, // min area of
         {213.0}, // left dividing line
         {426.0} // right dividing line

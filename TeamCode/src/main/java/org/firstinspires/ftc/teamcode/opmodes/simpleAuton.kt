@@ -12,34 +12,34 @@ class simpleAuton: autoBaseOpMode() {
     override fun describeInit() {
         val startPose = Pose2d(0.0, 0.0, Math.toRadians(0.0))
 
-        bot.drive.poseEstimate= startPose
+        //bot.drive.poseEstimate= startPose
 
         propPosition= bot.camera.detectLocation()
 
 
-        bot.drive.followTrajectory(trajectoryA)
+        //bot.drive.followTrajectory(trajectoryA)
     }
 
     override fun describePath() {
-        when (propPosition) {
-            PropPositions.RIGHT -> {
-                trajectoryA = bot.drive.trajectoryBuilder(Pose2d())
-                    .splineTo(Vector2d(6.0, 8.0), Math.toRadians(0.0))
-                    .build()
-            }
-            PropPositions.LEFT -> {
-                trajectoryA = bot.drive.trajectoryBuilder(Pose2d())
-                    .splineTo(Vector2d(-6.0, 8.0), Math.toRadians(0.0))
-                    .build()
-            }
-            else -> {
-                trajectoryA = bot.drive.trajectoryBuilder(Pose2d())
-                    .splineTo(Vector2d(0.0, 12.0), Math.toRadians(0.0))
-                    .build()
-            }
-        }
-
-        bot.drive.followTrajectory(trajectoryA)
+//        when (propPosition) {
+//            PropPositions.RIGHT -> {
+//                trajectoryA = bot.drive.trajectoryBuilder(Pose2d())
+//                    .splineTo(Vector2d(6.0, 8.0), Math.toRadians(0.0))
+//                    .build()
+//            }
+//            PropPositions.LEFT -> {
+//                trajectoryA = bot.drive.trajectoryBuilder(Pose2d())
+//                    .splineTo(Vector2d(-6.0, 8.0), Math.toRadians(0.0))
+//                    .build()
+//            }
+//            else -> {
+//                trajectoryA = bot.drive.trajectoryBuilder(Pose2d())
+//                    .splineTo(Vector2d(0.0, 12.0), Math.toRadians(0.0))
+//                    .build()
+//            }
+//        }
+//
+//        bot.drive.followTrajectory(trajectoryA)
     }
 
 }
