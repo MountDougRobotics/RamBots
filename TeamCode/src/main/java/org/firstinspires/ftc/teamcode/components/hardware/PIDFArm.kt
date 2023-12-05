@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.PIDFCoefficients
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.teamcode.components.meta.TeleOpBotComponents
@@ -44,7 +45,8 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
     }
 
     fun updatePID() { // * PID Control
-        controller.setPIDF(p, i, d, f)
+        controller.setPIDF(pidCoeefs.p, pidCoeefs.i, pidCoeefs.d, pidCoeefs.f)
+
         val pos = arm.currentPosition.toDouble()
         val pid = controller.calculate(pos, target)
 
@@ -82,7 +84,7 @@ class PIDFArm (hardwareMap: HardwareMap, telemetry: Telemetry) {
         @JvmField var d = 0.002
         @JvmField var f = 0.15 // ? PID Constants
         @JvmField var target = 0.0 // ? PID Target
-
+        var pidCoeefs = PIDFCoefficients(p,i,d,f)
         // ? old constants
 //        @JvmField var p = 0.05
 //        @JvmField var i = 0.0

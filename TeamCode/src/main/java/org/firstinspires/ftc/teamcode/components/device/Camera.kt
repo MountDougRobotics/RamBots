@@ -19,6 +19,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.teamcode.components.device.ColourMassDetectionProcessor.PropPositions
+import org.firstinspires.ftc.teamcode.components.meta.Config
 import org.firstinspires.ftc.teamcode.components.meta.DeviceNames
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
@@ -48,8 +49,8 @@ class Camera (hardwareMap: HardwareMap, telemetry: Telemetry) {
         .build()
 
     private var colourMassDetectionProcessor: ColourMassDetectionProcessor = ColourMassDetectionProcessor(
-        lowerBlue,
-        upperBlue,
+        if (Config.team == Config.COLOR.BLUE) lowerBlue else lowerRed,
+        if (Config.team == Config.COLOR.BLUE) upperBlue else upperRed,
         {minArea}, // min area of
         {213.0}, // left dividing line
         {426.0} // right dividing line

@@ -11,8 +11,8 @@ object Config {
     enum class COLOR {
         RED, BLUE
     }
-    enum class DIRECTION {
-
+    enum class STARTPOS {
+        LEFT, RIGHT
     }
     var team = COLOR.BLUE
 }

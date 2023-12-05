@@ -3,8 +3,12 @@ package org.firstinspires.ftc.teamcode.opmodes
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.acmerobotics.roadrunner.trajectory.Trajectory
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.components.device.ColourMassDetectionProcessor.PropPositions
 
+@Disabled
+@Autonomous
 class simpleAuton: autoBaseOpMode() {
     lateinit var trajectoryA: Trajectory
     lateinit var propPosition: PropPositions
