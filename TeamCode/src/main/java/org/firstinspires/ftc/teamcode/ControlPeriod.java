@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp
 // Tele-Op Class
@@ -14,6 +15,7 @@ public class ControlPeriod extends OpMode {
     private DcMotor backLeftMotor;
     private DcMotor frontRightMotor;
     private DcMotor frontLeftMotor;
+    private DcMotor intakeMotor;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -25,18 +27,21 @@ public class ControlPeriod extends OpMode {
         backLeftMotor = hardwareMap.dcMotor.get("BL");
         frontRightMotor = hardwareMap.dcMotor.get("FR");
         frontLeftMotor = hardwareMap.dcMotor.get("FL");
+        intakeMotor = hardwareMap.dcMotor.get("IN");
 
         // Sets up the motors for a mecanum drive
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotor.Direction.FORWARD);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Unpowered all motors
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
+        intakeMotor.setPower(0);
 
         // Runs with encoders
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -69,6 +74,7 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         frontLeftMotor.setPower(frontLeftPower);
+        intakeMotor.setPower((double)gamepad1.right_trigger);
 
         // Logs it in the driver hub
         telemetry.addData("Status", "Running");

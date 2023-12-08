@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 //Autonomous Class
 public class AutonPeriod {
 
-    @Override private void runOpMode {
+    public void runOpMode() {
 
     } //runOpMode
 
