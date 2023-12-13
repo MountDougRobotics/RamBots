@@ -16,6 +16,7 @@ public class ControlPeriod extends OpMode {
     private DcMotor frontRightMotor;
     private DcMotor frontLeftMotor;
     private DcMotor intakeMotor;
+    //private DcMotor armLiftMotor;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -28,13 +29,15 @@ public class ControlPeriod extends OpMode {
         frontRightMotor = hardwareMap.dcMotor.get("FR");
         frontLeftMotor = hardwareMap.dcMotor.get("FL");
         intakeMotor = hardwareMap.dcMotor.get("IN");
+        //armLiftMotor = hardwareMap.dcMotor.get("AL");
 
         // Sets up the motors for a mecanum drive
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotor.Direction.FORWARD);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
-        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
 
         // Unpowered all motors
         backRightMotor.setPower(0);
