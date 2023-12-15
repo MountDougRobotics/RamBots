@@ -36,7 +36,7 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setDirection(DcMotor.Direction.FORWARD);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
-        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         // Unpowered all motors
@@ -80,7 +80,8 @@ public class ControlPeriod extends OpMode {
         intakeMotor.setPower((double)gamepad1.right_trigger);
 
         // Logs it in the driver hub
-        telemetry.addData("Status", "Running");
+        //telemetry.addData("Status", "Running");
+        telemetry.addData("Intake Power: ", (float)intakeMotor.getPower());
         telemetry.update();
     } // loop
 
