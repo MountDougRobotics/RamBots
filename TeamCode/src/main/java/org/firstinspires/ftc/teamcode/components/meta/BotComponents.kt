@@ -17,6 +17,7 @@ abstract class BaseBotComponents (hardwareMap: HardwareMap,telemetry: Telemetry)
     val claw   = Claw(hardwareMap)
     val arm    = PIDFArm(hardwareMap, telemetry)
     val lift    = Lift(hardwareMap, telemetry)
+    val intake    = Intake(hardwareMap, telemetry)
 
     open fun updateComponents(useLiftDeadzone: Boolean) { // * Functions that update each tick
 
@@ -45,6 +46,7 @@ data class TeleOpBotComponents (
         this.arm.update(driver, codriver)
         this.lift.update(driver, codriver)
         this.claw.clawControl(driver, codriver)
+        this.intake.update(driver, codriver)
 
     }
 }
