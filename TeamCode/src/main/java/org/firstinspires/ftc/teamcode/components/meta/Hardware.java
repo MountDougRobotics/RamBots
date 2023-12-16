@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.javacomponents.meta;
+package org.firstinspires.ftc.teamcode.components.meta;
 
 /*
  * Device Names

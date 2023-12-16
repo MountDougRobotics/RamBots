@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.javacomponents.meta;
+package org.firstinspires.ftc.teamcode.components.meta;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.javacomponents.hardware.DriveTrain;
+import org.firstinspires.ftc.teamcode.components.hardware.DriveTrain;
 
 public class TeleOpBotComponents extends BotComponents {
 
@@ -19,12 +19,6 @@ public class TeleOpBotComponents extends BotComponents {
         this.codriver = codriver;
     }
 
-    @Override
-    public void updateComponents(boolean useLiftDeadzone) {
-        this.drivetrain.drive(driver, 1.0); // Drive Code Here
-        this.arm.update(driver, codriver);
-    }
-
     public static TeleOpBotComponents createTeleOpBotComponents(HardwareMap hardwareMap, Telemetry telemetry, Gamepad driver, Gamepad codriver) {
         return new TeleOpBotComponents(
                 hardwareMap,
@@ -32,6 +26,12 @@ public class TeleOpBotComponents extends BotComponents {
                 driver,
                 codriver
         ); // ? TeleOp component builder
+    }
+
+    @Override
+    public void updateComponents(boolean useLiftDeadzone) {
+        this.drivetrain.drive(driver, 1.0); // Drive Code Here
+        this.arm.update(driver, codriver);
     }
 
 }

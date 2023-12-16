@@ -44,13 +44,13 @@ public class ColourMassDetectionProcessor implements VisionProcessor, CameraStre
     private final Paint linePaint;
     private final ArrayList<MatOfPoint> contours;
     private final Mat hierarchy = new Mat();
+    private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
     private double largestContourX;
     private double largestContourY;
     private double largestContourArea;
     private MatOfPoint largestContour;
     private PropPositions previousPropPosition;
     private PropPositions recordedPropPosition = PropPositions.UNFOUND;
-    private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
 
 
     /**
@@ -241,15 +241,16 @@ public class ColourMassDetectionProcessor implements VisionProcessor, CameraStre
         hierarchy.release();
     }
 
+    @Override
+    public void getFrameBitmap(Continuation<? extends Consumer<Bitmap>> continuation) {
+        continuation.dispatch(bitmapConsumer -> bitmapConsumer.accept(lastFrame.get()));
+    }
+
     // the enum that stores the 4 possible prop positions
     public enum PropPositions {
         LEFT,
         MIDDLE,
         RIGHT,
-        UNFOUND;
-    }
-    @Override
-    public void getFrameBitmap(Continuation<? extends Consumer<Bitmap>> continuation) {
-        continuation.dispatch(bitmapConsumer -> bitmapConsumer.accept(lastFrame.get()));
+        UNFOUND
     }
 }

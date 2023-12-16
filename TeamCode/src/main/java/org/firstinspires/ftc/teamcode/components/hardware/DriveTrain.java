@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.javacomponents.hardware;
+package org.firstinspires.ftc.teamcode.components.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -7,11 +7,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.javacomponents.meta.Hardware;
-import org.firstinspires.ftc.teamcode.javacomponents.meta.MotorGroup;
-
 import org.firstinspires.ftc.teamcode.components.device.GamepadKt;
-import org.firstinspires.ftc.teamcode.components.utils.*;
+import org.firstinspires.ftc.teamcode.components.meta.Hardware;
+import org.firstinspires.ftc.teamcode.components.meta.MotorGroup;
 
 public class DriveTrain {
     HardwareMap hardwareMap;
@@ -23,12 +21,12 @@ public class DriveTrain {
     public DriveTrain(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
-        frontLeft  = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_FL);// Motor vars
+        frontLeft = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_FL);// Motor vars
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRight = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_FR);
-        backLeft   = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_BL);
+        backLeft = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_BL);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRight  = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_BR);
+        backRight = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_BR);
 
         motorGroup.applyToMotors(motor -> motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER));
         motorGroup.applyToMotors(motor -> motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE));

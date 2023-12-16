@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.javacomponents.meta;
+package org.firstinspires.ftc.teamcode.components.meta;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import java.util.function.Consumer;
 
 public class MotorGroup {
-    private DcMotorEx[] motors;
     public int index = 0;
+    private final DcMotorEx[] motors;
 
     public MotorGroup(DcMotorEx... motors) {
         this.motors = motors;

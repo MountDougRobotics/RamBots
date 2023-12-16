@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.javacomponents.meta.TeleOpBotComponents;
+import org.firstinspires.ftc.teamcode.components.meta.TeleOpBotComponents;
 
 public class javaTeleOP extends LinearOpMode {
 

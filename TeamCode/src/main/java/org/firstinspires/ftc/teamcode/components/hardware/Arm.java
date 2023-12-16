@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.javacomponents.hardware;
+package org.firstinspires.ftc.teamcode.components.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.javacomponents.meta.Hardware;
+import org.firstinspires.ftc.teamcode.components.meta.Hardware;
 
 public class Arm {
     HardwareMap hardwareMap;
@@ -29,6 +29,6 @@ public class Arm {
             dir = -1.0;
         }//a ctrl
 
-        arm.setPower(dir*0.8);
+        arm.setPower(dir * 0.8);
     }
 }
