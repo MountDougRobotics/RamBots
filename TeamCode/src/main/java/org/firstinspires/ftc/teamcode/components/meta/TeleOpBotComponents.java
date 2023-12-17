@@ -32,6 +32,10 @@ public class TeleOpBotComponents extends BotComponents {
     public void updateComponents(boolean useLiftDeadzone) {
         this.drivetrain.drive(driver, 1.0); // Drive Code Here
         this.arm.update(driver, codriver);
+        this.lift.update(driver, codriver);
+        this.claw.update(driver, codriver);
+
+
     }
 
 }

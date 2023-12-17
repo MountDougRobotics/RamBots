@@ -31,7 +31,7 @@ public class Claw {
         claw2.setPosition(1 - targetPos);
     }
 
-    void update(Gamepad driver, Gamepad codriver) { // ? Teleop claw control
+    public void update(Gamepad driver, Gamepad codriver) { // ? Teleop claw control
         if (codriver.right_bumper || driver.right_bumper) {
             if (targetPos == CLAW_CLOSE) targetPos = CLAW_INTAKE_NARROW;
             else if (targetPos == CLAW_INTAKE_NARROW) targetPos = CLAW_DEPOSIT;
