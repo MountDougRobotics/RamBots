@@ -72,6 +72,8 @@ public class ControlPeriod extends OpMode {
         double frontLeftPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x * 0.5);
 
         // compensates for trying to rotate when the motors are already at max power
+        // when motor power is > 1 or < -1, motor will default to 1 or -1, so
+        // to compensate, power is subtracted from other motors
         if (frontRightPower > 1) {
             frontLeftPower -= frontRightPower - 1;
             backLeftPower -= frontRightPower - 1;
