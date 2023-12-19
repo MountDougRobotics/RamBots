@@ -28,7 +28,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.components.meta.DeviceNames;
+import org.firstinspires.ftc.teamcode.components.meta.Hardware;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceRunner;
@@ -100,10 +100,10 @@ public class SampleMecanumDrive extends MecanumDrive {
                 DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
         imu.initialize(parameters);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, DeviceNames.DRIVE_FL);
-        leftRear = hardwareMap.get(DcMotorEx.class, DeviceNames.DRIVE_BL);
-        rightRear = hardwareMap.get(DcMotorEx.class, DeviceNames.DRIVE_BR);
-        rightFront = hardwareMap.get(DcMotorEx.class, DeviceNames.DRIVE_FR);
+        leftFront = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_FL);
+        leftRear = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_BL);
+        rightRear = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_BR);
+        rightFront = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_FR);
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 

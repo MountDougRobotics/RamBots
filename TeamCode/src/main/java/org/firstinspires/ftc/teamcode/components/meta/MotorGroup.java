@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import java.util.function.Consumer;
 
 public class MotorGroup {
-    public int index = 0;
+    public int motorIndex = 0;
     private final DcMotorEx[] motors;
 
     public MotorGroup(DcMotorEx... motors) {
@@ -15,9 +15,9 @@ public class MotorGroup {
     public void applyToMotors(Consumer<DcMotorEx> motorFunction) {
         for (DcMotorEx motor : motors) {
             motorFunction.accept(motor);
-            index++;
+            motorIndex++;
         }
         // Reset index for the next iteration
-        index = 0;
+        motorIndex = 0;
     }
 }
