@@ -26,6 +26,8 @@ public class DriveTrain {
         frontLeft = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_FL);// Motor vars
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRight = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_FR);
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE); // ! FIX ANDERSON POWERPOLE
+
         backLeft = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_BL);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backRight = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_BR);
@@ -69,12 +71,14 @@ public class DriveTrain {
 
         double xComponent = power * Math.cos(theta - Math.PI / 4);
         double yComponent = power * Math.sin(theta - Math.PI / 4);
+        double[] arr = {xComponent, yComponent, 1e-16};
+        double max = largest(arr); // truly one of the most legible functions of all time, peek at package org.firstinspires.ftc.teamcode.components.utils.MathUtils if you wanna suffer
 
         double[] powers = {
-                xComponent + r,
-                yComponent - r,
-                yComponent + r,
-                xComponent - r
+                power * (xComponent / max) + r,
+                power * (yComponent / max) - r,
+                power * (yComponent / max) + r,
+                power * (xComponent / max) - r
         };
 
 
@@ -90,7 +94,7 @@ public class DriveTrain {
             powers[i] = Math.pow(powers[i], 3.0) * _powerMulti;
         }
 
-        powers = reduce(powers);
+        //powers = reduce(powers);
 
         double[] finalPowers = powers;
         motorGroup.applyToMotors(motor -> motor.setPower(finalPowers[motorGroup.motorIndex]));
@@ -98,6 +102,10 @@ public class DriveTrain {
         telemetry.addData("FR", frontRight.getPower());
         telemetry.addData("BL", backLeft.getPower());
         telemetry.addData("BR", backRight.getPower());
+        telemetry.addData("FLF", powers[0]);
+        telemetry.addData("FRF", powers[1]);
+        telemetry.addData("BLF", powers[2]);
+        telemetry.addData("BRF", powers[3]);
         telemetry.update();
 
     }
