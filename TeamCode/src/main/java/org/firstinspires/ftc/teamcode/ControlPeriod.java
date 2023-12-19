@@ -31,13 +31,12 @@ public class ControlPeriod extends OpMode {
         intakeMotor = hardwareMap.dcMotor.get("IN");
         //armLiftMotor = hardwareMap.dcMotor.get("AL");
 
-        // Sets up the motors for a mecanum drive
-        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        backLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+        // Sets up the motors for a Mecanum drive
+        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
 
         // Unpowered all motors
         backRightMotor.setPower(0);
@@ -67,10 +66,27 @@ public class ControlPeriod extends OpMode {
         double angle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
 
         // Calculate the speed and power
-        double backRightPower = magnitude * Math.cos(angle);
-        double backLeftPower = magnitude * Math.sin(angle);
-        double frontRightPower = magnitude * Math.sin(angle);
-        double frontLeftPower = magnitude * Math.cos(angle);
+        double backRightPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x * -0.5);
+        double backLeftPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x * 0.5);
+        double frontRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x * -0.5);
+        double frontLeftPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x * 0.5);
+
+        // compensates for trying to rotate when the motors are already at max power
+        if (frontRightPower > 1) {
+            frontLeftPower -= frontRightPower - 1;
+            backLeftPower -= frontRightPower - 1;
+        } else if (frontRightPower < -1) {
+            frontLeftPower += frontRightPower + 1;
+            backLeftPower += frontRightPower + 1;
+        } // if
+
+        if (frontLeftPower > 1) {
+            frontRightPower -= frontLeftPower - 1;
+            backRightPower -= frontLeftPower - 1;
+        } else if (frontLeftPower < -1) {
+            frontRightPower += frontLeftPower + 1;
+            backRightPower += frontLeftPower + 1;
+        } // if
 
         // Set the powers to the motors
         backRightMotor.setPower(backRightPower);
@@ -82,7 +98,12 @@ public class ControlPeriod extends OpMode {
         // Logs it in the driver hub
         //telemetry.addData("Status", "Running");
         telemetry.addData("Intake Power: ", (float)intakeMotor.getPower());
+        telemetry.addData("BR Motor: ", backRightPower);
+        telemetry.addData("BL Motor: ", backLeftPower);
+        telemetry.addData("FR Motor: ", frontRightPower);
+        telemetry.addData("FL Motor: ", frontLeftPower);
         telemetry.update();
+
     } // loop
 
     // Stops the robot
