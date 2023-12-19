@@ -14,10 +14,10 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.components.hardware.*
 
 abstract class BaseBotComponents (hardwareMap: HardwareMap,telemetry: Telemetry) { // ? Components for both TeleOp and Auton
-    val claw   = Claw(hardwareMap)
-    val arm    = PIDFArm(hardwareMap, telemetry)
-    val lift    = Lift(hardwareMap, telemetry)
-    val intake    = Intake(hardwareMap, telemetry)
+//    val claw   = Claw(hardwareMap)
+//    val arm    = PIDFArm(hardwareMap, telemetry)
+//    val lift    = Lift(hardwareMap, telemetry)
+//    val intake    = Intake(hardwareMap, telemetry)
 
     open fun updateComponents(useLiftDeadzone: Boolean) { // * Functions that update each tick
 
@@ -43,10 +43,10 @@ data class TeleOpBotComponents (
     override fun updateComponents(useLiftDeadzone: Boolean) {
         super.updateComponents(useLiftDeadzone)
         this.drivetrain.drive(driver, 1.0) // * Drive Code Here
-        this.arm.update(driver, codriver)
-        this.lift.update(driver, codriver)
-        this.claw.clawControl(driver, codriver)
-        this.intake.update(driver, codriver)
+//        this.arm.update(driver, codriver)
+//        this.lift.update(driver, codriver)
+//        this.claw.clawControl(driver, codriver)
+//        this.intake.update(driver, codriver)
 
     }
 }

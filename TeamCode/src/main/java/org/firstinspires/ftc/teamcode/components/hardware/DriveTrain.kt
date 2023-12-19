@@ -33,7 +33,7 @@ var tipDeadzone = 0.05
 
 class DriveTrain (hardwareMap: HardwareMap) {
     private val frontLeft  = hardwareMap.get(DcMotorEx::class.java, DeviceNames.DRIVE_FL).apply { direction = Direction.REVERSE } // Motor vars
-    private val frontRight = hardwareMap.get(DcMotorEx::class.java, DeviceNames.DRIVE_FR)
+    private val frontRight = hardwareMap.get(DcMotorEx::class.java, DeviceNames.DRIVE_FR).apply { direction = Direction.REVERSE } // ! added a flip cuz of anderson powerpole being flipped
     private val backLeft   = hardwareMap.get(DcMotorEx::class.java, DeviceNames.DRIVE_BL).apply { direction = Direction.REVERSE }
     private val backRight  = hardwareMap.get(DcMotorEx::class.java, DeviceNames.DRIVE_BR)
 
