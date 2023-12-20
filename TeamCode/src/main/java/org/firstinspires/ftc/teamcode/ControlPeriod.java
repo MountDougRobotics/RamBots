@@ -66,28 +66,35 @@ public class ControlPeriod extends OpMode {
         double angle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
 
         // Calculate the speed and power
-        double backRightPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x * -0.5);
-        double backLeftPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x * 0.5);
-        double frontRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x * -0.5);
-        double frontLeftPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x * 0.5);
+        double backRightPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x * -1);
+        double backLeftPower = magnitude * Math.sin(angle) + gamepad1.right_stick_x;
+        double frontRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x * -1);
+        double frontLeftPower = magnitude * Math.cos(angle) + gamepad1.right_stick_x;
 
         // compensates for trying to rotate when the motors are already at max power
         // when motor power is > 1 or < -1, motor will default to 1 or -1, so
         // to compensate, power is subtracted from other motors
+
+//        if (frontRightPower > 1 && frontLeftPower > 1) {
+//
+//        } else if (frontRightPower < 1 && frontLeftPower < 1) {
+//
+//        }
+
         if (frontRightPower > 1) {
             frontLeftPower -= frontRightPower - 1;
             backLeftPower -= frontRightPower - 1;
         } else if (frontRightPower < -1) {
-            frontLeftPower += frontRightPower + 1;
-            backLeftPower += frontRightPower + 1;
+            frontLeftPower -= frontRightPower + 1;
+            backLeftPower -= frontRightPower + 1;
         } // if
 
         if (frontLeftPower > 1) {
             frontRightPower -= frontLeftPower - 1;
             backRightPower -= frontLeftPower - 1;
         } else if (frontLeftPower < -1) {
-            frontRightPower += frontLeftPower + 1;
-            backRightPower += frontLeftPower + 1;
+            frontRightPower -= frontLeftPower + 1;
+            backRightPower -= frontLeftPower + 1;
         } // if
 
         // Set the powers to the motors
@@ -121,4 +128,7 @@ public class ControlPeriod extends OpMode {
         telemetry.addData("Status", "Stopped");
         telemetry.update();
     } // stop
+
+
+
 } // RobotTeleOp
