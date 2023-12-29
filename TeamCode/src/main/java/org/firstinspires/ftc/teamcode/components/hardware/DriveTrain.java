@@ -71,8 +71,8 @@ public class DriveTrain {
 
         double xComponent = power * Math.cos(theta - Math.PI / 4);
         double yComponent = power * Math.sin(theta - Math.PI / 4);
-        double[] arr = {xComponent, yComponent, 1e-16};
-        double max = largest(arr); // truly one of the most legible functions of all time, peek at package org.firstinspires.ftc.teamcode.components.utils.MathUtils if you wanna suffer
+        double[] arr = {Math.abs(xComponent), Math.abs(yComponent), Math.abs(1e-16)}; // ? untested
+        double max = largest(arr);
 
         double[] powers = {
                 power * (xComponent / max) + r,
