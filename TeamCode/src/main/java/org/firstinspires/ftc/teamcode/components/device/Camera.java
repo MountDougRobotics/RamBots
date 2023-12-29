@@ -52,6 +52,25 @@ public class Camera {
                 .addProcessor(colourMassDetectionProcessor)
                 .addProcessor(aprilTagProcessor)
                 .build();
+
+    }
+
+    public ColourMassDetectionProcessor.PropPositions detectLocation() { // ? actual function used to detect Prop position, call this when needed
+        // gets the recorded prop position
+
+        // gets the recorded prop position
+        ColourMassDetectionProcessor.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+
+        // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
+        // if it is UNFOUND, you can manually set it to any of the other positions to guess
+
+        // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
+        // if it is UNFOUND, you can manually set it to any of the other positions to guess
+        if (recordedPropPosition == ColourMassDetectionProcessor.PropPositions.UNFOUND) {
+            recordedPropPosition = ColourMassDetectionProcessor.PropPositions.MIDDLE;
+        }
+
+        return recordedPropPosition;
     }
 
 
