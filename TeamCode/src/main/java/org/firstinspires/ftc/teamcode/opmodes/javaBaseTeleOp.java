@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.components.meta.TeleOpBotComponents;
 
-public abstract class javaBaseOpmode extends LinearOpMode {
+public abstract class javaBaseTeleOp extends LinearOpMode {
 
     /*
      * As an extension of the linear opmode provided by the FTC RC, this program uses a linear progress system instead of the asynchronous Iterative Opmode.

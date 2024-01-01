@@ -27,6 +27,6 @@ public class AutoBotComponents extends BotComponents {
         return new AutoBotComponents(
                 hardwareMap,
                 telemetry
-        ); // ? TeleOp component builder
+        ); // ? Auto component builder
     }
 }
