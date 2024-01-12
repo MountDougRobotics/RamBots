@@ -15,10 +15,6 @@ public class ControlPeriod extends OpMode {
     private DcMotor backLeftMotor;
     private DcMotor frontRightMotor;
     private DcMotor frontLeftMotor;
-    private DcMotor intakeMotor;
-    //private DcMotor armLiftMotor;
-
-    private ElapsedTime runtime = new ElapsedTime();
 
     // Initialize method
     @Override
@@ -28,22 +24,18 @@ public class ControlPeriod extends OpMode {
         backLeftMotor = hardwareMap.dcMotor.get("BL");
         frontRightMotor = hardwareMap.dcMotor.get("FR");
         frontLeftMotor = hardwareMap.dcMotor.get("FL");
-        intakeMotor = hardwareMap.dcMotor.get("IN");
-        //armLiftMotor = hardwareMap.dcMotor.get("AL");
 
         // Sets up the motors for a Mecanum drive
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Unpowered all motors
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
-        intakeMotor.setPower(0);
 
         // Runs with encoders
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -58,28 +50,18 @@ public class ControlPeriod extends OpMode {
     // Checks for joystick input
     @Override
     public void loop() {
-        double leftStickY = -gamepad1.left_stick_y; // Reverse Y-axis
-        double leftStickX = gamepad1.left_stick_x;
 
         // Calculates the angle and power to move the robot
-        double magnitude = Math.hypot(leftStickX, leftStickY);
-        double angle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
 
         // Calculate the speed and power
-        double backRightPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x * -1);
-        double backLeftPower = magnitude * Math.sin(angle) + gamepad1.right_stick_x;
-        double frontRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x * -1);
-        double frontLeftPower = magnitude * Math.cos(angle) + gamepad1.right_stick_x;
+        double backRightPower = gamepad1.left_stick_y + (gamepad1.right_stick_x * -1);
+        double backLeftPower = gamepad1.left_stick_y + gamepad1.right_stick_x;
+        double frontRightPower = gamepad1.left_stick_y + (gamepad1.right_stick_x * -1);
+        double frontLeftPower = gamepad1.left_stick_y + gamepad1.right_stick_x;
 
         // compensates for trying to rotate when the motors are already at max power
         // when motor power is > 1 or < -1, motor will default to 1 or -1, so
         // to compensate, power is subtracted from other motors
-
-//        if (frontRightPower > 1 && frontLeftPower > 1) {
-//
-//        } else if (frontRightPower < 1 && frontLeftPower < 1) {
-//
-//        }
 
         if (frontRightPower > 1) {
             frontLeftPower -= frontRightPower - 1;
@@ -102,11 +84,8 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         frontLeftMotor.setPower(frontLeftPower);
-        intakeMotor.setPower((double)gamepad1.right_trigger);
 
-        // Logs it in the driver hub
-        //telemetry.addData("Status", "Running");
-        telemetry.addData("Intake Power: ", (float)intakeMotor.getPower());
+        // Displays Motor Power in the Driver Hub Console
         telemetry.addData("BR Motor: ", backRightPower);
         telemetry.addData("BL Motor: ", backLeftPower);
         telemetry.addData("FR Motor: ", frontRightPower);
