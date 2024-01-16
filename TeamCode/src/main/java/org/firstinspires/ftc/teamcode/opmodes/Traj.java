@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 
+// ? Test Trajectories for Auton. Do not tamper!
+
 public class Traj {
     HardwareMap hardwareMap;
     SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
