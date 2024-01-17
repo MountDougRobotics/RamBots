@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp
 // Tele-Op Class
@@ -18,6 +19,7 @@ public class ControlPeriod extends OpMode {
     private DcMotor intakeMotor;
     private DcMotor armLiftMotor;
     private DcMotor armExtendMotor;
+    private Servo intakeServo;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -32,8 +34,9 @@ public class ControlPeriod extends OpMode {
         intakeMotor = hardwareMap.dcMotor.get("IN");
         armLiftMotor = hardwareMap.dcMotor.get("AL");
         armExtendMotor = hardwareMap.dcMotor.get("AE");
+        intakeServo = hardwareMap.servo.get("INS");
 
-        // Sets up the motors for a Mecanum drive
+        // Set motor and servo directions
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -41,6 +44,7 @@ public class ControlPeriod extends OpMode {
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         armLiftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         armExtendMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeServo.setDirection(Servo.Direction.FORWARD);
 
         // Unpowered all motors
         backRightMotor.setPower(0);
@@ -109,9 +113,9 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         frontLeftMotor.setPower(frontLeftPower);
-        intakeMotor.setPower((double)gamepad1.right_trigger); // Intake Test
+        intakeMotor.setPower(gamepad1.right_stick_y); // Intake Test
         armLiftMotor.setPower((double)gamepad1.left_trigger); // Arm Lift Test
-        armExtendMotor.setPower((double)gamepad1.right_trigger); // Arm Extend Test
+        armExtendMotor.setPower(gamepad1.right_stick_y); // Arm Extend Test
 
         // Logs it in the driver hub
         //telemetry.addData("Status", "Running");
@@ -139,6 +143,12 @@ public class ControlPeriod extends OpMode {
         telemetry.addData("Status", "Stopped");
         telemetry.update();
     } // stop
+
+    public void IntakeServo() {
+
+
+
+    } // spinIntakeServo
 
 
 
