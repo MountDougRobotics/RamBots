@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 // FTC Imports
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -19,7 +20,7 @@ public class ControlPeriod extends OpMode {
     private DcMotor intakeMotor;
     private DcMotor armLiftMotor;
     private DcMotor armExtendMotor;
-    private Servo intakeServo;
+    private CRServo intakeServo;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -34,7 +35,7 @@ public class ControlPeriod extends OpMode {
         intakeMotor = hardwareMap.dcMotor.get("IN");
         armLiftMotor = hardwareMap.dcMotor.get("AL");
         armExtendMotor = hardwareMap.dcMotor.get("AE");
-        intakeServo = hardwareMap.servo.get("INS");
+        intakeServo = hardwareMap.crservo.get("INS");
 
         // Set motor and servo directions
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -44,7 +45,7 @@ public class ControlPeriod extends OpMode {
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         armLiftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         armExtendMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeServo.setDirection(Servo.Direction.FORWARD);
+        intakeServo.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // Unpowered all motors
         backRightMotor.setPower(0);
@@ -54,6 +55,7 @@ public class ControlPeriod extends OpMode {
         intakeMotor.setPower(0);
         armLiftMotor.setPower(0);
         armExtendMotor.setPower(0);
+        intakeServo.setPower(0);
 
         // Runs with encoders
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -117,13 +119,20 @@ public class ControlPeriod extends OpMode {
         armLiftMotor.setPower((double)gamepad1.left_trigger); // Arm Lift Test
         armExtendMotor.setPower(gamepad1.right_stick_y); // Arm Extend Test
 
+        if (gamepad1.a) {
+            intakeServo.setPower(1);
+        } else if (gamepad1.b) {
+            intakeServo.setPower(0);
+        } // else if
+
         // Logs it in the driver hub
         //telemetry.addData("Status", "Running");
         telemetry.addData("BR Motor: ", backRightPower);
         telemetry.addData("BL Motor: ", backLeftPower);
         telemetry.addData("FR Motor: ", frontRightPower);
         telemetry.addData("FL Motor: ", frontLeftPower);
-        telemetry.addData("Intake Power: ", (float)intakeMotor.getPower());
+        telemetry.addData("Intake Motor Power: ", (float)intakeMotor.getPower());
+        telemetry.addData("Intake Servo Power: ", (float)intakeServo.getPower());
         telemetry.addData("Arm Lift Power: ", (float)armLiftMotor.getPower());
         telemetry.addData("Arm Extend Power: ", (float)armExtendMotor.getPower());
         telemetry.update();
@@ -143,13 +152,5 @@ public class ControlPeriod extends OpMode {
         telemetry.addData("Status", "Stopped");
         telemetry.update();
     } // stop
-
-    public void IntakeServo() {
-
-
-
-    } // spinIntakeServo
-
-
 
 } // RobotTeleOp
