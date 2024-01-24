@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 // FTC Imports
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -21,6 +22,13 @@ public class ControlPeriod extends OpMode {
     private DcMotor armLiftMotor;
     private DcMotor armExtendMotor;
     private CRServo intakeServo;
+    private Servo clawServo1;
+    private Servo clawServo2;
+    private AnalogInput armPot;
+
+    private boolean armUp;
+    private double armUpVoltage = 0;
+    private double armDownVoltage = 0;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -36,6 +44,8 @@ public class ControlPeriod extends OpMode {
         armLiftMotor = hardwareMap.dcMotor.get("AL");
         armExtendMotor = hardwareMap.dcMotor.get("AE");
         intakeServo = hardwareMap.crservo.get("INS");
+        clawServo1 = hardwareMap.servo.get("CL1");
+        clawServo2 = hardwareMap.servo.get("CL2");
 
         // Set motor and servo directions
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -46,6 +56,8 @@ public class ControlPeriod extends OpMode {
         armLiftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         armExtendMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeServo.setDirection(DcMotorSimple.Direction.FORWARD);
+        clawServo1.setDirection(Servo.Direction.FORWARD);
+        clawServo2.setDirection(Servo.Direction.FORWARD);
 
         // Unpowered all motors
         backRightMotor.setPower(0);
@@ -115,10 +127,33 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         frontLeftMotor.setPower(frontLeftPower);
-        intakeMotor.setPower(gamepad1.right_stick_y); // Intake Test
+        intakeMotor.setPower(-gamepad1.right_stick_y); // Intake Test
         armLiftMotor.setPower((double)gamepad1.left_trigger); // Arm Lift Test
-        armExtendMotor.setPower(gamepad1.right_stick_y); // Arm Extend Test
+        armExtendMotor.setPower(-gamepad1.right_stick_y); // Arm Extend Test
 
+        // Set Claw Position
+        if (gamepad1.right_bumper) {
+            clawServo1.setPosition(-gamepad1.right_stick_y);
+        } // if
+
+        if (gamepad1.left_bumper) {
+            clawServo2.setPosition(-gamepad1.left_stick_y);
+        } // if
+
+        // Set Arm State
+        if (gamepad1.a) {
+            armUp = true;
+        } else if (gamepad1.b) {
+            armUp = false;
+        } // else if
+
+        if (armUp) {
+            controlArmMotor(armUpVoltage);
+        } else {
+            controlArmMotor(armDownVoltage);
+        }
+
+        // Spin Intake Servo
         if (gamepad1.a) {
             intakeServo.setPower(1);
         } else if (gamepad1.b) {
@@ -135,6 +170,9 @@ public class ControlPeriod extends OpMode {
         telemetry.addData("Intake Servo Power: ", (float)intakeServo.getPower());
         telemetry.addData("Arm Lift Power: ", (float)armLiftMotor.getPower());
         telemetry.addData("Arm Extend Power: ", (float)armExtendMotor.getPower());
+        telemetry.addData("Claw Servo 1 Pos: ", (float)clawServo1.getPosition());
+        telemetry.addData("Claw Servo 2 Pos: ", (float)clawServo2.getPosition());
+        telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
         telemetry.update();
 
     } // loop
@@ -152,5 +190,9 @@ public class ControlPeriod extends OpMode {
         telemetry.addData("Status", "Stopped");
         telemetry.update();
     } // stop
+
+    public void controlArmMotor(double target) {
+
+    } // controlArmMotor
 
 } // RobotTeleOp
