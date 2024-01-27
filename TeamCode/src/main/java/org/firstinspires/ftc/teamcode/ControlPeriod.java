@@ -51,7 +51,7 @@ public class ControlPeriod extends OpMode {
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         armLiftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         armExtendMotor.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -92,10 +92,10 @@ public class ControlPeriod extends OpMode {
         double angle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
 
         // Calculate the speed and power
-        double backRightPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x * -1);
-        double backLeftPower = magnitude * Math.sin(angle) + gamepad1.right_stick_x;
-        double frontRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x * -1);
-        double frontLeftPower = magnitude * Math.cos(angle) + gamepad1.right_stick_x;
+        double backRightPower = magnitude * Math.sin(angle) + (-gamepad1.right_stick_x);
+        double backLeftPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x);
+        double frontRightPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
+        double frontLeftPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
 
         // compensates for trying to rotate when the motors are already at max power
         // when motor power is > 1 or < -1, motor will default to 1 or -1, so
@@ -127,38 +127,38 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         frontLeftMotor.setPower(frontLeftPower);
-        intakeMotor.setPower(-gamepad1.right_stick_y); // Intake Test
-        armLiftMotor.setPower((double)gamepad1.left_trigger); // Arm Lift Test
-        armExtendMotor.setPower(-gamepad1.right_stick_y); // Arm Extend Test
+//        intakeMotor.setPower(-gamepad1.right_stick_y); // Intake Test
+//        armLiftMotor.setPower((double)gamepad1.left_trigger); // Arm Lift Test
+//        armExtendMotor.setPower(-gamepad1.right_stick_y); // Arm Extend Test
 
         // Set Claw Position
-        if (gamepad1.right_bumper) {
-            clawServo1.setPosition(-gamepad1.right_stick_y);
-        } // if
-
-        if (gamepad1.left_bumper) {
-            clawServo2.setPosition(-gamepad1.left_stick_y);
-        } // if
+//        if (gamepad1.right_bumper) {
+//            clawServo1.setPosition(-gamepad1.right_stick_y);
+//        } // if
+//
+//        if (gamepad1.left_bumper) {
+//            clawServo2.setPosition(-gamepad1.left_stick_y);
+//        } // if
 
         // Set Arm State
-        if (gamepad1.a) {
-            armUp = true;
-        } else if (gamepad1.b) {
-            armUp = false;
-        } // else if
-
-        if (armUp) {
-            controlArmMotor(armUpVoltage);
-        } else {
-            controlArmMotor(armDownVoltage);
-        }
+//        if (gamepad1.a) {
+//            armUp = true;
+//        } else if (gamepad1.b) {
+//            armUp = false;
+//        } // else if
+//
+//        if (armUp) {
+//            controlArmMotor(armUpVoltage);
+//        } else {
+//            controlArmMotor(armDownVoltage);
+//        }
 
         // Spin Intake Servo
-        if (gamepad1.a) {
-            intakeServo.setPower(1);
-        } else if (gamepad1.b) {
-            intakeServo.setPower(0);
-        } // else if
+//        if (gamepad1.a) {
+//            intakeServo.setPower(1);
+//        } else if (gamepad1.b) {
+//            intakeServo.setPower(0);
+//        } // else if
 
         // Logs it in the driver hub
         //telemetry.addData("Status", "Running");
@@ -166,13 +166,15 @@ public class ControlPeriod extends OpMode {
         telemetry.addData("BL Motor: ", backLeftPower);
         telemetry.addData("FR Motor: ", frontRightPower);
         telemetry.addData("FL Motor: ", frontLeftPower);
-        telemetry.addData("Intake Motor Power: ", (float)intakeMotor.getPower());
-        telemetry.addData("Intake Servo Power: ", (float)intakeServo.getPower());
-        telemetry.addData("Arm Lift Power: ", (float)armLiftMotor.getPower());
-        telemetry.addData("Arm Extend Power: ", (float)armExtendMotor.getPower());
-        telemetry.addData("Claw Servo 1 Pos: ", (float)clawServo1.getPosition());
-        telemetry.addData("Claw Servo 2 Pos: ", (float)clawServo2.getPosition());
-        telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
+        telemetry.addData("Magnitude: ", magnitude);
+        telemetry.addData("Angle: ", angle);
+//        telemetry.addData("Intake Motor Power: ", (float)intakeMotor.getPower());
+//        telemetry.addData("Intake Servo Power: ", (float)intakeServo.getPower());
+//        telemetry.addData("Arm Lift Power: ", (float)armLiftMotor.getPower());
+//        telemetry.addData("Arm Extend Power: ", (float)armExtendMotor.getPower());
+//        telemetry.addData("Claw Servo 1 Pos: ", (float)clawServo1.getPosition());
+//        telemetry.addData("Claw Servo 2 Pos: ", (float)clawServo2.getPosition());
+//        telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
         telemetry.update();
 
     } // loop
