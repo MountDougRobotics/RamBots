@@ -50,6 +50,7 @@ public class ControlPeriod extends OpMode {
         clawServo2 = hardwareMap.servo.get("CL2");
         clawWrist = hardwareMap.servo.get("CW");
         planeLaunchServo = hardwareMap.servo.get("PL");
+        armPot = hardwareMap.get(AnalogInput.class, "AP");
 
         // Set motor and servo directions
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -156,6 +157,8 @@ public class ControlPeriod extends OpMode {
             planeLaunchServo.setPosition(leftStickY);
         } // if
 
+
+
         // Set Arm State
 //        if (gamepad1.a) {
 //            armUp = true;
@@ -199,8 +202,8 @@ public class ControlPeriod extends OpMode {
         frontLeftMotor.setPower(0);
 
         // Logs it in the driver hub
-        telemetry.addData("Status", "Stopped");
-        telemetry.update();
+        //telemetry.addData("Status", "Stopped");
+        //telemetry.update();
     } // stop
 
     public void controlArmMotor(double target) {
