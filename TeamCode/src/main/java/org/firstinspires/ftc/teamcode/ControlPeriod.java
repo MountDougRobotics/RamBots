@@ -141,7 +141,7 @@ public class ControlPeriod extends OpMode {
         //Begin Encoder Tracking when set distance is reached or
         //manual button/trigger is released
 
-        if (gamepad1.y) {
+        if (gamepad2.y) {
             if (!a_toggle) {
                 armUp = !armUp;
                 y_toggle = true;
@@ -150,7 +150,7 @@ public class ControlPeriod extends OpMode {
             y_toggle = false;
         } // else
 
-        if (gamepad1.a) {
+        if (gamepad2.a) {
             if (!b_toggle) {
                 controlClaw();
                 b_toggle = true;
@@ -251,13 +251,13 @@ public class ControlPeriod extends OpMode {
 
         if (!clawOpen) {
 
-            clawServo1.setPosition(0.465);
+            clawServo1.setPosition(0.88);
             clawServo2.setPosition(0.5);
 
             clawOpen = true;
         } else {
 
-            clawServo1.setPosition(0.491);
+            clawServo1.setPosition(0.61);
             clawServo2.setPosition(0.5);
 
             clawOpen = false;
