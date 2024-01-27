@@ -76,6 +76,7 @@ public class ControlPeriod extends OpMode {
         armExtendMotor.setPower(0);
         intakeServo.setPower(0);
         clawServo1.setPosition(0.47);
+        clawServo2.setPosition(0.5);
         clawWrist.setPosition(0.4);
 
         // Runs with encoders
@@ -154,9 +155,15 @@ public class ControlPeriod extends OpMode {
 
         } // if
 
-//        if (gamepad1.left_bumper) {
-//            clawServo2.setPosition(leftStickY);
-//        } // if
+        if (gamepad1.left_bumper) {
+
+            if (gamepad1.a) {
+                clawServo2.setPosition(clawServo2.getPosition() + 0.001);
+            } else if (gamepad1.b) {
+                clawServo2.setPosition(clawServo2.getPosition() - 0.001);
+            } // else if
+
+        } // if
 
         if (gamepad1.left_bumper) {
             //clawWrist.setPosition(leftStickY);
