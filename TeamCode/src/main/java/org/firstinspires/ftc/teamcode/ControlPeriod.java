@@ -29,7 +29,7 @@ public class ControlPeriod extends OpMode {
     private AnalogInput armPot;
 
     private boolean armUp = false;
-    private boolean clawOpen = false;
+    private boolean clawOpen = true;
     private double armUpVoltage = 0;
     private double armDownVoltage = 0;
 
@@ -81,6 +81,9 @@ public class ControlPeriod extends OpMode {
         armLiftMotor.setPower(0);
         armExtendMotor.setPower(0);
         intakeServo.setPower(0);
+        clawServo1.setPosition(0.88);
+        clawServo2.setPosition(0.5);
+        clawWrist.setPosition(0.4);
 
         // Runs with encoders
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -114,7 +117,7 @@ public class ControlPeriod extends OpMode {
         double backRightPower = (leftStickY + (-leftStickX)) * 0.5;
         double backLeftPower = (leftStickY + (leftStickX)) * 0.5;
         double frontRightPower = (leftStickY + (-leftStickX)) * 0.5;
-        double frontLeftPower = (leftStickY + (leftStickX)) *0.5;
+        double frontLeftPower = (leftStickY + (leftStickX)) * 0.5;
 
         // compensates for trying to rotate when the motors are already at max power
         // when motor power is > 1 or < -1, motor will default to 1 or -1, so
@@ -181,6 +184,9 @@ public class ControlPeriod extends OpMode {
 //            intakeServo.setPower(0);
 //        } // else if
 
+        String arm = (armUp) ? "Up" : "Down";
+        String claw = (clawOpen) ? "Open" : "Closed";
+
         // Logs it in the driver hub
         telemetry.addData("Status", "Running");
         telemetry.addData("BR Motor: ", backRightPower);
@@ -191,11 +197,13 @@ public class ControlPeriod extends OpMode {
         // telemetry.addData("Angle: ", angle);
 //        telemetry.addData("Intake Motor Power: ", (float)intakeMotor.getPower());
 //        telemetry.addData("Intake Servo Power: ", (float)intakeServo.getPower());
-        telemetry.addData("Arm Lift Power: ", (float)armLiftMotor.getPower());
+        //telemetry.addData("Arm Lift Power: ", (float)armLiftMotor.getPower());
 //        telemetry.addData("Arm Extend Power: ", (float)armExtendMotor.getPower());
-        telemetry.addData("Claw Servo 1 Pos: ", (float)clawServo1.getPosition());
-        telemetry.addData("Claw Servo 2 Pos: ", (float)clawServo2.getPosition());
-        telemetry.addData("Claw Wrist Pos: ", (float)clawWrist.getPosition());
+        //telemetry.addData("Claw Servo 1 Pos: ", (float)clawServo1.getPosition());
+        //telemetry.addData("Claw Servo 2 Pos: ", (float)clawServo2.getPosition());
+        //telemetry.addData("Claw Wrist Pos: ", (float)clawWrist.getPosition());
+        telemetry.addData("Arm: ", arm);
+        telemetry.addData("Claw: ", claw);
         telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
         telemetry.update();
 
@@ -210,7 +218,7 @@ public class ControlPeriod extends OpMode {
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
 
-        // Logs it in the driver hub
+        // Logs it in the driver hubd
         telemetry.addData("Status", "Stopped");
         telemetry.update();
     } // stop
@@ -225,20 +233,24 @@ public class ControlPeriod extends OpMode {
         //0.75
 
             if (voltage >= 0.75) {
-                //clawWrist.setPosition(0.399);
+                clawWrist.setPosition(0.91);
             } // if
 
             if (voltage <= targetUp) {
-                armLiftMotor.setPower(0.8);
+                armLiftMotor.setPower(1);
             } else {
                 armLiftMotor.setPower(0);
             } // else
         } else {
 
-            //clawWrist.setPosition(0.491);
+            clawWrist.setPosition(0.4);
+
+//            if (!clawOpen) {
+//
+//            } // if
 
             if (voltage >= targetDown) {
-                armLiftMotor.setPower(-0.4);
+                armLiftMotor.setPower(-1);
             } else {
                 armLiftMotor.setPower(0);
             } // else
@@ -257,7 +269,7 @@ public class ControlPeriod extends OpMode {
             clawOpen = true;
         } else {
 
-            clawServo1.setPosition(0.61);
+            clawServo1.setPosition(0.57);
             clawServo2.setPosition(0.5);
 
             clawOpen = false;

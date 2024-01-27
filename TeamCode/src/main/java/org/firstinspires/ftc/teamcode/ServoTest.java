@@ -165,7 +165,7 @@ public class ServoTest extends OpMode {
 
         } // if
 
-        if (gamepad1.left_bumper) {
+        if (gamepad1.dpad_down) {
             //clawWrist.setPosition(leftStickY);
 
             if (gamepad1.a) {
