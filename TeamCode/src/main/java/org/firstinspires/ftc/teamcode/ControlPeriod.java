@@ -231,19 +231,31 @@ public class ControlPeriod extends OpMode {
     public void controlArm() {
 
         double voltage = armPot.getVoltage();
-        double targetUp = 0; // get correct value from testing
-        double targetDown = 0; // get correct value from testing
+        double targetUp = 2.55; // get correct value from testing
+        double targetDown = 0.55; // get correct value from testing
 
         if (armUp) {
+        //0.75
+
+            if (voltage >= 0.75) {
+                //clawWrist.setPosition(0.399);
+            } // if
+
             if (voltage <= targetUp) {
                 armLiftMotor.setPower(0.8);
-            } // if
-        } else {
-            if (voltage >= targetDown) {
-                armLiftMotor.setPower(-0.2);
             } else {
-                armLiftMotor.setPower(0.4);
+                armLiftMotor.setPower(0);
             } // else
+        } else {
+
+            //clawWrist.setPosition(0.491);
+
+            if (voltage >= targetDown) {
+                armLiftMotor.setPower(-0.4);
+            } else {
+                armLiftMotor.setPower(0);
+            } // else
+
         } // else
 
     } // controlArmMotor
@@ -252,16 +264,14 @@ public class ControlPeriod extends OpMode {
 
         if (!clawOpen) {
 
-            clawServo1.setPosition(0);
-            clawServo2.setPosition(0);
-            clawWrist.setPosition(0);
+            clawServo1.setPosition(0.465);
+            clawServo2.setPosition(0.5);
 
             clawOpen = true;
         } else {
 
-            clawServo1.setPosition(0);
-            clawServo2.setPosition(0);
-            clawWrist.setPosition(0);
+            clawServo1.setPosition(0.491);
+            clawServo2.setPosition(0.5);
 
             clawOpen = false;
         } // else
