@@ -75,6 +75,8 @@ public class ControlPeriod extends OpMode {
         armLiftMotor.setPower(0);
         armExtendMotor.setPower(0);
         intakeServo.setPower(0);
+        clawServo1.setPosition(0.47);
+        clawWrist.setPosition(0.4);
 
         // Runs with encoders
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -142,22 +144,34 @@ public class ControlPeriod extends OpMode {
 
         // Set Claw Position
         if (gamepad1.right_bumper) {
-            clawServo1.setPosition(leftStickY);
+            //clawServo1.setPosition(leftStickY);
+
+            if (gamepad1.a) {
+                clawServo1.setPosition(clawServo1.getPosition() + 0.001);
+            } else if (gamepad1.b) {
+                clawServo1.setPosition(clawServo1.getPosition() - 0.001);
+            } // else if
+
         } // if
+
+//        if (gamepad1.left_bumper) {
+//            clawServo2.setPosition(leftStickY);
+//        } // if
 
         if (gamepad1.left_bumper) {
-            clawServo2.setPosition(leftStickY);
+            //clawWrist.setPosition(leftStickY);
+
+            if (gamepad1.a) {
+                clawWrist.setPosition(clawWrist.getPosition() + 0.001);
+            } else if (gamepad1.b) {
+                clawWrist.setPosition(clawWrist.getPosition() - 0.001);
+            } // else if
+
         } // if
 
-        if (gamepad1.a) {
-            clawWrist.setPosition(leftStickY);
-        } // if
-
-        if (gamepad1.x) {
+        if (gamepad1.y) {
             planeLaunchServo.setPosition(leftStickY);
         } // if
-
-
 
         // Set Arm State
 //        if (gamepad1.a) {
