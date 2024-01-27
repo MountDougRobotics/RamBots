@@ -24,9 +24,11 @@ public class ControlPeriod extends OpMode {
     private CRServo intakeServo;
     private Servo clawServo1;
     private Servo clawServo2;
+    private Servo clawWrist;
+    private Servo planeLaunchServo;
+
     private AnalogInput armPot;
 
-    private boolean armUp;
     private double armUpVoltage = 0;
     private double armDownVoltage = 0;
 
@@ -46,6 +48,8 @@ public class ControlPeriod extends OpMode {
         intakeServo = hardwareMap.crservo.get("INS");
         clawServo1 = hardwareMap.servo.get("CL1");
         clawServo2 = hardwareMap.servo.get("CL2");
+        clawWrist = hardwareMap.servo.get("CW");
+        planeLaunchServo = hardwareMap.servo.get("PL");
 
         // Set motor and servo directions
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -58,6 +62,8 @@ public class ControlPeriod extends OpMode {
         intakeServo.setDirection(DcMotorSimple.Direction.FORWARD);
         clawServo1.setDirection(Servo.Direction.FORWARD);
         clawServo2.setDirection(Servo.Direction.FORWARD);
+        clawWrist.setDirection(Servo.Direction.FORWARD);
+        planeLaunchServo.setDirection(Servo.Direction.FORWARD);
 
         // Unpowered all motors
         backRightMotor.setPower(0);
@@ -88,34 +94,36 @@ public class ControlPeriod extends OpMode {
         double leftStickX = gamepad1.left_stick_x;
 
         // Calculates the angle and power to move the robot
-        double magnitude = Math.hypot(leftStickX, leftStickY);
-        double angle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
+        //double magnitude = Math.hypot(leftStickX, leftStickY);
+        //double angle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
 
         // Calculate the speed and power
-        double backRightPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x * -1);
-        double backLeftPower = magnitude * Math.sin(angle) + gamepad1.right_stick_x;
-        double frontRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x * -1);
-        double frontLeftPower = magnitude * Math.cos(angle) + gamepad1.right_stick_x;
+        // double backRightPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x * -1);
+        // double backLeftPower = magnitude * Math.sin(angle) + gamepad1.right_stick_x;
+        // double frontRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x * -1);
+        // double frontLeftPower = magnitude * Math.cos(angle) + gamepad1.right_stick_x;
+
+        stop();
 
         // compensates for trying to rotate when the motors are already at max power
         // when motor power is > 1 or < -1, motor will default to 1 or -1, so
         // to compensate, power is subtracted from other motors
 
-        if (frontRightPower > 1) {
-            frontLeftPower -= frontRightPower - 1;
-            backLeftPower -= frontRightPower - 1;
-        } else if (frontRightPower < -1) {
-            frontLeftPower -= frontRightPower + 1;
-            backLeftPower -= frontRightPower + 1;
-        } // if
-
-        if (frontLeftPower > 1) {
-            frontRightPower -= frontLeftPower - 1;
-            backRightPower -= frontLeftPower - 1;
-        } else if (frontLeftPower < -1) {
-            frontRightPower -= frontLeftPower + 1;
-            backRightPower -= frontLeftPower + 1;
-        } // if
+//        if (frontRightPower > 1) {
+//            frontLeftPower -= frontRightPower - 1;
+//            backLeftPower -= frontRightPower - 1;
+//        } else if (frontRightPower < -1) {
+//            frontLeftPower -= frontRightPower + 1;
+//            backLeftPower -= frontRightPower + 1;
+//        } // if
+//
+//        if (frontLeftPower > 1) {
+//            frontRightPower -= frontLeftPower - 1;
+//            backRightPower -= frontLeftPower - 1;
+//        } else if (frontLeftPower < -1) {
+//            frontRightPower -= frontLeftPower + 1;
+//            backRightPower -= frontLeftPower + 1;
+//        } // if
 
         //Arm Lift Idea to Stop Sliding unintentionally
         //Use the encoder to track when the motor rotates and apply power to compensate
@@ -123,55 +131,59 @@ public class ControlPeriod extends OpMode {
         //manual button/trigger is released
 
         // Set the powers to the motors
-        backRightMotor.setPower(backRightPower);
-        backLeftMotor.setPower(backLeftPower);
-        frontRightMotor.setPower(frontRightPower);
-        frontLeftMotor.setPower(frontLeftPower);
-        intakeMotor.setPower(-gamepad1.right_stick_y); // Intake Test
-        armLiftMotor.setPower((double)gamepad1.left_trigger); // Arm Lift Test
-        armExtendMotor.setPower(-gamepad1.right_stick_y); // Arm Extend Test
+        //backRightMotor.setPower(backRightPower);
+        //backLeftMotor.setPower(backLeftPower);
+        //frontRightMotor.setPower(frontRightPower);
+        //frontLeftMotor.setPower(frontLeftPower);
+        //intakeMotor.setPower(-gamepad1.right_stick_y); // Intake Test
+        //armLiftMotor.setPower((double)gamepad1.left_trigger); // Arm Lift Test
+        //armExtendMotor.setPower(-gamepad1.right_stick_y); // Arm Extend Test
 
         // Set Claw Position
         if (gamepad1.right_bumper) {
-            clawServo1.setPosition(-gamepad1.right_stick_y);
+            clawServo1.setPosition(leftStickY);
         } // if
 
         if (gamepad1.left_bumper) {
-            clawServo2.setPosition(-gamepad1.left_stick_y);
+            clawServo2.setPosition(leftStickY);
+        } // if
+
+        if (gamepad1.a) {
+            clawWrist.setPosition(leftStickY);
+        } // if
+
+        if (gamepad1.x) {
+            planeLaunchServo.setPosition(leftStickY);
         } // if
 
         // Set Arm State
-        if (gamepad1.a) {
-            armUp = true;
-        } else if (gamepad1.b) {
-            armUp = false;
-        } // else if
-
-        if (armUp) {
-            controlArmMotor(armUpVoltage);
-        } else {
-            controlArmMotor(armDownVoltage);
-        }
+//        if (gamepad1.a) {
+//            armUp = true;
+//        } else if (gamepad1.b) {
+//            armUp = false;
+//        } // else if
 
         // Spin Intake Servo
-        if (gamepad1.a) {
-            intakeServo.setPower(1);
-        } else if (gamepad1.b) {
-            intakeServo.setPower(0);
-        } // else if
+//        if (gamepad1.a) {
+//            intakeServo.setPower(1);
+//        } else if (gamepad1.b) {
+//            intakeServo.setPower(0);
+//        } // else if
 
         // Logs it in the driver hub
         //telemetry.addData("Status", "Running");
-        telemetry.addData("BR Motor: ", backRightPower);
-        telemetry.addData("BL Motor: ", backLeftPower);
-        telemetry.addData("FR Motor: ", frontRightPower);
-        telemetry.addData("FL Motor: ", frontLeftPower);
-        telemetry.addData("Intake Motor Power: ", (float)intakeMotor.getPower());
-        telemetry.addData("Intake Servo Power: ", (float)intakeServo.getPower());
+        //telemetry.addData("BR Motor: ", backRightPower);
+        //telemetry.addData("BL Motor: ", backLeftPower);
+        //telemetry.addData("FR Motor: ", frontRightPower);
+        //telemetry.addData("FL Motor: ", frontLeftPower);
+        //telemetry.addData("Intake Motor Power: ", (float)intakeMotor.getPower());
+        //telemetry.addData("Intake Servo Power: ", (float)intakeServo.getPower());
         telemetry.addData("Arm Lift Power: ", (float)armLiftMotor.getPower());
-        telemetry.addData("Arm Extend Power: ", (float)armExtendMotor.getPower());
+        //telemetry.addData("Arm Extend Power: ", (float)armExtendMotor.getPower());
         telemetry.addData("Claw Servo 1 Pos: ", (float)clawServo1.getPosition());
         telemetry.addData("Claw Servo 2 Pos: ", (float)clawServo2.getPosition());
+        telemetry.addData("Claw Wrist Pos: ", (float)clawWrist.getPosition());
+        telemetry.addData("Plane Launch Pos: ", (float)planeLaunchServo.getPosition());
         telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
         telemetry.update();
 
