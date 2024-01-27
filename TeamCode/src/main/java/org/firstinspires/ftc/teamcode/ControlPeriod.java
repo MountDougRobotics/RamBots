@@ -25,6 +25,7 @@ public class ControlPeriod extends OpMode {
     private Servo clawServo1;
     private Servo clawServo2;
     private Servo clawWrist;
+    private Servo planeLaunchServo;
     private AnalogInput armPot;
 
     private boolean armUp = false;
@@ -34,6 +35,8 @@ public class ControlPeriod extends OpMode {
 
     private boolean a_toggle = false;
     private boolean b_toggle = false;
+    private boolean x_toggle = false;
+    private boolean y_toggle = false;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -52,6 +55,7 @@ public class ControlPeriod extends OpMode {
         clawServo1 = hardwareMap.servo.get("CL1");
         clawServo2 = hardwareMap.servo.get("CL2");
         clawWrist = hardwareMap.servo.get("CW");
+        planeLaunchServo = hardwareMap.servo.get("PL");
         armPot = hardwareMap.get(AnalogInput.class, "AP");
 
         // Set motor and servo directions
@@ -65,6 +69,7 @@ public class ControlPeriod extends OpMode {
         intakeServo.setDirection(DcMotorSimple.Direction.FORWARD);
         clawServo1.setDirection(Servo.Direction.FORWARD);
         clawServo2.setDirection(Servo.Direction.FORWARD);
+        planeLaunchServo.setDirection(Servo.Direction.FORWARD);
         clawWrist.setDirection(Servo.Direction.FORWARD);
 
         // Unpowered all motors
@@ -92,7 +97,7 @@ public class ControlPeriod extends OpMode {
     // Checks for joystick input
     @Override
     public void loop() {
-        double leftStickY = -gamepad1.left_stick_y; // Reverse Y-axis
+        double leftStickY = gamepad1.left_stick_y; // Reverse Y-axis
         double leftStickX = gamepad1.left_stick_x;
         double rightStickX = gamepad1.right_stick_x;
 
@@ -136,22 +141,26 @@ public class ControlPeriod extends OpMode {
         //Begin Encoder Tracking when set distance is reached or
         //manual button/trigger is released
 
-        if (gamepad1.a) {
+        if (gamepad1.y) {
             if (!a_toggle) {
                 armUp = !armUp;
-                a_toggle = true;
+                y_toggle = true;
             } // if
         } else {
-            a_toggle = false;
+            y_toggle = false;
         } // else
 
-        if (gamepad1.b) {
+        if (gamepad1.a) {
             if (!b_toggle) {
                 controlClaw();
                 b_toggle = true;
             } // if
         } else {
             b_toggle = false;
+        } // if
+
+        if (gamepad1.x) {
+            planeLaunchServo.setPosition(1);
         } // if
 
         // Set the powers to the motors
@@ -164,28 +173,6 @@ public class ControlPeriod extends OpMode {
 //        armExtendMotor.setPower(-gamepad1.right_stick_y); // Arm Extend Test
 
         controlArm();
-
-        // Set Claw Position
-//        if (gamepad1.right_bumper) {
-//            clawServo1.setPosition(-gamepad1.right_stick_y);
-//        } // if
-//
-//        if (gamepad1.left_bumper) {
-//            clawServo2.setPosition(-gamepad1.left_stick_y);
-//        } // if
-
-        // Set Arm State
-//        if (gamepad1.a) {
-//            armUp = true;
-//        } else if (gamepad1.b) {
-//            armUp = false;
-//        } // else if
-//
-//        if (armUp) {
-//            controlArmMotor(armUpVoltage);
-//        } else {
-//            controlArmMotor(armDownVoltage);
-//        }
 
         // Spin Intake Servo
 //        if (gamepad1.a) {
