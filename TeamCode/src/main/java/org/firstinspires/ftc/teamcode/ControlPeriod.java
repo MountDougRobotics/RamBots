@@ -52,6 +52,7 @@ public class ControlPeriod extends OpMode {
         clawServo1 = hardwareMap.servo.get("CL1");
         clawServo2 = hardwareMap.servo.get("CL2");
         clawWrist = hardwareMap.servo.get("CW");
+        armPot = hardwareMap.get(AnalogInput.class, "AP");
 
         // Set motor and servo directions
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -93,6 +94,7 @@ public class ControlPeriod extends OpMode {
     public void loop() {
         double leftStickY = -gamepad1.left_stick_y; // Reverse Y-axis
         double leftStickX = gamepad1.left_stick_x;
+        double rightStickX = gamepad1.right_stick_x;
 
         // Calculates the angle and power to move the robot
         double magnitude = Math.hypot(leftStickX, leftStickY);
@@ -104,10 +106,10 @@ public class ControlPeriod extends OpMode {
         // double frontRightPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
         // double frontLeftPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
 
-        double backRightPower = leftStickY + (-leftStickX);
-        double backLeftPower = leftStickY + (leftStickX);
-        double frontRightPower = leftStickY + (-leftStickX);
-        double frontLeftPower = leftStickY + (leftStickX);
+        double backRightPower = (leftStickY + (-leftStickX)) * 0.5;
+        double backLeftPower = (leftStickY + (leftStickX)) * 0.5;
+        double frontRightPower = (leftStickY + (-leftStickX)) * 0.5;
+        double frontLeftPower = (leftStickY + (leftStickX)) *0.5;
 
         // compensates for trying to rotate when the motors are already at max power
         // when motor power is > 1 or < -1, motor will default to 1 or -1, so
@@ -206,7 +208,7 @@ public class ControlPeriod extends OpMode {
 //        telemetry.addData("Arm Extend Power: ", (float)armExtendMotor.getPower());
         telemetry.addData("Claw Servo 1 Pos: ", (float)clawServo1.getPosition());
         telemetry.addData("Claw Servo 2 Pos: ", (float)clawServo2.getPosition());
-        telemetry.addData("Claw Wrist Pos: ", (float)clawWrist.getPosition);
+        telemetry.addData("Claw Wrist Pos: ", (float)clawWrist.getPosition());
         telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
         telemetry.update();
 
@@ -228,7 +230,7 @@ public class ControlPeriod extends OpMode {
 
     public void controlArm() {
 
-        double voltage = armPot.getVoltage;
+        double voltage = armPot.getVoltage();
         double targetUp = 0; // get correct value from testing
         double targetDown = 0; // get correct value from testing
 
