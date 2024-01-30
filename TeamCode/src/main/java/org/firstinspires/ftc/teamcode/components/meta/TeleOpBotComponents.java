@@ -34,6 +34,7 @@ public class TeleOpBotComponents extends BotComponents {
         this.arm.update(driver, codriver);
         this.lift.update(driver, codriver);
         this.claw.update(driver, codriver);
+        this.wrist.update(driver, codriver);
 
 
     }

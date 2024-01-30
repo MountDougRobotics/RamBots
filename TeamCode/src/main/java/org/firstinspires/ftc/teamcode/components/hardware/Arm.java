@@ -22,13 +22,13 @@ public class Arm {
     public void update(Gamepad driver, Gamepad codriver) {
         double dir = 0.0;
 
-        if (codriver.dpad_up) { // * input
+        if (driver.dpad_up) { // * input
             dir = 1.0;
         }//y ctrl
-        else if (codriver.dpad_down) {
+        else if (driver.dpad_down) {
             dir = -1.0;
         }//a ctrl
 
-        arm.setPower(dir * 0.8);
+        arm.setPower(dir * 1);
     }
 }

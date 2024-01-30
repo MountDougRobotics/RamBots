@@ -98,15 +98,15 @@ public class DriveTrain {
 
         double[] finalPowers = powers;
         motorGroup.applyToMotors(motor -> motor.setPower(finalPowers[motorGroup.motorIndex]));
-        telemetry.addData("FL", frontLeft.getPower());
-        telemetry.addData("FR", frontRight.getPower());
-        telemetry.addData("BL", backLeft.getPower());
-        telemetry.addData("BR", backRight.getPower());
-        telemetry.addData("FLF", powers[0]);
-        telemetry.addData("FRF", powers[1]);
-        telemetry.addData("BLF", powers[2]);
-        telemetry.addData("BRF", powers[3]);
-        telemetry.update();
+//        telemetry.addData("FL", frontLeft.getPower());
+//        telemetry.addData("FR", frontRight.getPower());
+//        telemetry.addData("BL", backLeft.getPower());
+//        telemetry.addData("BR", backRight.getPower());
+//        telemetry.addData("FLF", powers[0]);
+//        telemetry.addData("FRF", powers[1]);
+//        telemetry.addData("BLF", powers[2]);
+//        telemetry.addData("BRF", powers[3]);
+//        telemetry.update();
 
     }
 
