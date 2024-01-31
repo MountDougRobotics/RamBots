@@ -19,10 +19,14 @@ public abstract class BotComponents {
     protected final Claw claw;
     protected final Lift lift;
 
+    protected final Wrist wrist;
+
+
     public BotComponents(HardwareMap hardwareMap, Telemetry telemetry) {
         this.arm = new Arm(hardwareMap, telemetry);
         this.lift = new Lift(hardwareMap, telemetry);
         this.claw = new Claw(hardwareMap, telemetry);
+        this.wrist = new Wrist(hardwareMap, telemetry);
 
     }
 
