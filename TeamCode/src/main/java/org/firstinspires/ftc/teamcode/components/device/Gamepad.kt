@@ -57,4 +57,4 @@ fun Gamepad.isAnyJoystickTriggered(deadzone: Double = .05) =
  *
  * @return a list of (-ly, lx, and rx)
  */
-fun Gamepad.getDriveSticks() = arrayOf(left_stick_x, -left_stick_y, right_stick_x)
+fun Gamepad.getDriveSticks() = doubleArrayOf(left_stick_x.toDouble(), -left_stick_y.toDouble(), (left_trigger-right_trigger).toDouble())// right_stick_x.toDouble())
