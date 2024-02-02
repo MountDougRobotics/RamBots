@@ -206,7 +206,7 @@ public class ControlPeriod extends OpMode {
 //        telemetry.addData("Arm Extend Power: ", (float)armExtendMotor.getPower());
         telemetry.addData("Claw Servo 1 Pos: ", (float)clawServo1.getPosition());
         telemetry.addData("Claw Servo 2 Pos: ", (float)clawServo2.getPosition());
-        telemetry.addData("Claw Wrist Pos: ", (float)clawWrist.getPosition);
+        telemetry.addData("Claw Wrist Pos: ", (float)clawWrist.getPosition());
         telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
         telemetry.update();
 
@@ -228,7 +228,7 @@ public class ControlPeriod extends OpMode {
 
     public void controlArm() {
 
-        double voltage = armPot.getVoltage;
+        double voltage = armPot.getVoltage();
         double targetUp = 0; // get correct value from testing
         double targetDown = 0; // get correct value from testing
 
