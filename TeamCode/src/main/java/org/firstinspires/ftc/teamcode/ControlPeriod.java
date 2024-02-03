@@ -99,15 +99,15 @@ public class ControlPeriod extends OpMode {
         double angle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
 
         // Calculate the speed and power
-        // double backRightPower = magnitude * Math.sin(angle) + (-gamepad1.right_stick_x);
-        // double backLeftPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x);
-        // double frontRightPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
-        // double frontLeftPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
+         double backRightPower = magnitude * Math.sin(angle) + (-gamepad1.right_stick_x);
+         double backLeftPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x);
+         double frontRightPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
+         double frontLeftPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
 
-        double backRightPower = leftStickY + (-leftStickX);
-        double backLeftPower = leftStickY + (leftStickX);
-        double frontRightPower = leftStickY + (-leftStickX);
-        double frontLeftPower = leftStickY + (leftStickX);
+//        double backRightPower = leftStickY + (-leftStickX);
+//        double backLeftPower = leftStickY + (leftStickX);
+//        double frontRightPower = leftStickY + (-leftStickX);
+//        double frontLeftPower = leftStickY + (leftStickX);
 
         // compensates for trying to rotate when the motors are already at max power
         // when motor power is > 1 or < -1, motor will default to 1 or -1, so
