@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -9,6 +10,8 @@ import org.firstinspires.ftc.teamcode.components.device.ColourMassDetectionProce
 import org.firstinspires.ftc.teamcode.components.meta.Hardware;
 import org.firstinspires.ftc.teamcode.components.meta.MotorGroup;
 
+
+@Autonomous
 public class hardCodedAuton extends LinearOpMode {
     public Camera camera;
     DcMotorEx frontLeft, frontRight, backLeft, backRight;
@@ -24,22 +27,29 @@ public class hardCodedAuton extends LinearOpMode {
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backRight = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_BR);
 
+        camera = new Camera(hardwareMap, telemetry);
+
         waitForStart();
 
         ColourMassDetectionProcessor.PropPositions position = camera.detectLocation();
 
         switch (position) {
             case LEFT:
+                telemetry.addData("POS", "LEFT");
                 rotate(-1, 100);
-                move(1, 200);
+                move(-1, 200);
                 break;
             case MIDDLE:
-                move(1, 400);
+                telemetry.addData("POS", "MIDDLE");
+                move(-1, 400);
                 break;
             case RIGHT:
+                telemetry.addData("POS", "RIGHT");
                 rotate(1, 100);
-                move(1, 200);
+                move(-1, 200);
+                break;
         }
+        telemetry.update();
 
     }
 

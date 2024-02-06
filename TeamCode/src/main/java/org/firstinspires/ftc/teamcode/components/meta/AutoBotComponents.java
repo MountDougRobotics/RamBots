@@ -9,13 +9,13 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
 public class AutoBotComponents extends BotComponents {
 
-    public final SampleMecanumDrive drive;
+//    public final SampleMecanumDrive drive;
     public final Camera camera;
 
 
     public AutoBotComponents(HardwareMap hardwareMap, Telemetry telemetry) {
         super(hardwareMap, telemetry);
-        this.drive = new SampleMecanumDrive(hardwareMap);
+//        this.drive = new SampleMecanumDrive(hardwareMap);
         this.camera = new Camera(hardwareMap, telemetry);
     }
 
