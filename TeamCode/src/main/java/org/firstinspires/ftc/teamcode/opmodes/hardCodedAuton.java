@@ -1,23 +1,26 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.components.device.Camera;
 import org.firstinspires.ftc.teamcode.components.device.ColourMassDetectionProcessor;
 import org.firstinspires.ftc.teamcode.components.meta.Hardware;
 import org.firstinspires.ftc.teamcode.components.meta.MotorGroup;
 
+/*
+* temporary hard coded auton with color mass on camera
+ */
 
-@Autonomous
 public class hardCodedAuton extends LinearOpMode {
-    public Camera camera;
     DcMotorEx frontLeft, frontRight, backLeft, backRight;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        Camera camera = new Camera(hardwareMap, telemetry);
+
         frontLeft = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_FL);// Motor vars
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRight = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_FR);
@@ -27,29 +30,22 @@ public class hardCodedAuton extends LinearOpMode {
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backRight = hardwareMap.get(DcMotorEx.class, Hardware.DRIVE_BR);
 
-        camera = new Camera(hardwareMap, telemetry);
-
         waitForStart();
 
-        ColourMassDetectionProcessor.PropPositions position = camera.detectLocation();
+        ColourMassDetectionProcessor.PropPositions position = camera.detectLocation(); // get camera pos
 
         switch (position) {
             case LEFT:
-                telemetry.addData("POS", "LEFT");
                 rotate(-1, 100);
-                move(-1, 200);
+                move(1, 200);
                 break;
             case MIDDLE:
-                telemetry.addData("POS", "MIDDLE");
-                move(-1, 400);
+                move(1, 400);
                 break;
             case RIGHT:
-                telemetry.addData("POS", "RIGHT");
                 rotate(1, 100);
-                move(-1, 200);
-                break;
+                move(1, 200);
         }
-        telemetry.update();
 
     }
 
