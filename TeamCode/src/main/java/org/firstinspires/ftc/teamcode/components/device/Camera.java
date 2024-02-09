@@ -30,7 +30,7 @@ public class Camera {
 
     ColourMassDetectionProcessor colourMassDetectionProcessor;
     AprilTagProcessor aprilTagProcessor;
-    VisionPortal visionPortal;
+    public VisionPortal visionPortal;
 
     public Camera(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
