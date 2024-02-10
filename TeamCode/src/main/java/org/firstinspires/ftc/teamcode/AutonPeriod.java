@@ -1,6 +1,6 @@
-
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -17,6 +17,11 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Autonomous
 public class AutonPeriod extends LinearOpMode {
@@ -24,6 +29,13 @@ public class AutonPeriod extends LinearOpMode {
     static final int STREAM_HEIGHT = 720; // modify for your camera
     OpenCvWebcam webcam;
     ThePipeline2 pipeline;
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 5.0, 130.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 100.0, 255.0);
+
+    public static double borderLeftX    = 0.0;   //fraction of pixels from the left side of the cam to skip
+    public static double borderRightX   = 0.0;   //fraction of pixels from the right of the cam to skip
+    public static double borderTopY     = 0.0;   //fraction of pixels from the top of the cam to skip
+    public static double borderBottomY  = 0.0;
 
     @Override
     public void runOpMode() {
@@ -31,12 +43,17 @@ public class AutonPeriod extends LinearOpMode {
         WebcamName webcamName = null;
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-        pipeline = new ThePipeline2();
-        webcam.setPipeline(pipeline);
+        FtcDashboard.getInstance().startCameraStream(webcam, 0);
+
+        webcam.setPipeline(pipeline = new ThePipeline2(borderLeftX,borderRightX,borderTopY,borderBottomY));
+        // Configuration of Pipeline
+        pipeline.configureScalarLower(scalarLowerYCrCb.val[0],scalarLowerYCrCb.val[1],scalarLowerYCrCb.val[2]);
+        pipeline.configureScalarUpper(scalarUpperYCrCb.val[0],scalarUpperYCrCb.val[1],scalarUpperYCrCb.val[2]);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
                 webcam.startStreaming(STREAM_WIDTH, STREAM_HEIGHT, OpenCvCameraRotation.UPRIGHT);
+                webcam.setPipeline(pipeline);
             }
 
             @Override
@@ -45,145 +62,223 @@ public class AutonPeriod extends LinearOpMode {
                 telemetry.update();
             }
         });
-
         waitForStart(); // Waiting for start button
 
         // VISION CODE START
-        int analysis = pipeline.getAnalysis();
-
-        telemetry.addData("analysis", "start_" + analysis);
-
+        if (opModeIsActive()) {
+            pipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
+            telemetry.addData("RectArea: ", pipeline.getRectArea());
+            telemetry.update();
+            telemetry.update();
+        }
     }
 }
 
+
+
+// Credits to team 7303 RoboAvatars, adjusted by team 3954 Pink to the Future
+
 class ThePipeline2 extends OpenCvPipeline {
-    Mat HSV = new Mat();
-    Mat hsv1 = new Mat();
-    Mat hsv2 = new Mat();
-    int avgr;
-    int avgm;
-    int avgl;
-    Scalar lowerBound;
-    Scalar upperBound;
-    Mat RectR = new Mat();
-    Mat RectM = new Mat();
-    Mat RectL = new Mat();
-    Rect lrect = new Rect(220, 620, 500, 460);
-    Rect mrect = new Rect(800, 600, 500, 360);
-    Rect rrect = new Rect(1500, 620, 420, 460);
-    Rect lrect2 = new Rect(0, 620, 500, 460);
-    Rect mrect2 = new Rect(550, 600, 500, 360);
-    Rect rrect2 = new Rect(1200, 620, 420, 460);
-    boolean rightsideofbarrier = false;
-    boolean debugview = true;
-    boolean doBlue = false;
-    int returnlocation;
-    /*
-     * This function takes the RGB frame, converts to HSV,
-     * and extracts the red color to the '' variable
-     */
-    void extractColor(Mat input) {
-        Imgproc.cvtColor(input, HSV, Imgproc.COLOR_RGB2HSV);  // convert the RGB to HSV
-        if (!doBlue){
-            // get red pixels (hue > 0)
-            lowerBound = new Scalar(0, 200, 30);
-            upperBound = new Scalar(5, 255, 255);
-            Core.inRange(HSV, lowerBound, upperBound, hsv1);
-            // get red pixels (hue < 180)
-            lowerBound = new Scalar(170, 200, 30);
-            upperBound = new Scalar(180, 255, 255);
-            Core.inRange(HSV, lowerBound, upperBound, hsv2);
+    Scalar Red = new Scalar(252, 71, 89); //it isnt hotpink its red BOUNDING BOX
 
-            Core.add(hsv1, hsv2, HSV);
-        }                                     // get red pixels
-        else {
-            // get blue pixels
-            lowerBound = new Scalar(100, 150, 0);
-            upperBound = new Scalar(140, 255, 255);
-            Core.inRange(HSV, lowerBound, upperBound, hsv1);
-            Core.add(hsv1, hsv1, HSV);
-        }                                            // get blue pixels
-    }
-    void drawRects(Mat input) {
-        Point ptl = new Point(290, 300);
-        Point ptm = new Point(970, 300);
-        Point ptr = new Point(1580, 300);
-        Scalar col = new Scalar(255);
-        Imgproc.putText(HSV, avgl + "", ptl, 1, 10, col, 5);
-        Imgproc.putText(HSV, avgm + "", ptm, 1, 10, col, 5);
-        Imgproc.putText(HSV, avgr + "", ptr, 1, 10, col, 5);
-        if(rightsideofbarrier){
-            Imgproc.rectangle(HSV, lrect2, col, 5);
-            Imgproc.rectangle(HSV, mrect2, col, 5);
-            Imgproc.rectangle(HSV, rrect2, col, 5);
-            if (avgl > avgm && avgl > avgr) {
-                Imgproc.rectangle(HSV, lrect2, col, 40);
-            } else if (avgm > avgr) {
-                Imgproc.rectangle(HSV, mrect2, col, 40);
-            } else {
-                Imgproc.rectangle(HSV, rrect2, col, 40);
-            }
-        }else {
-            Imgproc.rectangle(HSV, lrect, col, 5);
-            Imgproc.rectangle(HSV, mrect, col, 5);
-            Imgproc.rectangle(HSV, rrect, col, 5);
-            if (avgl > avgm && avgl > avgr) {
-                Imgproc.rectangle(HSV, lrect, col, 40);
-            } else if (avgm > avgr) {
-                Imgproc.rectangle(HSV, mrect, col, 40);
-            } else {
-                Imgproc.rectangle(HSV, rrect, col, 40);
-            }
-        }
-    }
+    // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 5.0, 130.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 100.0, 255.0);
 
-    @Override
-    public void init(Mat firstFrame) {
-        extractColor(firstFrame);
+    // Yellow, freight or ducks!
+    //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
+    //public static Scalar scalarUpperYCrCb = new Scalar(255.0, 170.0, 120.0);
+
+    // Green                                             Y      Cr     Cb
+    // public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 0.0, 0.0);
+    // public static Scalar scalarUpperYCrCb = new Scalar(255.0, 120.0, 120.0);
+
+    // Use this picture for you own color https://github.com/PinkToTheFuture/OpenCV_FreightFrenzy_2021-2022/blob/main/YCbCr.jpeg
+    // Note that the Cr and Cb values range between 0-255. this means that the origin of the coordinate system is (128,128)
+
+    // Volatile because accessed by OpMode without sync
+    public volatile boolean error = false;
+    public volatile Exception debug;
+
+    private double borderLeftX;     //fraction of pixels from the left side of the cam to skip
+    private double borderRightX;    //fraction of pixels from the right of the cam to skip
+    private double borderTopY;      //fraction of pixels from the top of the cam to skip
+    private double borderBottomY;   //fraction of pixels from the bottom of the cam to skip
+
+    private int CAMERA_WIDTH;
+    private int CAMERA_HEIGHT;
+
+    private int loopCounter = 0;
+    private int pLoopCounter = 0;
+
+    private final Mat mat = new Mat();
+    private final Mat processed = new Mat();
+
+    private Rect maxRect = new Rect(600,1,1,1);
+
+    private double maxArea = 0;
+    private boolean first = false;
+
+    private final Object sync = new Object();
+
+    public ThePipeline2(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
+        this.borderLeftX = borderLeftX;
+        this.borderRightX = borderRightX;
+        this.borderTopY = borderTopY;
+        this.borderBottomY = borderBottomY;
+    }
+    public void configureScalarLower(double y, double cr, double cb) {
+        scalarLowerYCrCb = new Scalar(y, cr, cb);
+    }
+    public void configureScalarUpper(double y, double cr, double cb) {
+        scalarUpperYCrCb = new Scalar(y, cr, cb);
+    }
+    public void configureScalarLower(int y, int cr, int cb) {
+        scalarLowerYCrCb = new Scalar(y, cr, cb);
+    }
+    public void configureScalarUpper(int y, int cr, int cb) {
+        scalarUpperYCrCb = new Scalar(y, cr, cb);
+    }
+    public void configureBorders(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
+        this.borderLeftX = borderLeftX;
+        this.borderRightX = borderRightX;
+        this.borderTopY = borderTopY;
+        this.borderBottomY = borderBottomY;
     }
 
     @Override
     public Mat processFrame(Mat input) {
-        extractColor(input);
-        if (rightsideofbarrier){
-            RectL = HSV.submat(lrect2);
-            RectM = HSV.submat(mrect2);
-            RectR = HSV.submat(rrect2);
-        }else {
-            RectL = HSV.submat(lrect);
-            RectM = HSV.submat(mrect);
-            RectR = HSV.submat(rrect);
-        }
-        System.out.println("processing requested");
-        avgl = (int) Core.mean(RectL).val[0];
-        avgm = (int) Core.mean(RectM).val[0];
-        avgr = (int) Core.mean(RectR).val[0];
-        if(debugview) {
-            drawRects(HSV);
-        }
-        if (avgl >= (avgm + 5) && avgl >= (avgr + 5)) {
-            returnlocation = 1;
-        } else if (avgm >= (avgl + 5) && avgm >= (avgr + 5)) {
-            returnlocation = 2;
-        } else if (avgr >= (avgl + 5) && avgr >= (avgm + 5)){
-            returnlocation = 3;
-        }else{
-            returnlocation = 4;
-        }
+        CAMERA_WIDTH = input.width();
+        CAMERA_HEIGHT = input.height();
+        try {
+            // Process Image
+            Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2YCrCb);
+            Core.inRange(mat, scalarLowerYCrCb, scalarUpperYCrCb, processed);
+            // Remove Noise
+            Imgproc.morphologyEx(processed, processed, Imgproc.MORPH_OPEN, new Mat());
+            Imgproc.morphologyEx(processed, processed, Imgproc.MORPH_CLOSE, new Mat());
+            // GaussianBlur
+            Imgproc.GaussianBlur(processed, processed, new Size(5.0, 15.0), 0.00);
+            // Find Contours
+            List<MatOfPoint> contours = new ArrayList<>();
+            Imgproc.findContours(processed, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
-        hsv1.release();   // don't leak memory
-        hsv2.release();   //        |
-        RectL.release();  //        |
-        RectM.release();  //        |
-        RectR.release();  //________V__________
-        if (debugview)
-            return HSV;
-        else {
-            HSV.release(); // don't leak memory
-            return input;
+            // Draw Contours
+            Imgproc.drawContours(input, contours, -1, new Scalar(255, 0, 0));
+
+            // Lock this up to prevent errors when outside threads access the max rect property.
+            synchronized (sync) {
+                // Loop Through Contours
+                for (MatOfPoint contour : contours) {
+                    Point[] contourArray = contour.toArray();
+
+                    // Bound Rectangle if Contour is Large Enough
+                    if (contourArray.length >= 15) {
+                        MatOfPoint2f areaPoints = new MatOfPoint2f(contourArray);
+                        Rect rect = Imgproc.boundingRect(areaPoints);
+
+                        if (                        rect.area() > maxArea
+                                && rect.x + (rect.width / 2.0)  > (borderLeftX * CAMERA_WIDTH)
+                                && rect.x + (rect.width / 2.0)  < CAMERA_WIDTH - (borderRightX * CAMERA_WIDTH)
+                                && rect.y + (rect.height / 2.0) > (borderTopY * CAMERA_HEIGHT)
+                                && rect.y + (rect.height / 2.0) < CAMERA_HEIGHT - (borderBottomY * CAMERA_HEIGHT)
+
+                                || loopCounter - pLoopCounter   > 6
+                                && rect.x + (rect.width / 2.0)  > (borderLeftX * CAMERA_WIDTH)
+                                && rect.x + (rect.width / 2.0)  < CAMERA_WIDTH - (borderRightX * CAMERA_WIDTH)
+                                && rect.y + (rect.height / 2.0) > (borderTopY * CAMERA_HEIGHT)
+                                && rect.y + (rect.height / 2.0) < CAMERA_HEIGHT - (borderBottomY * CAMERA_HEIGHT)
+                        ){
+                            maxArea = rect.area();
+                            maxRect = rect;
+                            pLoopCounter++;
+                            loopCounter = pLoopCounter;
+                            first = true;
+                        }
+                        else if(loopCounter - pLoopCounter > 10){
+                            maxArea = new Rect().area();
+                            maxRect = new Rect();
+                        }
+
+                        areaPoints.release();
+                    }
+                    contour.release();
+                }
+                if (contours.isEmpty()) {
+                    maxRect = new Rect(600,1,1,1);
+                }
+            }
+            // Draw Rectangles If Area Is At Least 500
+            if (first && maxRect.area() > 500) {
+                Imgproc.rectangle(input, maxRect, new Scalar(0, 255, 0), 2);
+            }
+            // Draw Borders
+            Imgproc.rectangle(input, new Rect(
+                    (int) (borderLeftX * CAMERA_WIDTH),
+                    (int) (borderTopY * CAMERA_HEIGHT),
+                    (int) (CAMERA_WIDTH - (borderRightX * CAMERA_WIDTH) - (borderLeftX * CAMERA_WIDTH)),
+                    (int) (CAMERA_HEIGHT - (borderBottomY * CAMERA_HEIGHT) - (borderTopY * CAMERA_HEIGHT))
+            ), Red, 2);
+
+            // Display Data
+            Imgproc.putText(input, "Area: " + getRectArea() + " Midpoint: " + getRectMidpointXY().x + " , " + getRectMidpointXY().y, new Point(5, CAMERA_HEIGHT - 5), 0, 0.6, new Scalar(255, 255, 255), 2);
+
+            loopCounter++;
+        } catch (Exception e) {
+            debug = e;
+            error = true;
+        }
+        return input;
+    }
+    /*
+    Synchronize these operations as the user code could be incorrect otherwise, i.e a property is read
+    while the same rectangle is being processed in the pipeline, leading to some values being not
+    synced.
+     */
+
+    public int getRectHeight() {
+        synchronized (sync) {
+            return maxRect.height;
         }
     }
-    public int getAnalysis() {
-        return returnlocation;
+    public int getRectWidth() {
+        synchronized (sync) {
+            return maxRect.width;
+        }
+    }
+    public int getRectX() {
+        synchronized (sync) {
+            return maxRect.x;
+        }
+    }
+    public int getRectY() {
+        synchronized (sync) {
+            return maxRect.y;
+        }
+    }
+    public double getRectMidpointX() {
+        synchronized (sync) {
+            return getRectX() + (getRectWidth() / 2.0);
+        }
+    }
+    public double getRectMidpointY() {
+        synchronized (sync) {
+            return getRectY() + (getRectHeight() / 2.0);
+        }
+    }
+    public Point getRectMidpointXY() {
+        synchronized (sync) {
+            return new Point(getRectMidpointX(), getRectMidpointY());
+        }
+    }
+    public double getAspectRatio() {
+        synchronized (sync) {
+            return getRectArea() / (CAMERA_HEIGHT * CAMERA_WIDTH);
+        }
+    }
+    public double getRectArea() {
+        synchronized (sync) {
+            return maxRect.area();
+        }
     }
 }
