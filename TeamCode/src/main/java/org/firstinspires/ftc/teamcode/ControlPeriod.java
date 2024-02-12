@@ -40,6 +40,7 @@ public class ControlPeriod extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime clawClosedTime = new ElapsedTime();
+    private ElapsedTime planeLaunchTime = new ElapsedTime();
 
     // Initialize method
     @Override
@@ -161,6 +162,15 @@ public class ControlPeriod extends OpMode {
             } // if
         } else {
             a_toggle = false;
+        } // if
+
+        if (gamepad1.x) {
+            if (!x_toggle) {
+                controlClaw();
+                x_toggle = true;
+            } // if
+        } else {
+            x_toggle = false;
         } // if
 
         if (gamepad1.x) {
