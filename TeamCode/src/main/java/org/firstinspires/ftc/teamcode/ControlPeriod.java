@@ -146,7 +146,7 @@ public class ControlPeriod extends OpMode {
         //manual button/trigger is released
 
         if (gamepad2.y) {
-            if (!a_toggle) {
+            if (!y_toggle) {
                 armUp = !armUp;
                 y_toggle = true;
             } // if
@@ -155,12 +155,12 @@ public class ControlPeriod extends OpMode {
         } // else
 
         if (gamepad2.a) {
-            if (!b_toggle) {
+            if (!a_toggle) {
                 controlClaw();
-                b_toggle = true;
+                a_toggle = true;
             } // if
         } else {
-            b_toggle = false;
+            a_toggle = false;
         } // if
 
         if (gamepad1.x) {
