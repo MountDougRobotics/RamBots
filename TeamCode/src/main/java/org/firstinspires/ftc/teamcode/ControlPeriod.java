@@ -25,17 +25,21 @@ public class ControlPeriod extends OpMode {
     private Servo clawServo1;
     private Servo clawServo2;
     private Servo clawWrist;
+    private Servo planeLaunchServo;
     private AnalogInput armPot;
 
     private boolean armUp = false;
-    private boolean clawOpen = false;
+    private boolean clawOpen = true;
     private double armUpVoltage = 0;
     private double armDownVoltage = 0;
 
     private boolean a_toggle = false;
     private boolean b_toggle = false;
+    private boolean x_toggle = false;
+    private boolean y_toggle = false;
 
     private ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime clawClosedTime = new ElapsedTime();
 
     // Initialize method
     @Override
@@ -52,6 +56,8 @@ public class ControlPeriod extends OpMode {
         clawServo1 = hardwareMap.servo.get("CL1");
         clawServo2 = hardwareMap.servo.get("CL2");
         clawWrist = hardwareMap.servo.get("CW");
+        planeLaunchServo = hardwareMap.servo.get("PL");
+        armPot = hardwareMap.get(AnalogInput.class, "AP");
 
         // Set motor and servo directions
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -64,6 +70,7 @@ public class ControlPeriod extends OpMode {
         intakeServo.setDirection(DcMotorSimple.Direction.FORWARD);
         clawServo1.setDirection(Servo.Direction.FORWARD);
         clawServo2.setDirection(Servo.Direction.FORWARD);
+        planeLaunchServo.setDirection(Servo.Direction.FORWARD);
         clawWrist.setDirection(Servo.Direction.FORWARD);
 
         // Unpowered all motors
@@ -75,6 +82,9 @@ public class ControlPeriod extends OpMode {
         armLiftMotor.setPower(0);
         armExtendMotor.setPower(0);
         intakeServo.setPower(0);
+        clawServo1.setPosition(0.88);
+        clawServo2.setPosition(0.5);
+        clawWrist.setPosition(0.4);
 
         // Runs with encoders
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -91,8 +101,9 @@ public class ControlPeriod extends OpMode {
     // Checks for joystick input
     @Override
     public void loop() {
-        double leftStickY = -gamepad1.left_stick_y; // Reverse Y-axis
+        double leftStickY = gamepad1.left_stick_y; // Reverse Y-axis
         double leftStickX = gamepad1.left_stick_x;
+        double rightStickX = gamepad1.right_stick_x;
 
         // Calculates the angle and power to move the robot
         double magnitude = Math.hypot(leftStickX, leftStickY);
@@ -104,10 +115,10 @@ public class ControlPeriod extends OpMode {
          double frontRightPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
          double frontLeftPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
 
-//        double backRightPower = leftStickY + (-leftStickX);
-//        double backLeftPower = leftStickY + (leftStickX);
-//        double frontRightPower = leftStickY + (-leftStickX);
-//        double frontLeftPower = leftStickY + (leftStickX);
+//        double backRightPower = (leftStickY + (-leftStickX)) * 0.5;
+//        double backLeftPower = (leftStickY + (leftStickX)) * 0.5;
+//        double frontRightPower = (leftStickY + (-leftStickX)) * 0.5;
+//        double frontLeftPower = (leftStickY + (leftStickX)) * 0.5;
 
         // compensates for trying to rotate when the motors are already at max power
         // when motor power is > 1 or < -1, motor will default to 1 or -1, so
@@ -134,22 +145,26 @@ public class ControlPeriod extends OpMode {
         //Begin Encoder Tracking when set distance is reached or
         //manual button/trigger is released
 
-        if (gamepad1.a) {
+        if (gamepad2.y) {
             if (!a_toggle) {
                 armUp = !armUp;
-                a_toggle = true;
+                y_toggle = true;
             } // if
         } else {
-            a_toggle = false;
+            y_toggle = false;
         } // else
 
-        if (gamepad1.b) {
+        if (gamepad2.a) {
             if (!b_toggle) {
                 controlClaw();
                 b_toggle = true;
             } // if
         } else {
             b_toggle = false;
+        } // if
+
+        if (gamepad1.x) {
+            planeLaunchServo.setPosition(1);
         } // if
 
         // Set the powers to the motors
@@ -163,34 +178,15 @@ public class ControlPeriod extends OpMode {
 
         controlArm();
 
-        // Set Claw Position
-//        if (gamepad1.right_bumper) {
-//            clawServo1.setPosition(-gamepad1.right_stick_y);
-//        } // if
-//
-//        if (gamepad1.left_bumper) {
-//            clawServo2.setPosition(-gamepad1.left_stick_y);
-//        } // if
-
-        // Set Arm State
-//        if (gamepad1.a) {
-//            armUp = true;
-//        } else if (gamepad1.b) {
-//            armUp = false;
-//        } // else if
-//
-//        if (armUp) {
-//            controlArmMotor(armUpVoltage);
-//        } else {
-//            controlArmMotor(armDownVoltage);
-//        }
-
         // Spin Intake Servo
 //        if (gamepad1.a) {
 //            intakeServo.setPower(1);
 //        } else if (gamepad1.b) {
 //            intakeServo.setPower(0);
 //        } // else if
+
+        String arm = (armUp) ? "Up" : "Down";
+        String claw = (clawOpen) ? "Open" : "Closed";
 
         // Logs it in the driver hub
         telemetry.addData("Status", "Running");
@@ -202,11 +198,13 @@ public class ControlPeriod extends OpMode {
         // telemetry.addData("Angle: ", angle);
 //        telemetry.addData("Intake Motor Power: ", (float)intakeMotor.getPower());
 //        telemetry.addData("Intake Servo Power: ", (float)intakeServo.getPower());
-        telemetry.addData("Arm Lift Power: ", (float)armLiftMotor.getPower());
+        //telemetry.addData("Arm Lift Power: ", (float)armLiftMotor.getPower());
 //        telemetry.addData("Arm Extend Power: ", (float)armExtendMotor.getPower());
-        telemetry.addData("Claw Servo 1 Pos: ", (float)clawServo1.getPosition());
-        telemetry.addData("Claw Servo 2 Pos: ", (float)clawServo2.getPosition());
-        telemetry.addData("Claw Wrist Pos: ", (float)clawWrist.getPosition());
+        //telemetry.addData("Claw Servo 1 Pos: ", (float)clawServo1.getPosition());
+        //telemetry.addData("Claw Servo 2 Pos: ", (float)clawServo2.getPosition());
+        //telemetry.addData("Claw Wrist Pos: ", (float)clawWrist.getPosition());
+        telemetry.addData("Arm: ", arm);
+        telemetry.addData("Claw: ", claw);
         telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
         telemetry.update();
 
@@ -221,7 +219,7 @@ public class ControlPeriod extends OpMode {
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
 
-        // Logs it in the driver hub
+        // Logs it in the driver hubd
         telemetry.addData("Status", "Stopped");
         telemetry.update();
     } // stop
@@ -229,19 +227,35 @@ public class ControlPeriod extends OpMode {
     public void controlArm() {
 
         double voltage = armPot.getVoltage();
-        double targetUp = 0; // get correct value from testing
-        double targetDown = 0; // get correct value from testing
+        double targetUp = 2.55; // get correct value from testing
+        double targetDown = 0.55; // get correct value from testing
 
         if (armUp) {
-            if (voltage <= targetUp) {
-                armLiftMotor.setPower(0.8);
+        //0.75
+
+            if (voltage >= 0.75) {
+                clawWrist.setPosition(0.91);
             } // if
-        } else {
-            if (voltage >= targetDown) {
-                armLiftMotor.setPower(-0.2);
+
+            if (voltage <= targetUp) {
+                armLiftMotor.setPower(1);
             } else {
-                armLiftMotor.setPower(0.4);
+                armLiftMotor.setPower(0);
             } // else
+        } else {
+
+            if (clawClosedTime.milliseconds() > 300 && clawOpen == false) {
+                clawWrist.setPosition(0.43);
+            } else {
+                clawWrist.setPosition(0.4); // standard position
+            } // else
+
+            if (voltage >= targetDown) {
+                armLiftMotor.setPower(-1);
+            } else {
+                armLiftMotor.setPower(0);
+            } // else
+
         } // else
 
     } // controlArmMotor
@@ -250,16 +264,16 @@ public class ControlPeriod extends OpMode {
 
         if (!clawOpen) {
 
-            clawServo1.setPosition(0);
-            clawServo2.setPosition(0);
-            clawWrist.setPosition(0);
+            clawServo1.setPosition(0.88);
+            clawServo2.setPosition(0.5);
 
             clawOpen = true;
         } else {
 
-            clawServo1.setPosition(0);
-            clawServo2.setPosition(0);
-            clawWrist.setPosition(0);
+            clawServo1.setPosition(0.57);
+            clawServo2.setPosition(0.5);
+
+            clawClosedTime.reset();
 
             clawOpen = false;
         } // else
