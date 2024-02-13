@@ -40,7 +40,7 @@ public class ControlPeriod extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime clawClosedTime = new ElapsedTime();
-    private ElapsedTime planeLaunchTime = new ElapsedTime();
+    private ElapsedTime planeLaunchTime = new ElapsedTime(1);
 
     // Initialize method
     @Override
@@ -166,15 +166,17 @@ public class ControlPeriod extends OpMode {
 
         if (gamepad1.x) {
             if (!x_toggle) {
-                controlClaw();
+
+                // checks if press is within the time frame
+                if (planeLaunchTime.milliseconds() < 500) {
+                    planeLaunchServo.setPosition(1);
+                } else {
+                    planeLaunchTime.reset();
+                } // else
                 x_toggle = true;
             } // if
         } else {
             x_toggle = false;
-        } // if
-
-        if (gamepad1.x) {
-            planeLaunchServo.setPosition(1);
         } // if
 
         // Set the powers to the motors
@@ -187,13 +189,6 @@ public class ControlPeriod extends OpMode {
 //        armExtendMotor.setPower(-gamepad1.right_stick_y); // Arm Extend Test
 
         controlArm();
-
-        // Spin Intake Servo
-//        if (gamepad1.a) {
-//            intakeServo.setPower(1);
-//        } else if (gamepad1.b) {
-//            intakeServo.setPower(0);
-//        } // else if
 
         String arm = (armUp) ? "Up" : "Down";
         String claw = (clawOpen) ? "Open" : "Closed";
@@ -228,6 +223,7 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
+        armLiftMotor.setPower(0);
 
         // Logs it in the driver hubd
         telemetry.addData("Status", "Stopped");
