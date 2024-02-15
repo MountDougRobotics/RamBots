@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -37,6 +38,8 @@ public class AutonPeriod extends LinearOpMode {
     public static double borderTopY     = 0.0;   //fraction of pixels from the top of the cam to skip
     public static double borderBottomY  = 0.0;
 
+
+
     @Override
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -68,9 +71,12 @@ public class AutonPeriod extends LinearOpMode {
         if (opModeIsActive()) {
             pipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
             telemetry.addData("RectArea: ", pipeline.getRectArea());
+            
             telemetry.update();
             telemetry.update();
         }
+
+
     }
 }
 
