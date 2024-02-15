@@ -26,11 +26,8 @@ public class ServoTest extends OpMode {
     private Servo clawServo2;
     private Servo clawWrist;
     private Servo planeLaunchServo;
-
+    private Servo hookServo;
     private AnalogInput armPot;
-
-    private double armUpVoltage = 0;
-    private double armDownVoltage = 0;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -50,6 +47,7 @@ public class ServoTest extends OpMode {
         clawServo2 = hardwareMap.servo.get("CL2");
         clawWrist = hardwareMap.servo.get("CW");
         planeLaunchServo = hardwareMap.servo.get("PL");
+        hookServo = hardwareMap.servo.get("HK");
         armPot = hardwareMap.get(AnalogInput.class, "AP");
 
         // Set motor and servo directions
@@ -64,6 +62,7 @@ public class ServoTest extends OpMode {
         clawServo1.setDirection(Servo.Direction.FORWARD);
         clawServo2.setDirection(Servo.Direction.FORWARD);
         clawWrist.setDirection(Servo.Direction.FORWARD);
+        hookServo.setDirection(Servo.Direction.FORWARD);
         planeLaunchServo.setDirection(Servo.Direction.FORWARD);
 
         // Unpowered all motors
@@ -78,6 +77,8 @@ public class ServoTest extends OpMode {
         clawServo1.setPosition(0.47);
         clawServo2.setPosition(0.5);
         clawWrist.setPosition(0.4);
+        hookServo.setPosition(0);
+        planeLaunchServo.setPosition(0);
 
         // Runs with encoders
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -176,16 +177,11 @@ public class ServoTest extends OpMode {
 
         } // if
 
-        if (gamepad1.y) {
-            planeLaunchServo.setPosition(leftStickY);
+        if (gamepad1.dpad_left) {
+
         } // if
 
-        // Set Arm State
-//        if (gamepad1.a) {
-//            armUp = true;
-//        } else if (gamepad1.b) {
-//            armUp = false;
-//        } // else if
+
 
         // Spin Intake Servo
 //        if (gamepad1.a) {

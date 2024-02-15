@@ -26,6 +26,7 @@ public class ControlPeriod extends OpMode {
     private Servo clawServo2;
     private Servo clawWrist;
     private Servo planeLaunchServo;
+    private Servo hookServo;
     private AnalogInput armPot;
 
     private boolean armUp = false;
@@ -58,6 +59,7 @@ public class ControlPeriod extends OpMode {
         clawServo2 = hardwareMap.servo.get("CL2");
         clawWrist = hardwareMap.servo.get("CW");
         planeLaunchServo = hardwareMap.servo.get("PL");
+        hookServo = hardwareMap.servo.get("HK");
         armPot = hardwareMap.get(AnalogInput.class, "AP");
 
         // Set motor and servo directions
@@ -72,6 +74,7 @@ public class ControlPeriod extends OpMode {
         clawServo1.setDirection(Servo.Direction.FORWARD);
         clawServo2.setDirection(Servo.Direction.FORWARD);
         planeLaunchServo.setDirection(Servo.Direction.FORWARD);
+        hookServo.setDirection(Servo.Direction.FORWARD);
         clawWrist.setDirection(Servo.Direction.FORWARD);
 
         // Unpowered all motors
@@ -86,6 +89,8 @@ public class ControlPeriod extends OpMode {
         clawServo1.setPosition(0.88);
         clawServo2.setPosition(0.5);
         clawWrist.setPosition(0.4);
+        planeLaunchServo.setPosition(0);
+        hookServo.setPosition(1);
 
         // Runs with encoders
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
