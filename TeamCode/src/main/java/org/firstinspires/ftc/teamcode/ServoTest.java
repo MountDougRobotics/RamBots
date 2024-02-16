@@ -179,9 +179,23 @@ public class ServoTest extends OpMode {
 
         if (gamepad1.dpad_left) {
 
+            if (gamepad1.a) {
+                planeLaunchServo.setPosition(planeLaunchServo.getPosition() + 0.001);
+            } else if (gamepad1.b) {
+                planeLaunchServo.setPosition(planeLaunchServo.getPosition() - 0.001);
+            } // else if
+
         } // if
 
+        if (gamepad1.dpad_right) {
 
+            if (gamepad1.a) {
+                hookServo.setPosition(hookServo.getPosition() + 0.001);
+            } else if (gamepad1.b) {
+                hookServo.setPosition(hookServo.getPosition() - 0.001);
+            } // else if
+
+        } // if
 
         // Spin Intake Servo
 //        if (gamepad1.a) {
