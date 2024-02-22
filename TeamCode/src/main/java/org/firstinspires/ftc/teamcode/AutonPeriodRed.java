@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
@@ -38,8 +41,24 @@ public class AutonPeriodRed extends LinearOpMode {
     public static double borderTopY     = 0.0;   //fraction of pixels from the top of the cam to skip
     public static double borderBottomY  = 0.0;
 
+    public String propLocation = "center";
+
+    private DcMotor backRightMotor;
+    private DcMotor backLeftMotor;
+    private DcMotor frontRightMotor;
+    private DcMotor frontLeftMotor;
+    private DcMotor armLiftMotor;
+    private DcMotor armLiftMotorExtra;
+    private Servo clawServo1;
+    private Servo clawServo2;
+
     @Override
     public void runOpMode() {
+
+        backRightMotor = hardwareMap.get(DcMotor.class, "BR");
+        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         WebcamName webcamName = null;
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
@@ -64,14 +83,39 @@ public class AutonPeriodRed extends LinearOpMode {
             }
         });
         waitForStart(); // Waiting for start button
-
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // VISION CODE START
         if (opModeIsActive()) {
             pipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
-            telemetry.addData("RectArea: ", pipeline.getRectArea());
+            double propCoords = pipeline.getRectMidpointX();
+
+            if (propCoords < 500.0) propLocation = "left";
+            else if (propCoords > 1200) propLocation = "right";
+            else propLocation = "center";
+
+            telemetry.addData("Prop Location", propLocation);
             telemetry.update();
-            telemetry.update();
+
+            if (propLocation.equals("left")) {
+                driveBack(0.5, 200);
+                //spinRight();
+                //goForward();
+                //dropPixel();
+            } else if (propLocation.equals("right")) {
+
+            } else {
+
+            }
         }
+    }
+
+    public void driveBack(double speed, int TARGET_TICKS) {
+        backRightMotor.setTargetPosition(TARGET_TICKS);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightMotor.setPower(speed); // Set motor power, adjust as needed
+
+        // Reset the encoder count
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
 
