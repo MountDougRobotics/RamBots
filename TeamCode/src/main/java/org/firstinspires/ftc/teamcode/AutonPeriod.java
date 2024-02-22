@@ -110,8 +110,8 @@ public class AutonPeriod extends LinearOpMode {
 
     public void driveBack(double speed, int TARGET_TICKS) {
         backRightMotor.setTargetPosition(TARGET_TICKS);
-        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backRightMotor.setPower(speed); // Set motor power, adjust as needed
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Reset the encoder count
         backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
