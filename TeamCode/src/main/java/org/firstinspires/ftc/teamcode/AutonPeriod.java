@@ -135,13 +135,61 @@ public class AutonPeriod extends LinearOpMode {
         frontRightMotor.setPower(-power);
         sleep(duration);
     }
+
+    public void driveForward(double power, long duration) {
+        backRightMotor.setPower(-power);
+        backLeftMotor.setPower(-power);
+        frontLeftMotor.setPower(-power);
+        frontRightMotor.setPower(power);
+        sleep(duration);
+    }
+
+    public void strafeLeft(double power, long duration) {
+        backRightMotor.setPower(-power);
+        backLeftMotor.setPower(power);
+        frontLeftMotor.setPower(-power);
+        frontRightMotor.setPower(-power);
+        sleep(duration);
+    }
+
+    public void strafeRight(double power, long duration) {
+        backRightMotor.setPower(power);
+        backLeftMotor.setPower(-power);
+        frontLeftMotor.setPower(power);
+        frontRightMotor.setPower(power);
+        sleep(duration);
+    }
+
+    public void turnRight(double power, long duration) {
+        backRightMotor.setPower(-power);
+        backLeftMotor.setPower(power);
+        frontLeftMotor.setPower(power);
+        frontRightMotor.setPower(power);
+        sleep(duration);
+    }
+
+    public void turnLeft(double power, long duration) {
+        backRightMotor.setPower(power);
+        backLeftMotor.setPower(-power);
+        frontLeftMotor.setPower(-power);
+        frontRightMotor.setPower(-power);
+        sleep(duration);
+        stopAllMotors();
+    }
+
+    public void stopAllMotors() {
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+    }
+
 }
 
 
 
 // Credits to team 7303 RoboAvatars,
 // Edited By Rambots for their prop
-
 class PropDetectionBlue extends OpenCvPipeline {
     Scalar Red = new Scalar(252, 71, 89); //it isnt hotpink its red BOUNDING BOX
 

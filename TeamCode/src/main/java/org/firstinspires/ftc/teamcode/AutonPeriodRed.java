@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -60,8 +61,19 @@ public class AutonPeriodRed extends LinearOpMode {
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
         backRightMotor = hardwareMap.get(DcMotor.class, "BR");
-        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftMotor = hardwareMap.get(DcMotor.class, "BL");
+        frontRightMotor = hardwareMap.get(DcMotor.class, "FR");
+        frontLeftMotor = hardwareMap.get(DcMotor.class, "FL");
 
+        backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         WebcamName webcamName = null;
@@ -87,7 +99,7 @@ public class AutonPeriodRed extends LinearOpMode {
             }
         });
         waitForStart(); // Waiting for start button
-        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         // VISION CODE START
         if (opModeIsActive()) {
             pipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
@@ -115,13 +127,61 @@ public class AutonPeriodRed extends LinearOpMode {
         }
     }
 
-    public void driveBack(double speed, int TARGET_TICKS) {
-        backRightMotor.setTargetPosition(TARGET_TICKS);
-        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backRightMotor.setPower(speed); // Set motor power, adjust as needed
 
-        // Reset the encoder count
-        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    public void driveBack(double power, long duration) {
+        backRightMotor.setPower(power);
+        backLeftMotor.setPower(power);
+        frontLeftMotor.setPower(power);
+        frontRightMotor.setPower(-power);
+        sleep(duration);
+    }
+
+    public void driveForward(double power, long duration) {
+        backRightMotor.setPower(-power);
+        backLeftMotor.setPower(-power);
+        frontLeftMotor.setPower(-power);
+        frontRightMotor.setPower(power);
+        sleep(duration);
+    }
+
+    public void strafeLeft(double power, long duration) {
+        backRightMotor.setPower(-power);
+        backLeftMotor.setPower(power);
+        frontLeftMotor.setPower(-power);
+        frontRightMotor.setPower(-power);
+        sleep(duration);
+    }
+
+    public void strafeRight(double power, long duration) {
+        backRightMotor.setPower(power);
+        backLeftMotor.setPower(-power);
+        frontLeftMotor.setPower(power);
+        frontRightMotor.setPower(power);
+        sleep(duration);
+    }
+
+    public void turnRight(double power, long duration) {
+        backRightMotor.setPower(-power);
+        backLeftMotor.setPower(power);
+        frontLeftMotor.setPower(power);
+        frontRightMotor.setPower(power);
+        sleep(duration);
+    }
+
+    public void turnLeft(double power, long duration) {
+        backRightMotor.setPower(power);
+        backLeftMotor.setPower(-power);
+        frontLeftMotor.setPower(-power);
+        frontRightMotor.setPower(-power);
+        sleep(duration);
+        stopAllMotors();
+    }
+
+    public void stopAllMotors() {
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
     }
 }
 
