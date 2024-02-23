@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -33,7 +34,7 @@ public class AutonPeriodRed extends LinearOpMode {
     static final int STREAM_HEIGHT = 720; // modify for your camera
     OpenCvWebcam webcam;
     PropDetectionRed pipeline;
-    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 160.0, 100.0);
+    public static Scalar scalarLowerYCrCb = new Scalar(60.0, 170.0, 100.0);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
     public static double borderLeftX    = 0.0;   //fraction of pixels from the left side of the cam to skip
@@ -54,6 +55,9 @@ public class AutonPeriodRed extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
         backRightMotor = hardwareMap.get(DcMotor.class, "BR");
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -94,6 +98,8 @@ public class AutonPeriodRed extends LinearOpMode {
             else propLocation = "center";
 
             telemetry.addData("Prop Location", propLocation);
+            dashboardTelemetry.addData("Prop Location", propLocation);
+            dashboardTelemetry.update();
             telemetry.update();
 
             if (propLocation.equals("left")) {
@@ -125,7 +131,7 @@ class PropDetectionRed extends OpenCvPipeline {
     Scalar Red = new Scalar(252, 71, 89); //it isnt hotpink its red
 
     // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 150.0, 120.0);
+    public static Scalar scalarLowerYCrCb = new Scalar(60.0, 170.0, 90.0);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
     // Yellow, freight or ducks!
