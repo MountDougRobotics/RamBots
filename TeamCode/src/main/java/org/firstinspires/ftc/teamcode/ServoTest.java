@@ -72,7 +72,7 @@ public class ServoTest extends OpMode {
         clawServo1.setPosition(0.47);
         clawServo2.setPosition(0.5);
         clawWrist.setPosition(0.4);
-        hookServo.setPosition(0);
+        hookServo.setPosition(0.5);
         hangServo.setPower(0);
         planeLaunchServo.setPosition(0);
 
