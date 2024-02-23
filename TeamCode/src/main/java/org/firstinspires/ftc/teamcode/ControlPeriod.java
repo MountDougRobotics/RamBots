@@ -19,14 +19,14 @@ public class ControlPeriod extends OpMode {
     private DcMotor frontRightMotor;
     private DcMotor frontLeftMotor;
     private DcMotor intakeMotor;
-    private DcMotor armLiftMotor;
-    private DcMotor armExtendMotor;
-    private CRServo intakeServo;
+    private DcMotor armLiftMotor1;
+    private DcMotor armLiftMotor2;
     private Servo clawServo1;
     private Servo clawServo2;
     private Servo clawWrist;
     private Servo planeLaunchServo;
     private Servo hookServo;
+    private CRServo hangServo;
     private AnalogInput armPot;
 
     private boolean armUp = false;
@@ -52,14 +52,14 @@ public class ControlPeriod extends OpMode {
         frontRightMotor = hardwareMap.dcMotor.get("FR");
         frontLeftMotor = hardwareMap.dcMotor.get("FL");
         intakeMotor = hardwareMap.dcMotor.get("IN");
-        armLiftMotor = hardwareMap.dcMotor.get("AL");
-        armExtendMotor = hardwareMap.dcMotor.get("AE");
-        intakeServo = hardwareMap.crservo.get("INS");
+        armLiftMotor1 = hardwareMap.dcMotor.get("AL1");
+        armLiftMotor2 = hardwareMap.dcMotor.get("Al2");
         clawServo1 = hardwareMap.servo.get("CL1");
         clawServo2 = hardwareMap.servo.get("CL2");
         clawWrist = hardwareMap.servo.get("CW");
         planeLaunchServo = hardwareMap.servo.get("PL");
         hookServo = hardwareMap.servo.get("HK");
+        hangServo = hardwareMap.crservo.get("HN");
         armPot = hardwareMap.get(AnalogInput.class, "AP");
 
         // Set motor and servo directions
@@ -68,14 +68,14 @@ public class ControlPeriod extends OpMode {
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        armLiftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        armExtendMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeServo.setDirection(DcMotorSimple.Direction.FORWARD);
+        armLiftMotor1.setDirection(DcMotorSimple.Direction.FORWARD);
+        armLiftMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
         clawServo1.setDirection(Servo.Direction.FORWARD);
         clawServo2.setDirection(Servo.Direction.FORWARD);
+        clawWrist.setDirection(Servo.Direction.FORWARD);
         planeLaunchServo.setDirection(Servo.Direction.FORWARD);
         hookServo.setDirection(Servo.Direction.FORWARD);
-        clawWrist.setDirection(Servo.Direction.FORWARD);
+        hangServo.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // Unpowered all motors
         backRightMotor.setPower(0);
@@ -83,9 +83,8 @@ public class ControlPeriod extends OpMode {
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
         intakeMotor.setPower(0);
-        armLiftMotor.setPower(0);
-        armExtendMotor.setPower(0);
-        intakeServo.setPower(0);
+        armLiftMotor1.setPower(0);
+        armLiftMotor2.setPower(0);
         clawServo1.setPosition(0.88);
         clawServo2.setPosition(0.5);
         clawWrist.setPosition(0.4);
@@ -97,8 +96,8 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armLiftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armExtendMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armLiftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armLiftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Logs it in the driver hub
         telemetry.addData("Status", "Initialized");
@@ -189,10 +188,6 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         frontLeftMotor.setPower(frontLeftPower);
-//        intakeMotor.setPower(-gamepad1.right_stick_y); // Intake Test
-//        armLiftMotor.setPower((double)gamepad1.left_trigger); // Arm Lift Test
-//        armExtendMotor.setPower(-gamepad1.right_stick_y); // Arm Extend Test
-
         controlArm();
 
         String arm = (armUp) ? "Up" : "Down";
@@ -215,7 +210,7 @@ public class ControlPeriod extends OpMode {
         //telemetry.addData("Claw Wrist Pos: ", (float)clawWrist.getPosition());
         telemetry.addData("Arm: ", arm);
         telemetry.addData("Claw: ", claw);
-        telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
+        // telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
         telemetry.update();
 
     } // loop
@@ -228,7 +223,9 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
-        armLiftMotor.setPower(0);
+        armLiftMotor1.setPower(0);
+        armLiftMotor2.setPower(0);
+        hangServo.setPower(0);
 
         // Logs it in the driver hubd
         telemetry.addData("Status", "Stopped");
@@ -249,9 +246,11 @@ public class ControlPeriod extends OpMode {
             } // if
 
             if (voltage <= targetUp) {
-                armLiftMotor.setPower(1);
+                armLiftMotor1.setPower(1);
+                armLiftMotor2.setPower(1);
             } else {
-                armLiftMotor.setPower(0);
+                armLiftMotor1.setPower(0);
+                armLiftMotor2.setPower(0);
             } // else
         } else {
 
@@ -262,9 +261,11 @@ public class ControlPeriod extends OpMode {
             } // else
 
             if (voltage >= targetDown) {
-                armLiftMotor.setPower(-1);
+                armLiftMotor1.setPower(-1);
+                armLiftMotor2.setPower(-1);
             } else {
-                armLiftMotor.setPower(0);
+                armLiftMotor1.setPower(0);
+                armLiftMotor2.setPower(0);
             } // else
 
         } // else
