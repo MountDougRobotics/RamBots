@@ -43,6 +43,14 @@ public class AutonPeriodRedClose extends LinearOpMode {
     public static double borderTopY     = 0.0;   //fraction of pixels from the top of the cam to skip
     public static double borderBottomY  = 0.0;
 
+    private double CrLowerUpdate = 160;
+    private double CbLowerUpdate = 100;
+    private double CrUpperUpdate = 255;
+    private double CbUpperUpdate = 255;
+
+    private double lowerruntime = 0;
+    private double upperruntime = 0;
+
     public String propLocation = "center";
 
     private DcMotor backRightMotor;
@@ -113,6 +121,8 @@ public class AutonPeriodRedClose extends LinearOpMode {
             dashboardTelemetry.addData("Prop Location", propLocation);
             dashboardTelemetry.update();
             telemetry.update();
+            // Only use this line of the code when you want to find the lower and upper values
+            testing(pipeline);
 
             if (propLocation.equals("left")) {
                 driveBack(0.5, 200);
@@ -124,6 +134,37 @@ public class AutonPeriodRedClose extends LinearOpMode {
         }
     }
 
+    public void testing(PropDetectionRed myPipeline) {
+        if(lowerruntime + 0.05 < getRuntime()){
+            CrLowerUpdate += -gamepad1.left_stick_y;
+            CbLowerUpdate += gamepad1.left_stick_x;
+            lowerruntime = getRuntime();
+        }
+        if(upperruntime + 0.05 < getRuntime()){
+            CrUpperUpdate += -gamepad1.right_stick_y;
+            CbUpperUpdate += gamepad1.right_stick_x;
+            upperruntime = getRuntime();
+        }
+
+        CrLowerUpdate = inValues(CrLowerUpdate, 0, 255);
+        CrUpperUpdate = inValues(CrUpperUpdate, 0, 255);
+        CbLowerUpdate = inValues(CbLowerUpdate, 0, 255);
+        CbUpperUpdate = inValues(CbUpperUpdate, 0, 255);
+
+        myPipeline.configureScalarLower(0.0, CrLowerUpdate, CbLowerUpdate);
+        myPipeline.configureScalarUpper(255.0, CrUpperUpdate, CbUpperUpdate);
+
+        telemetry.addData("lowerCr ", (int)CrLowerUpdate);
+        telemetry.addData("lowerCb ", (int)CbLowerUpdate);
+        telemetry.addData("UpperCr ", (int)CrUpperUpdate);
+        telemetry.addData("UpperCb ", (int)CbUpperUpdate);
+    }
+
+    public Double inValues(double value, double min, double max) {
+        if(value < min){ value = min; }
+        if(value > max){ value = max; }
+        return value;
+    }
 
     public void driveBack(double power, long duration) {
         backRightMotor.setPower(power);
@@ -188,7 +229,7 @@ class PropDetectionRed extends OpenCvPipeline {
     Scalar Red = new Scalar(252, 71, 89); //it isnt hotpink its red
 
     // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
-    public static Scalar scalarLowerYCrCb = new Scalar(60.0, 170.0, 90.0);
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 170.0, 90.0);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
     // Yellow, freight or ducks!

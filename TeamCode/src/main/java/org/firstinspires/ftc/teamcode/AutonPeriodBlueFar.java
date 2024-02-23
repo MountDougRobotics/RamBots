@@ -7,25 +7,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Size;
-import java.util.ArrayList;
-import java.util.List;
 
 @Autonomous(name = "Auto Blue Far")
 public class AutonPeriodBlueFar extends LinearOpMode {
@@ -51,6 +39,7 @@ public class AutonPeriodBlueFar extends LinearOpMode {
     private DcMotor armLiftMotorExtra;
     private Servo clawServo1;
     private Servo clawServo2;
+
 
     @Override
     public void runOpMode() {
@@ -116,11 +105,18 @@ public class AutonPeriodBlueFar extends LinearOpMode {
 
             if (propLocation.equals("left")) {
                 driveBack(0.5,  100);
+                driveForward(0.5, 60);
+                strafeLeft(0.5, 100);
+                strafeRight(0.5, 100);
+                turnLeft(0.5, 40);
+                turnRight(0.5, 40);
             } else if (propLocation.equals("right")) {
 
             } else {
 
             }
+
+            sleep(200000);
         }
     }
 
