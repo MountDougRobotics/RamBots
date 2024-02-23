@@ -3,43 +3,45 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Size;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "Auto Blue")
-public class AutonPeriod extends LinearOpMode {
-    static final int STREAM_WIDTH = 1920; // modify for your camera
-    static final int STREAM_HEIGHT = 1080; // modify for your camera
+
+@Autonomous(name = "Auto Red")
+public class AutonPeriodRed extends LinearOpMode {
+    static final int STREAM_WIDTH = 1280; // modify for your camera
+    static final int STREAM_HEIGHT = 720; // modify for your camera
     OpenCvWebcam webcam;
-    PropDetectionBlue pipeline;
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 5.0, 130.0);
-    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 100.0, 255.0);
+    PropDetectionRed pipeline;
+    public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 160.0, 100.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
     public static double borderLeftX    = 0.0;   //fraction of pixels from the left side of the cam to skip
     public static double borderRightX   = 0.0;   //fraction of pixels from the right of the cam to skip
     public static double borderTopY     = 0.0;   //fraction of pixels from the top of the cam to skip
     public static double borderBottomY  = 0.0;
-    public String propLocation = "center";
 
+    public String propLocation = "center";
 
     private DcMotor backRightMotor;
     private DcMotor backLeftMotor;
@@ -56,13 +58,14 @@ public class AutonPeriod extends LinearOpMode {
         backRightMotor = hardwareMap.get(DcMotor.class, "BR");
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         WebcamName webcamName = null;
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
 
-        webcam.setPipeline(pipeline = new PropDetectionBlue(borderLeftX,borderRightX,borderTopY,borderBottomY));
+        webcam.setPipeline(pipeline = new PropDetectionRed(borderLeftX,borderRightX,borderTopY,borderBottomY));
         // Configuration of Pipeline
         pipeline.configureScalarLower(scalarLowerYCrCb.val[0],scalarLowerYCrCb.val[1],scalarLowerYCrCb.val[2]);
         pipeline.configureScalarUpper(scalarUpperYCrCb.val[0],scalarUpperYCrCb.val[1],scalarUpperYCrCb.val[2]);
@@ -81,11 +84,9 @@ public class AutonPeriod extends LinearOpMode {
         });
         waitForStart(); // Waiting for start button
         backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         // VISION CODE START
         if (opModeIsActive()) {
             pipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
-
             double propCoords = pipeline.getRectMidpointX();
 
             if (propCoords < 500.0) propLocation = "left";
@@ -110,8 +111,8 @@ public class AutonPeriod extends LinearOpMode {
 
     public void driveBack(double speed, int TARGET_TICKS) {
         backRightMotor.setTargetPosition(TARGET_TICKS);
-        backRightMotor.setPower(speed); // Set motor power, adjust as needed
         backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightMotor.setPower(speed); // Set motor power, adjust as needed
 
         // Reset the encoder count
         backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -119,16 +120,13 @@ public class AutonPeriod extends LinearOpMode {
 }
 
 
-
-// Credits to team 7303 RoboAvatars,
-// Edited By Rambots for their prop
-
-class PropDetectionBlue extends OpenCvPipeline {
-    Scalar Red = new Scalar(252, 71, 89); //it isnt hotpink its red BOUNDING BOX
+// Credits to team 7303 RoboAvatars, adjusted by team 3954 Pink to the Future
+class PropDetectionRed extends OpenCvPipeline {
+    Scalar Red = new Scalar(252, 71, 89); //it isnt hotpink its red
 
     // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 5.0, 130.0);
-    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 100.0, 255.0);
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 150.0, 120.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
     // Yellow, freight or ducks!
     //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
@@ -166,7 +164,7 @@ class PropDetectionBlue extends OpenCvPipeline {
 
     private final Object sync = new Object();
 
-    public PropDetectionBlue(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
+    public PropDetectionRed(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
         this.borderLeftX = borderLeftX;
         this.borderRightX = borderRightX;
         this.borderTopY = borderTopY;
