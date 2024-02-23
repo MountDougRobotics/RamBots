@@ -4,9 +4,11 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -53,14 +55,30 @@ public class AutonPeriod extends LinearOpMode {
     @Override
     public void runOpMode() {
 
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
         backRightMotor = hardwareMap.get(DcMotor.class, "BR");
-        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftMotor = hardwareMap.get(DcMotor.class, "BL");
+        frontRightMotor = hardwareMap.get(DcMotor.class, "FR");
+        frontLeftMotor = hardwareMap.get(DcMotor.class, "FL");
+
+        backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         WebcamName webcamName = null;
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
+
 
         webcam.setPipeline(pipeline = new PropDetectionBlue(borderLeftX,borderRightX,borderTopY,borderBottomY));
         // Configuration of Pipeline
@@ -80,10 +98,9 @@ public class AutonPeriod extends LinearOpMode {
             }
         });
         waitForStart(); // Waiting for start button
-        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // VISION CODE START
-        if (opModeIsActive()) {
+        while (opModeIsActive()) {
             pipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
 
             double propCoords = pipeline.getRectMidpointX();
@@ -93,10 +110,13 @@ public class AutonPeriod extends LinearOpMode {
             else propLocation = "center";
 
             telemetry.addData("Prop Location", propLocation);
+            dashboardTelemetry.addData("Prop Location", propLocation);
+            dashboardTelemetry.update();
             telemetry.update();
 
             if (propLocation.equals("left")) {
-                driveBack(0.5, 200);
+                driveBack(0.5,  100);
+
                 //spinRight();
                 //goForward();
                 //dropPixel();
@@ -108,13 +128,12 @@ public class AutonPeriod extends LinearOpMode {
         }
     }
 
-    public void driveBack(double speed, int TARGET_TICKS) {
-        backRightMotor.setTargetPosition(TARGET_TICKS);
-        backRightMotor.setPower(speed); // Set motor power, adjust as needed
-        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // Reset the encoder count
-        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    public void driveBack(double power, long duration) {
+        backRightMotor.setPower(power);
+        backLeftMotor.setPower(power);
+        frontLeftMotor.setPower(power);
+        frontRightMotor.setPower(-power);
+        sleep(duration);
     }
 }
 
