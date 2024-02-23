@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Autonomous(name = "Auto Red")
-public class AutonPeriodRed extends LinearOpMode {
+@Autonomous(name = "Auto Red Close")
+public class AutonPeriodRedClose extends LinearOpMode {
     static final int STREAM_WIDTH = 1280; // modify for your camera
     static final int STREAM_HEIGHT = 720; // modify for your camera
     OpenCvWebcam webcam;
@@ -116,9 +116,6 @@ public class AutonPeriodRed extends LinearOpMode {
 
             if (propLocation.equals("left")) {
                 driveBack(0.5, 200);
-                //spinRight();
-                //goForward();
-                //dropPixel();
             } else if (propLocation.equals("right")) {
 
             } else {

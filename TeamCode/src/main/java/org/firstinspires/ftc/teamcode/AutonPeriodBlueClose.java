@@ -27,8 +27,8 @@ import org.opencv.core.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "Auto Blue")
-public class AutonPeriod extends LinearOpMode {
+@Autonomous(name = "Auto Blue Close")
+public class AutonPeriodBlueClose extends LinearOpMode {
     static final int STREAM_WIDTH = 1920; // modify for your camera
     static final int STREAM_HEIGHT = 1080; // modify for your camera
     OpenCvWebcam webcam;
@@ -116,10 +116,6 @@ public class AutonPeriod extends LinearOpMode {
 
             if (propLocation.equals("left")) {
                 driveBack(0.5,  100);
-
-                //spinRight();
-                //goForward();
-                //dropPixel();
             } else if (propLocation.equals("right")) {
 
             } else {
