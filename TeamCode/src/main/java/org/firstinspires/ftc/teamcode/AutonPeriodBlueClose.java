@@ -118,22 +118,34 @@ public class AutonPeriodBlueClose extends LinearOpMode {
 
 
             if (propLocation.equals("left")) {
-                strafeLeft(0.5, 700);
+                strafeLeft(0.5, 500);
                 driveBack(0.5, 800);
                 turnLeft(0.5, 785);
                 driveBack(0.5, 1150);
-                strafeLeft(0.5, 500);
-                strafeRight(0.5, 1300);
+                strafeLeft(0.5, 100);
+                strafeRight(0.5, 1700);
                 driveBack(0.5, 600);
             } else if (propLocation.equals("center")) {
                 driveBack(0.5, 1000);
                 turnLeft(0.5, 785);
                 driveBack(0.5, 1600);
                 strafeLeft(0.5, 150);
-                driveBack(0.5, 200);
+                driveBack(0.5, 300);
                 strafeRight(.5, 1000);
                 driveBack(0.5, 600);
             } else {
+                driveBack(.5, 900);
+                turnRight(.5, 500);
+                driveBack(.5, 300);
+                driveForward(.5, 300);
+                turnRight(.5, 1750);
+                driveBack(.5, 1770);
+                strafeRight(.5, 370);
+                driveBack(.5, 300);
+                driveForward(.5, 300);
+                strafeRight(.5, 850);
+                driveBack(.5, 600);
+
 
             }
             sleep(200000);
