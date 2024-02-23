@@ -124,6 +124,8 @@ public class AutonPeriodRedClose extends LinearOpMode {
             // Only use this line of the code when you want to find the lower and upper values
             testing(pipeline);
 
+            sleep(30000);
+
             if (propLocation.equals("left")) {
                 driveBack(0.5, 200);
             } else if (propLocation.equals("right")) {
@@ -158,6 +160,7 @@ public class AutonPeriodRedClose extends LinearOpMode {
         telemetry.addData("lowerCb ", (int)CbLowerUpdate);
         telemetry.addData("UpperCr ", (int)CrUpperUpdate);
         telemetry.addData("UpperCb ", (int)CbUpperUpdate);
+        telemetry.update();
     }
 
     public Double inValues(double value, double min, double max) {

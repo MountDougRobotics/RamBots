@@ -28,7 +28,7 @@ public class AutonPeriodBlueFar extends LinearOpMode {
     public static double borderRightX   = 0.0;   //fraction of pixels from the right of the cam to skip
     public static double borderTopY     = 0.0;   //fraction of pixels from the top of the cam to skip
     public static double borderBottomY  = 0.0;
-    public String propLocation = "center";
+    public String propLocation = "";
 
 
     private DcMotor backRightMotor;
@@ -104,12 +104,8 @@ public class AutonPeriodBlueFar extends LinearOpMode {
             telemetry.update();
 
             if (propLocation.equals("left")) {
-                driveBack(0.5,  100);
-                driveForward(0.5, 60);
-                strafeLeft(0.5, 100);
-                strafeRight(0.5, 100);
-                turnLeft(0.5, 40);
-                turnRight(0.5, 40);
+                strafeLeft(0.5, 400);
+                driveBack(0.5,  900);
             } else if (propLocation.equals("right")) {
 
             } else {
@@ -126,6 +122,7 @@ public class AutonPeriodBlueFar extends LinearOpMode {
         frontLeftMotor.setPower(power);
         frontRightMotor.setPower(-power);
         sleep(duration);
+        stopAllMotors();
     }
 
     public void driveForward(double power, long duration) {
@@ -134,6 +131,7 @@ public class AutonPeriodBlueFar extends LinearOpMode {
         frontLeftMotor.setPower(-power);
         frontRightMotor.setPower(power);
         sleep(duration);
+        stopAllMotors();
     }
 
     public void strafeLeft(double power, long duration) {
@@ -142,6 +140,7 @@ public class AutonPeriodBlueFar extends LinearOpMode {
         frontLeftMotor.setPower(-power);
         frontRightMotor.setPower(-power);
         sleep(duration);
+        stopAllMotors();
     }
 
     public void strafeRight(double power, long duration) {
@@ -150,6 +149,7 @@ public class AutonPeriodBlueFar extends LinearOpMode {
         frontLeftMotor.setPower(power);
         frontRightMotor.setPower(power);
         sleep(duration);
+        stopAllMotors();
     }
 
     public void turnRight(double power, long duration) {
@@ -158,6 +158,7 @@ public class AutonPeriodBlueFar extends LinearOpMode {
         frontLeftMotor.setPower(power);
         frontRightMotor.setPower(power);
         sleep(duration);
+        stopAllMotors();
     }
 
     public void turnLeft(double power, long duration) {

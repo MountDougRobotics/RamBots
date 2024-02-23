@@ -114,13 +114,29 @@ public class AutonPeriodBlueClose extends LinearOpMode {
             dashboardTelemetry.update();
             telemetry.update();
 
-            if (propLocation.equals("left")) {
-                driveBack(0.5,  100);
-            } else if (propLocation.equals("right")) {
 
+
+
+            if (propLocation.equals("left")) {
+                strafeLeft(0.5, 700);
+                driveBack(0.5, 800);
+                turnLeft(0.5, 785);
+                driveBack(0.5, 1150);
+                strafeLeft(0.5, 500);
+                strafeRight(0.5, 1300);
+                driveBack(0.5, 600);
+            } else if (propLocation.equals("center")) {
+                driveBack(0.5, 1000);
+                turnLeft(0.5, 785);
+                driveBack(0.5, 1600);
+                strafeLeft(0.5, 150);
+                driveBack(0.5, 200);
+                strafeRight(.5, 1000);
+                driveBack(0.5, 600);
             } else {
 
             }
+            sleep(200000);
         }
     }
 
@@ -130,6 +146,7 @@ public class AutonPeriodBlueClose extends LinearOpMode {
         frontLeftMotor.setPower(power);
         frontRightMotor.setPower(-power);
         sleep(duration);
+        stopAllMotors();
     }
 
     public void driveForward(double power, long duration) {
@@ -138,6 +155,7 @@ public class AutonPeriodBlueClose extends LinearOpMode {
         frontLeftMotor.setPower(-power);
         frontRightMotor.setPower(power);
         sleep(duration);
+        stopAllMotors();
     }
 
     public void strafeLeft(double power, long duration) {
@@ -146,6 +164,7 @@ public class AutonPeriodBlueClose extends LinearOpMode {
         frontLeftMotor.setPower(-power);
         frontRightMotor.setPower(-power);
         sleep(duration);
+        stopAllMotors();
     }
 
     public void strafeRight(double power, long duration) {
@@ -154,6 +173,7 @@ public class AutonPeriodBlueClose extends LinearOpMode {
         frontLeftMotor.setPower(power);
         frontRightMotor.setPower(power);
         sleep(duration);
+        stopAllMotors();
     }
 
     public void turnRight(double power, long duration) {
@@ -162,6 +182,7 @@ public class AutonPeriodBlueClose extends LinearOpMode {
         frontLeftMotor.setPower(power);
         frontRightMotor.setPower(power);
         sleep(duration);
+        stopAllMotors();
     }
 
     public void turnLeft(double power, long duration) {
@@ -179,6 +200,7 @@ public class AutonPeriodBlueClose extends LinearOpMode {
         frontLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
     }
+
 
 }
 
