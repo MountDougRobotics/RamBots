@@ -106,7 +106,14 @@ public class AutonPeriodBlueFar extends LinearOpMode {
             if (propLocation.equals("left")) {
                 strafeLeft(0.5, 400);
                 driveBack(0.5,  900);
-            } else if (propLocation.equals("right")) {
+            } else if (propLocation.equals("center")) {
+                driveBack(0.5, 1200);
+                driveForward(.5, 320);
+                turnLeft(0.5, 820);
+                driveBack(.5, 3800);
+                driveForward(.5, 300);
+                strafeLeft(.5, 1000);
+                driveBack(.5, 600);
 
             } else {
 
