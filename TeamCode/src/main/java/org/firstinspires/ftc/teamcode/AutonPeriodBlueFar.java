@@ -104,8 +104,8 @@ public class AutonPeriodBlueFar extends LinearOpMode {
             telemetry.update();
 
             if (propLocation.equals("left")) {
-                strafeLeft(0.5, 400);
-                driveBack(0.5,  900);
+                driveBack(0.5, 900);
+                strafeLeft(0.5, 700);
             } else if (propLocation.equals("center")) {
                 driveBack(0.5, 1200);
                 driveForward(.5, 320);
