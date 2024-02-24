@@ -255,7 +255,7 @@ public class ControlPeriod extends OpMode {
         } else {
 
             if (clawClosedTime.milliseconds() > 300 && clawOpen == false) {
-                clawWrist.setPosition(0.43);
+                clawWrist.setPosition(0.4);
             } else {
                 clawWrist.setPosition(0.4); // standard position
             } // else
