@@ -112,7 +112,7 @@ public class ControlPeriod extends OpMode {
 
         // Calculate the speed and power
          double backRightPower = magnitude * Math.sin(angle) + (-gamepad1.right_stick_x);
-         double backLeftPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x);
+         double backLeftPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
          double frontRightPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
          double frontLeftPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
 
@@ -238,7 +238,7 @@ public class ControlPeriod extends OpMode {
         //0.75
 
             if (voltage >= 1.5) {
-                clawWrist.setPosition(0.9);
+                clawWrist.setPosition(0.88);
             } // if
 
             if (voltage <= targetUp) {
@@ -272,7 +272,7 @@ public class ControlPeriod extends OpMode {
 
         if (!clawOpen) {
 
-            clawServo1.setPosition(0.88);
+            clawServo1.setPosition(1);
             clawServo2.setPosition(0.56); // delete later
 
             clawOpen = true;
