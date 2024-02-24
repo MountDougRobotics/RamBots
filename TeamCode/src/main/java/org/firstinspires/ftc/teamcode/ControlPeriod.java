@@ -51,7 +51,7 @@ public class ControlPeriod extends OpMode {
         frontRightMotor = hardwareMap.dcMotor.get("FR");
         frontLeftMotor = hardwareMap.dcMotor.get("FL");
         armLiftMotor1 = hardwareMap.dcMotor.get("AL1");
-        armLiftMotor2 = hardwareMap.dcMotor.get("Al2");
+        armLiftMotor2 = hardwareMap.dcMotor.get("AL2");
         clawServo1 = hardwareMap.servo.get("CL1");
         clawServo2 = hardwareMap.servo.get("CL2");
         clawWrist = hardwareMap.servo.get("CW");
@@ -63,8 +63,8 @@ public class ControlPeriod extends OpMode {
         // Set motor and servo directions
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         armLiftMotor1.setDirection(DcMotorSimple.Direction.FORWARD);
         armLiftMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
         clawServo1.setDirection(Servo.Direction.FORWARD);
@@ -231,14 +231,14 @@ public class ControlPeriod extends OpMode {
     public void controlArm() {
 
         double voltage = armPot.getVoltage();
-        double targetUp = 2.55; // get correct value from testing
-        double targetDown = 0.55; // get correct value from testing
+        double targetUp = 3.2; // get correct value from testing
+        double targetDown = 0.78; // get correct value from testing
 
         if (armUp) {
         //0.75
 
-            if (voltage >= 0.75) {
-                clawWrist.setPosition(0.91);
+            if (voltage >= 1.5) {
+                clawWrist.setPosition(0.9);
             } // if
 
             if (voltage <= targetUp) {
@@ -273,13 +273,13 @@ public class ControlPeriod extends OpMode {
         if (!clawOpen) {
 
             clawServo1.setPosition(0.88);
-            clawServo2.setPosition(0.5);
+            clawServo2.setPosition(0.56); // delete later
 
             clawOpen = true;
         } else {
 
-            clawServo1.setPosition(0.57);
-            clawServo2.setPosition(0.5);
+            clawServo1.setPosition(0.63);
+            clawServo2.setPosition(0.56);
 
             clawClosedTime.reset();
 

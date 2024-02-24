@@ -72,7 +72,7 @@ public class ServoTest extends OpMode {
         clawServo1.setPosition(0.47);
         clawServo2.setPosition(0.5);
         clawWrist.setPosition(0.4);
-        hookServo.setPosition(0.5);
+        hookServo.setPosition(1);
         hangServo.setPower(0);
         planeLaunchServo.setPosition(0);
 
@@ -94,8 +94,6 @@ public class ServoTest extends OpMode {
         double leftStickY = -gamepad1.left_stick_y; // Reverse Y-axis
         double leftStickX = gamepad1.left_stick_x;
         double rightStickY = -gamepad1.right_stick_y;
-
-        stop();
 
         hangServo.setPower(gamepad1.right_trigger);
 
@@ -181,7 +179,7 @@ public class ServoTest extends OpMode {
         telemetry.addData("Plane Launch Pos: ", (float)planeLaunchServo.getPosition());
         telemetry.addData("Hook Servo Pos: ", (float)hookServo.getPosition());
         telemetry.addData("Hang Servo Power: ", (float)hangServo.getPower());
-        telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
+        telemetry.addData("Arm Pot Voltage: ", armPot.getVoltage());
         telemetry.update();
 
     } // loop
