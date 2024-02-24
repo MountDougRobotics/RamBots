@@ -84,7 +84,7 @@ public class ControlPeriod extends OpMode {
         clawServo1.setPosition(0.88);
         clawServo2.setPosition(0.5);
         clawWrist.setPosition(0.4);
-        planeLaunchServo.setPosition(0);
+        planeLaunchServo.setPosition(0.5);
         hookServo.setPosition(1);
 
         // Runs with encoders
@@ -111,10 +111,10 @@ public class ControlPeriod extends OpMode {
         double angle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
 
         // Calculate the speed and power
-         double backRightPower = magnitude * Math.sin(angle) + (-gamepad1.right_stick_x);
+         double backRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
          double backLeftPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
-         double frontRightPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
-         double frontLeftPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
+         double frontRightPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x);
+         double frontLeftPower = magnitude * Math.sin(angle) + (-gamepad1.right_stick_x);
 
 //        double backRightPower = (leftStickY + (-leftStickX)) * 0.5;
 //        double backLeftPower = (leftStickY + (leftStickX)) * 0.5;
