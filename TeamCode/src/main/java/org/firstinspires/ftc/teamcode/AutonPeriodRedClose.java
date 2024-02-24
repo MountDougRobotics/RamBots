@@ -35,7 +35,7 @@ public class AutonPeriodRedClose extends LinearOpMode {
     static final int STREAM_HEIGHT = 720; // modify for your camera
     OpenCvWebcam webcam;
     PropDetectionRed pipeline;
-    public static Scalar scalarLowerYCrCb = new Scalar(60.0, 170.0, 100.0);
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 170.0, 90.0);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
     public static double borderLeftX    = 0.0;   //fraction of pixels from the left side of the cam to skip
