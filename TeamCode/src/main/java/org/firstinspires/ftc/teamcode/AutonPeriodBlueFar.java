@@ -112,7 +112,7 @@ public class AutonPeriodBlueFar extends LinearOpMode {
                 turnLeft(0.5, 820);
                 driveBack(.5, 3800);
                 driveForward(.5, 300);
-                strafeLeft(.5, 1000);
+                strafeLeft(.5, 1200);
                 driveBack(.5, 600);
 
             } else {
