@@ -110,10 +110,16 @@ public class ControlPeriod extends OpMode {
         double magnitude = Math.hypot(leftStickX, leftStickY);
         double angle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
 
+        if (gamepad1.left_bumper) {
+            magnitude *= 0.9;
+        } else {
+            magnitude *= 0.7;
+        }
+
         // Calculate the speed and power
         double backRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
         double backLeftPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
-        double frontRightPower = magnitude * Math.cos(angle) + (gamepad1.right_stick_x);
+        double frontRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
         double frontLeftPower = magnitude * Math.sin(angle) + (-gamepad1.right_stick_x);
 
 //        double backRightPower = (leftStickY + (-leftStickX)) * 0.5;
@@ -234,6 +240,10 @@ public class ControlPeriod extends OpMode {
         double targetUp = 3.2; // get correct value from testing
         double targetDown = 0.78; // get correct value from testing
 
+        if (clawClosedTime.milliseconds() > 300 && clawOpen == false) {
+            targetDown = 0.84;
+        }
+
         if (armUp) {
             //0.75
 
@@ -250,15 +260,20 @@ public class ControlPeriod extends OpMode {
             } // else
         } else {
 
+            clawWrist.setPosition(0.4);
+
             if (clawClosedTime.milliseconds() > 300 && clawOpen == false) {
                 clawWrist.setPosition(0.4);
             } else {
-                clawWrist.setPosition(0.4); // standard position
+                clawWrist.setPosition(0.4);
             } // else
 
             if (voltage >= targetDown) {
                 armLiftMotor1.setPower(-1);
                 armLiftMotor2.setPower(-1);
+            } else if (voltage < targetDown - 0.02) {
+                armLiftMotor1.setPower(0.5);
+                armLiftMotor2.setPower(0.5);
             } else {
                 armLiftMotor1.setPower(0);
                 armLiftMotor2.setPower(0);
