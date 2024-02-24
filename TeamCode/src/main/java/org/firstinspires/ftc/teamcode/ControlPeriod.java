@@ -33,10 +33,13 @@ public class ControlPeriod extends OpMode {
     private double armUpVoltage = 0;
     private double armDownVoltage = 0;
 
+    private int speedSetting = 0;
+
     private boolean a_toggle = false;
     private boolean b_toggle = false;
     private boolean x_toggle = false;
     private boolean y_toggle = false;
+    private boolean rightBumper_toggle = false;
 
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime clawClosedTime = new ElapsedTime();
@@ -110,6 +113,18 @@ public class ControlPeriod extends OpMode {
         double magnitude = Math.hypot(leftStickX, leftStickY);
         double angle = Math.atan2(leftStickY, leftStickX) - Math.PI / 4;
 
+        switch (speedSetting) {
+            case 0:
+                magnitude *= 0.9;
+                break;
+            case 1:
+                magnitude *= 0.6;
+                break;
+            case 2:
+                magnitude *= 0.3;
+                break;
+        } // switch
+
         // Calculate the speed and power
         double backRightPower = magnitude * Math.sin(angle) + (gamepad1.right_stick_x);
         double backLeftPower = magnitude * Math.cos(angle) + (-gamepad1.right_stick_x);
@@ -177,7 +192,28 @@ public class ControlPeriod extends OpMode {
             } // if
         } else {
             x_toggle = false;
-        } // if
+        } // else
+
+        if (gamepad1.right_bumper) {
+            if (!rightBumper_toggle) {
+
+                switch (speedSetting) {
+                    case 0:
+                        speedSetting ++;
+                        break;
+                    case 1:
+                        speedSetting ++;
+                        break;
+                    case 2:
+                        speedSetting = 0;
+                        break;
+                } // switch
+
+                rightBumper_toggle = true;
+            } // if
+        } else {
+            rightBumper_toggle = false;
+        } // else
 
         // Set the powers to the motors
         backRightMotor.setPower(backRightPower);
@@ -223,7 +259,7 @@ public class ControlPeriod extends OpMode {
         armLiftMotor2.setPower(0);
         hangServo.setPower(0);
 
-        // Logs it in the driver hubd
+        // Logs it in the driver hub
         telemetry.addData("Status", "Stopped");
         telemetry.update();
     } // stop
@@ -232,7 +268,7 @@ public class ControlPeriod extends OpMode {
 
         double voltage = armPot.getVoltage();
         double targetUp = 3.2; // get correct value from testing
-        double targetDown = 0.78; // get correct value from testing
+        double targetDown = clawClosedTime.milliseconds() > 300 && clawOpen == false ? 0.84 : 0.78; // get correct value from testing 0.78 is standard
 
         if (armUp) {
             //0.75
@@ -250,15 +286,14 @@ public class ControlPeriod extends OpMode {
             } // else
         } else {
 
-            if (clawClosedTime.milliseconds() > 300 && clawOpen == false) {
-                clawWrist.setPosition(0.4);
-            } else {
-                clawWrist.setPosition(0.4); // standard position
-            } // else
+            clawWrist.setPosition(0.4);
 
             if (voltage >= targetDown) {
                 armLiftMotor1.setPower(-1);
                 armLiftMotor2.setPower(-1);
+            } else if (voltage < targetDown - 0.02) {
+                armLiftMotor1.setPower(0.5);
+                armLiftMotor2.setPower(0.5);
             } else {
                 armLiftMotor1.setPower(0);
                 armLiftMotor2.setPower(0);
