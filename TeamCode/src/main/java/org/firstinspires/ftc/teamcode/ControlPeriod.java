@@ -199,8 +199,6 @@ public class ControlPeriod extends OpMode {
 
                 switch (speedSetting) {
                     case 0:
-                        speedSetting ++;
-                        break;
                     case 1:
                         speedSetting ++;
                         break;
