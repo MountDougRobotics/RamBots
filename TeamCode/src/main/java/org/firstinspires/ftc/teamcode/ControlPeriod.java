@@ -262,12 +262,6 @@ public class ControlPeriod extends OpMode {
 
             clawWrist.setPosition(0.4);
 
-            if (clawClosedTime.milliseconds() > 300 && clawOpen == false) {
-                clawWrist.setPosition(0.4);
-            } else {
-                clawWrist.setPosition(0.4);
-            } // else
-
             if (voltage >= targetDown) {
                 armLiftMotor1.setPower(-1);
                 armLiftMotor2.setPower(-1);
