@@ -18,7 +18,6 @@ public class ControlPeriod extends OpMode {
     private DcMotor backLeftMotor;
     private DcMotor frontRightMotor;
     private DcMotor frontLeftMotor;
-    private DcMotor intakeMotor;
     private DcMotor armLiftMotor1;
     private DcMotor armLiftMotor2;
     private Servo clawServo1;
@@ -51,7 +50,6 @@ public class ControlPeriod extends OpMode {
         backLeftMotor = hardwareMap.dcMotor.get("BL");
         frontRightMotor = hardwareMap.dcMotor.get("FR");
         frontLeftMotor = hardwareMap.dcMotor.get("FL");
-        intakeMotor = hardwareMap.dcMotor.get("IN");
         armLiftMotor1 = hardwareMap.dcMotor.get("AL1");
         armLiftMotor2 = hardwareMap.dcMotor.get("Al2");
         clawServo1 = hardwareMap.servo.get("CL1");
@@ -67,7 +65,6 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
-        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         armLiftMotor1.setDirection(DcMotorSimple.Direction.FORWARD);
         armLiftMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
         clawServo1.setDirection(Servo.Direction.FORWARD);
@@ -82,7 +79,6 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
-        intakeMotor.setPower(0);
         armLiftMotor1.setPower(0);
         armLiftMotor2.setPower(0);
         clawServo1.setPosition(0.88);
