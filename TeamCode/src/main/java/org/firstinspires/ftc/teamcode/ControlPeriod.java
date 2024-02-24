@@ -242,7 +242,7 @@ public class ControlPeriod extends OpMode {
 
         if (clawClosedTime.milliseconds() > 300 && clawOpen == false) {
             targetDown = 0.84;
-        }
+        } // if
 
         if (armUp) {
             //0.75
