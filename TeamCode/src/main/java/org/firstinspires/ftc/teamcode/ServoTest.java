@@ -39,7 +39,7 @@ public class ServoTest extends OpMode {
         frontRightMotor = hardwareMap.dcMotor.get("FR");
         frontLeftMotor = hardwareMap.dcMotor.get("FL");
         armLiftMotor1 = hardwareMap.dcMotor.get("AL1");
-        armLiftMotor1 = hardwareMap.dcMotor.get("AL2");
+        armLiftMotor2 = hardwareMap.dcMotor.get("AL2");
         clawServo1 = hardwareMap.servo.get("CL1");
         clawServo2 = hardwareMap.servo.get("CL2");
         clawWrist = hardwareMap.servo.get("CW");
