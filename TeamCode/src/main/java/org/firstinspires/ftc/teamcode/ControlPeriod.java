@@ -42,6 +42,7 @@ public class ControlPeriod extends OpMode {
     private boolean x_toggle = false;
     private boolean y_toggle = false;
     private boolean rightBumper_toggle = false;
+    private boolean hangReached = false;
 
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime clawClosedTime = new ElapsedTime();
@@ -271,6 +272,7 @@ public class ControlPeriod extends OpMode {
         telemetry.addData("Arm: ", arm);
         telemetry.addData("Claw: ", claw);
         telemetry.addData("Arm Pot Voltage: ", (float)armPot.getVoltage());
+        telemetry.addData("Plane Servo Pos: ", planeLaunchServo.getPosition());
         telemetry.update();
 
     } // loop
@@ -298,35 +300,66 @@ public class ControlPeriod extends OpMode {
         double targetUp = 1.946; // get correct value from testing
         double targetDown = (clawClosedTime.milliseconds() > 300 && clawOpen == false) ? 0.25 : 0.193; // get correct value from testing 0.71 is standard
 
-        if (armUp) {
+        double hangVoltage = 1.13;
+        double holdVoltage = 0.61;
 
-            if (voltage >= 0.7) {
-                clawWrist.setPosition(0.799); // claw wrist up
-            } // if
+        if (gamepad2.dpad_down) {
 
-            if (voltage <= targetUp) {
-                armLiftMotor1.setPower(0.5);
-                armLiftMotor2.setPower(0.5);
-            } else {
-                armLiftMotor1.setPower(0);
-                armLiftMotor2.setPower(0);
-            } // else
-        } else {
+            if (!hangReached) {
 
-            clawWrist.setPosition(0.288);
+                if (voltage < hangVoltage) {
+                    armLiftMotor1.setPower(0.5);
+                    armLiftMotor2.setPower(0.5);
+                } else {
+                    armLiftMotor1.setPower(0);
+                    armLiftMotor2.setPower(0);
+                    hangReached = true;
+                }
 
-            if (voltage >= targetDown) {
+            }
+
+            // breaking til end
+        } else if (gamepad2.dpad_up) {
+
+            if (voltage > holdVoltage) {
                 armLiftMotor1.setPower(-0.5);
                 armLiftMotor2.setPower(-0.5);
-            } else if (voltage < targetDown - 0.02) {
-                armLiftMotor1.setPower(0.01);
-                armLiftMotor2.setPower(0.01);
             } else {
                 armLiftMotor1.setPower(0);
                 armLiftMotor2.setPower(0);
-            } // else
+            }
 
-        } // else
+        } else {
+            if (armUp) {
+
+                if (voltage >= 0.7) {
+                    clawWrist.setPosition(0.799); // claw wrist up
+                } // if
+
+                if (voltage <= targetUp) {
+                    armLiftMotor1.setPower(0.5);
+                    armLiftMotor2.setPower(0.5);
+                } else {
+                    armLiftMotor1.setPower(0);
+                    armLiftMotor2.setPower(0);
+                } // else
+            } else {
+
+                clawWrist.setPosition(0.288);
+
+                if (voltage >= targetDown) {
+                    armLiftMotor1.setPower(-0.5);
+                    armLiftMotor2.setPower(-0.5);
+                } else if (voltage < targetDown - 0.02) {
+                    armLiftMotor1.setPower(0.01);
+                    armLiftMotor2.setPower(0.01);
+                } else {
+                    armLiftMotor1.setPower(0);
+                    armLiftMotor2.setPower(0);
+                } // else
+
+            } // else
+        }
 
     } // controlArmMotor
 
