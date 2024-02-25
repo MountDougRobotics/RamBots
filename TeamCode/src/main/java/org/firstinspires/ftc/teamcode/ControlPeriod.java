@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior;
+
 @TeleOp
 // Tele-Op Class
 public class ControlPeriod extends OpMode {
@@ -77,6 +79,13 @@ public class ControlPeriod extends OpMode {
         hookServo.setDirection(Servo.Direction.FORWARD);
         hangServo.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        backLeftMotor.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        frontLeftMotor.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        backRightMotor.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        frontRightMotor.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        armLiftMotor1.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        armLiftMotor2.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+
         // Unpowered all motors
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
@@ -86,7 +95,7 @@ public class ControlPeriod extends OpMode {
         armLiftMotor2.setPower(0);
         clawServo1.setPosition(0.88);
         clawServo2.setPosition(0.57);
-        clawWrist.setPosition(0.4);
+        clawWrist.setPosition(0.288);
         planeLaunchServo.setPosition(0.5);
         hookServo.setPosition(1);
 
@@ -218,7 +227,7 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         frontLeftMotor.setPower(frontLeftPower);
-        //controlArm();
+        controlArm();
 
         // Arm and Claw Manual control
 //        if (gamepad2.x) {
@@ -287,10 +296,9 @@ public class ControlPeriod extends OpMode {
 
         double voltage = armPot.getVoltage();
         double targetUp = 1.946; // get correct value from testing
-        double targetDown = (clawClosedTime.milliseconds() > 300 && clawOpen == false) ? 0.25 : 0.2; // get correct value from testing 0.71 is standard
+        double targetDown = (clawClosedTime.milliseconds() > 300 && clawOpen == false) ? 0.25 : 0.193; // get correct value from testing 0.71 is standard
 
         if (armUp) {
-            //0.75
 
             if (voltage >= 0.7) {
                 clawWrist.setPosition(0.799); // claw wrist up
@@ -305,14 +313,14 @@ public class ControlPeriod extends OpMode {
             } // else
         } else {
 
-            clawWrist.setPosition(0.4);
+            clawWrist.setPosition(0.288);
 
             if (voltage >= targetDown) {
                 armLiftMotor1.setPower(-0.5);
                 armLiftMotor2.setPower(-0.5);
             } else if (voltage < targetDown - 0.02) {
-                armLiftMotor1.setPower(0.5);
-                armLiftMotor2.setPower(0.5);
+                armLiftMotor1.setPower(0.01);
+                armLiftMotor2.setPower(0.01);
             } else {
                 armLiftMotor1.setPower(0);
                 armLiftMotor2.setPower(0);
