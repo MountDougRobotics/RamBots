@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -18,23 +19,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Size;
 import java.util.ArrayList;
-import java.util.List;
+
+
+@Disabled
 
 @Autonomous(name = "Combined Test based on Blue Close")
 public class CombinedTest extends LinearOpMode {
@@ -172,6 +166,7 @@ public class CombinedTest extends LinearOpMode {
 
 
         webcam.setPipeline(pipeline = new PropDetectionBlue(borderLeftX,borderRightX,borderTopY,borderBottomY));
+
         // Configuration of Pipeline
         pipeline.configureScalarLower(scalarLowerYCrCb.val[0],scalarLowerYCrCb.val[1],scalarLowerYCrCb.val[2]);
         pipeline.configureScalarUpper(scalarUpperYCrCb.val[0],scalarUpperYCrCb.val[1],scalarUpperYCrCb.val[2]);
@@ -208,7 +203,43 @@ public class CombinedTest extends LinearOpMode {
 
 
 
-
+//        if (propLocation.equals("left")) {
+//            driveForward(1100);
+////                driveBack(1400);
+//
+////                driveBack(0.5, 800);
+////                turnLeft(0.5, 785);
+////                driveBack(0.5, 1150);
+////                strafeLeft(0.5, 100);
+////                strafeRight(0.5, 1700);
+////                driveBack(0.5, 600);
+//        } else if (propLocation.equals("center")) {
+////                driveBack(1400);
+////                sleep(300);
+//            turnRight(1400);
+//
+//            telemetry.addData("area", "venter");
+//            telemetry.update();
+////                turnLeft(0.5, 785);
+////                driveBack(0.5, 1600);
+////                strafeLeft(0.5, 150);
+////                driveBack(0.5, 300);
+////                strafeRight(.5, 1000);
+////                driveBack(0.5, 600);
+//        } else if (propLocation.equals("right")) {
+//            driveBack(1400);
+////                driveBack(.5, 900);
+////                turnRight(.5, 500);
+////                driveBack(.5, 300);
+////                driveForward(.5, 300);
+////                turnRight(.5, 1750);
+////                driveBack(.5, 1770);
+////                strafeRight(.5, 370);
+////                driveBack(.5, 300);
+////                driveForward(.5, 300);
+////                strafeRight(.5, 850);
+////                driveBack(.5, 600);
+//        }
         if (propLocation.equals("left")) {
             ID_TAG_OF_INTEREST = 1; // TODO 4 for Red
             strafeLeft(0.5, 500);
@@ -246,7 +277,11 @@ public class CombinedTest extends LinearOpMode {
         // TODO go to pos
         // ! added stuff to go to right dist?
         while(distance.getDistance(DistanceUnit.CM) >= 10) { // TODO adjust distance if needed
-            // TODO GO forwards
+            backRightMotor.setPower(-0.1); // drive forwards until reach
+            backLeftMotor.setPower(-0.1);
+            frontLeftMotor.setPower(-0.1);
+            frontRightMotor.setPower(0.1);
+
         }
 
 
@@ -267,13 +302,20 @@ public class CombinedTest extends LinearOpMode {
             while (tagOfInterest.pose.x >= -0.05 && tagOfInterest.pose.x <= 0.05 && !isStopRequested()) {
                 if(tagOfInterest.pose.x <= -0.05)
                 {
-                    // TODO Strafe Right
+                    backRightMotor.setPower(0.2); // TODO strafe right
+                    backLeftMotor.setPower(-0.2);
+                    frontLeftMotor.setPower(0.2);
+                    frontRightMotor.setPower(0.2);
                 }
                 else if(tagOfInterest.pose.x >= 0.05)
                 {
-                    // TODO Strafe Left
+                    backRightMotor.setPower(-0.2); // TODO strafe left
+                    backLeftMotor.setPower(0.2);
+                    frontLeftMotor.setPower(-0.2);
+                    frontRightMotor.setPower(-0.2);
                 }
             }
+            stopAllMotors();
 
         }
 
