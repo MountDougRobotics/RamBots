@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import android.annotation.SuppressLint;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -66,6 +68,7 @@ public class CombinedTest extends LinearOpMode {
     private Servo clawServo1;
     private Servo clawServo2;
 
+    Rev2mDistanceSensor distance;
 
     @SuppressLint("DefaultLocale")
     void tagToTelemetry(AprilTagDetection detection)
@@ -144,6 +147,7 @@ public class CombinedTest extends LinearOpMode {
 
         FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
+        distance = hardwareMap.get(Rev2mDistanceSensor.class, "R2D");
 
         backRightMotor = hardwareMap.get(DcMotor.class, "BR");
         backLeftMotor = hardwareMap.get(DcMotor.class, "BL");
@@ -206,6 +210,7 @@ public class CombinedTest extends LinearOpMode {
 
 
         if (propLocation.equals("left")) {
+            ID_TAG_OF_INTEREST = 1; // TODO 4 for Red
             strafeLeft(0.5, 500);
             driveBack(0.5, 800);
             turnLeft(0.5, 785);
@@ -214,6 +219,8 @@ public class CombinedTest extends LinearOpMode {
             strafeRight(0.5, 1700);
             driveBack(0.5, 600);
         } else if (propLocation.equals("center")) {
+            ID_TAG_OF_INTEREST = 2; // TODO 5 for Red
+
             driveBack(0.5, 1000);
             turnLeft(0.5, 785);
             driveBack(0.5, 1600);
@@ -222,6 +229,8 @@ public class CombinedTest extends LinearOpMode {
             strafeRight(.5, 1000);
             driveBack(0.5, 600);
         } else {
+            ID_TAG_OF_INTEREST = 3; // TODO 6 for Red
+
             driveBack(.5, 900);
             turnRight(.5, 500);
             driveBack(.5, 300);
@@ -234,6 +243,11 @@ public class CombinedTest extends LinearOpMode {
             strafeRight(.5, 850);
             driveBack(.5, 600);
         }
+        // TODO go to pos
+        // ! added stuff to go to right dist?
+        while(distance.getDistance(DistanceUnit.CM) >= 10) { // TODO adjust distance if needed
+            // TODO GO forwards
+        }
 
 
         // ! ADDED STUFF
@@ -242,7 +256,6 @@ public class CombinedTest extends LinearOpMode {
             sleep(20);
         }
 
-        // TODO go to pos
 
         /* Actually do something useful */
         if(tagOfInterest != null)

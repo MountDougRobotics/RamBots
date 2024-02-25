@@ -106,7 +106,7 @@ public class ServoTest extends OpMode {
                 clawServo1.setPosition(clawServo1.getPosition() - 0.001);
             } // else if
 
-            armLiftMotor1.setPower(rightStickY);
+            armLiftMotor1.setPower(rightStickY * 0.2);
 
         } // if
 
@@ -118,7 +118,7 @@ public class ServoTest extends OpMode {
                 clawServo2.setPosition(clawServo2.getPosition() - 0.001);
             } // else if
 
-            armLiftMotor2.setPower(rightStickY);
+            armLiftMotor2.setPower(rightStickY * 0.2);
 
         } // if
 
