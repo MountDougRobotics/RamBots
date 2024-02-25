@@ -61,6 +61,7 @@ public class AutonPeriodRedClose extends LinearOpMode {
     private DcMotor armLiftMotorExtra;
     private Servo clawServo1;
     private Servo clawServo2;
+    private Servo hook;
 
     @Override
     public void runOpMode() {
@@ -72,6 +73,7 @@ public class AutonPeriodRedClose extends LinearOpMode {
         backLeftMotor = hardwareMap.get(DcMotor.class, "BL");
         frontRightMotor = hardwareMap.get(DcMotor.class, "FR");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "FL");
+        hook = hardwareMap.get(Servo.class, "HK");
 
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -82,6 +84,8 @@ public class AutonPeriodRedClose extends LinearOpMode {
         backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        hook.setPosition(0.4);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         WebcamName webcamName = null;
@@ -108,9 +112,9 @@ public class AutonPeriodRedClose extends LinearOpMode {
         });
         waitForStart(); // Waiting for start button
 
-        // VISION CODE START
-        if (opModeIsActive()) {
+        while (opModeIsActive()) {
             pipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
+
             double propCoords = pipeline.getRectMidpointX();
 
             if (propCoords < 500.0) propLocation = "left";
@@ -121,20 +125,48 @@ public class AutonPeriodRedClose extends LinearOpMode {
             dashboardTelemetry.addData("Prop Location", propLocation);
             dashboardTelemetry.update();
             telemetry.update();
-            // Only use this line of the code when you want to find the lower and upper values
-            testing(pipeline);
 
-            sleep(30000);
 
-            if (propLocation.equals("left")) {
-                driveBack(0.5, 200);
-            } else if (propLocation.equals("right")) {
 
+
+            if (propLocation.equals("right")) {
+                strafeRight(0.5, 500);
+                driveBack(0.5, 800);
+                turnRight(0.5, 785);
+                driveBack(0.5, 1150);
+                strafeRight(0.5, 100);
+                strafeLeft(0.5, 1700);
+                driveBack(0.5, 600);
+            } else if (propLocation.equals("center")) {
+                driveBack(0.5, 1000);
+                dropPurple();
+                turnRight(0.5, 785);
+                driveBack(0.5, 1600);
+                strafeRight(0.5, 150);
+                driveBack(0.5, 300);
+                strafeLeft(.5, 1000);
+                driveBack(0.5, 600);
             } else {
-
+                driveBack(.5, 900);
+                turnLeft(.5, 500);
+                driveBack(.5, 300);
+                driveForward(.5, 300);
+                turnLeft(.5, 1750);
+                driveBack(.5, 1770);
+                strafeLeft(.5, 370);
+                driveBack(.5, 300);
+                driveForward(.5, 300);
+                strafeLeft(.5, 850);
+                driveBack(.5, 600);
             }
+            sleep(200000);
         }
     }
+
+    public void dropPurple() {
+        hook.setPosition(1);
+    }
+
 
     public void testing(PropDetectionRed myPipeline) {
         if(lowerruntime + 0.05 < getRuntime()){

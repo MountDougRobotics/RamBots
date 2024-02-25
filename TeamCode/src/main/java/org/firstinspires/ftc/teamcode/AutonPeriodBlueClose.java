@@ -145,8 +145,6 @@ public class AutonPeriodBlueClose extends LinearOpMode {
                 driveForward(.5, 300);
                 strafeRight(.5, 850);
                 driveBack(.5, 600);
-
-
             }
             sleep(200000);
         }

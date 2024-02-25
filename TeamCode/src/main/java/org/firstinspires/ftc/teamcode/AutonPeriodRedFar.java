@@ -53,6 +53,7 @@ public class AutonPeriodRedFar extends LinearOpMode {
     private DcMotor armLiftMotorExtra;
     private Servo clawServo1;
     private Servo clawServo2;
+    private Servo hook;
 
     @Override
     public void runOpMode() {
@@ -64,6 +65,7 @@ public class AutonPeriodRedFar extends LinearOpMode {
         backLeftMotor = hardwareMap.get(DcMotor.class, "BL");
         frontRightMotor = hardwareMap.get(DcMotor.class, "FR");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "FL");
+        hook = hardwareMap.get(Servo.class, "HK");
 
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -74,6 +76,8 @@ public class AutonPeriodRedFar extends LinearOpMode {
         backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        hook.setPosition(0.25);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         WebcamName webcamName = null;
@@ -114,14 +118,41 @@ public class AutonPeriodRedFar extends LinearOpMode {
             dashboardTelemetry.update();
             telemetry.update();
 
-            if (propLocation.equals("left")) {
-                driveBack(0.5, 200);
-            } else if (propLocation.equals("right")) {
+            if (propLocation.equals("right")) {
+                driveBack(0.5, 1000);
+                strafeRight(0.5, 550);
+                driveForward(.5, 300);
+                dropPixel();
+            } else if (propLocation.equals("center")) {
+                driveBack(0.5, 850);
+                dropPixel();
+//                driveForward(.5, 320);
+//                turnLeft(0.5, 830);
+//                driveBack(.5, 3800);
+//                driveForward(.5, 300);
+//                strafeLeft(.5, 1400);
+//                driveBack(.5, 600);
 
             } else {
-
+                driveBack(0.5, 900);
+                turnLeft(0.5, 800);
+                driveBack(0.5, 60);
+                dropPixel();
+//                driveForward(0.5, 3000);
+//                turnRight(0.5, 1600);
+//                driveBack(0.5, 1000);
+//                strafeRight(0.5, 400);
+//                strafeLeft(0.5, 1400);
+//                driveBack(0.5, 600);
             }
+
+            sleep(20000);
+
         }
+    }
+
+    private void dropPixel() {
+        hook.setPosition(1);
     }
 
 
