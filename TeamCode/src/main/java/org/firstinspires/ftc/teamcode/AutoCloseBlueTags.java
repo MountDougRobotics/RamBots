@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -42,7 +43,7 @@ public class AutoCloseBlueTags extends LinearOpMode {
     static final int STREAM_HEIGHT = 1080; // modify for your camera
     OpenCvWebcam webcam;
     PropDetectionBlue pipeline;
-    Rev2mDistanceSensor distance;
+    ColorRangeSensor distance;
 
     static final double FEET_PER_METER = 3.28084;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -170,7 +171,7 @@ public class AutoCloseBlueTags extends LinearOpMode {
         frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        distance = hardwareMap.get(Rev2mDistanceSensor.class, "R2D");
+        distance = hardwareMap.get(ColorRangeSensor.class, "R2D");
         hook = hardwareMap.get(Servo.class, "HK");
         hook.setPosition(0.25);
 

@@ -85,7 +85,7 @@ public class AutonPeriodRedClose extends LinearOpMode {
         backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        hook.setPosition(0.4);
+        hook.setPosition(0.25);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         WebcamName webcamName = null;
@@ -126,41 +126,45 @@ public class AutonPeriodRedClose extends LinearOpMode {
             dashboardTelemetry.update();
             telemetry.update();
 
-
-
-
-            if (propLocation.equals("right")) {
-                strafeRight(0.5, 500);
-                driveBack(0.5, 800);
-                turnRight(0.5, 785);
-                driveBack(0.5, 1150);
-                strafeRight(0.5, 100);
-                strafeLeft(0.5, 1700);
-                driveBack(0.5, 600);
-            } else if (propLocation.equals("center")) {
+            if (propLocation.equals("left")) {
                 driveBack(0.5, 1000);
-                dropPurple();
-                turnRight(0.5, 785);
-                driveBack(0.5, 1600);
-                strafeRight(0.5, 150);
-                driveBack(0.5, 300);
-                strafeLeft(.5, 1000);
-                driveBack(0.5, 600);
+                strafeLeft(0.5, 550);
+                driveForward(.5, 300);
+                dropPixel();
+            } else if (propLocation.equals("center")) {
+                driveBack(0.5, 1500);
+                driveForward(.25, 800);
+                stopAllMotors();
+                sleep(500);
+                dropPixel();
+                sleep(1000);
+                driveForward(.5, 700);
+//                driveForward(.5, 320);
+//                turnLeft(0.5, 830);
+//                driveBack(.5, 3800);
+//                driveForward(.5, 300);
+//                strafeLeft(.5, 1400);
+//                driveBack(.5, 600);
+
             } else {
-                driveBack(.5, 900);
-                turnLeft(.5, 500);
-                driveBack(.5, 300);
-                driveForward(.5, 300);
-                turnLeft(.5, 1750);
-                driveBack(.5, 1770);
-                strafeLeft(.5, 370);
-                driveBack(.5, 300);
-                driveForward(.5, 300);
-                strafeLeft(.5, 850);
-                driveBack(.5, 600);
+                strafeRight(0.5, 575);
+                driveBack(0.5, 800);
+                stopAllMotors();
+                sleep(200);
+                dropPixel();
+//                driveForward(0.5, 3000);
+//                turnRight(0.5, 1600);
+//                driveBack(0.5, 1000);
+//                strafeRight(0.5, 400);
+//                strafeLeft(0.5, 1400);
+//                driveBack(0.5, 600);
             }
             sleep(200000);
         }
+    }
+
+    private void dropPixel() {
+        hook.setPosition(1);
     }
 
     public void dropPurple() {

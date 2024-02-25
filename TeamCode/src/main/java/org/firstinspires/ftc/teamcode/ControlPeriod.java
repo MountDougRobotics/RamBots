@@ -41,8 +41,10 @@ public class ControlPeriod extends OpMode {
     private boolean b_toggle = false;
     private boolean x_toggle = false;
     private boolean y_toggle = false;
+    private boolean x2_toggle = false;
     private boolean rightBumper_toggle = false;
     private boolean hangReached = false;
+    private boolean wristUp = false;
 
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime clawClosedTime = new ElapsedTime();
@@ -115,7 +117,7 @@ public class ControlPeriod extends OpMode {
     // Checks for joystick input
     @Override
     public void loop() {
-        double leftStickY = gamepad1.left_stick_y; // Reverse Y-axis
+        double leftStickY = -gamepad1.left_stick_y; // Reverse Y-axis
         double leftStickX = -gamepad1.left_stick_x;
         double rightStickX = gamepad1.right_stick_x;
 
@@ -171,15 +173,15 @@ public class ControlPeriod extends OpMode {
         //Begin Encoder Tracking when set distance is reached or
         //manual button/trigger is released
 
-        if (gamepad2.y) {
-            if (!y_toggle) {
-                armUp = !armUp;
-                y_toggle = true;
-            } // if
-        } else {
-            y_toggle = false;
-        } // else
-
+//        if (gamepad2.y) {
+//            if (!y_toggle) {
+//                armUp = !armUp;
+//                y_toggle = true;
+//            } // if
+//        } else {
+//            y_toggle = false;
+//        } // else
+//
         if (gamepad2.a) {
             if (!a_toggle) {
                 controlClaw();
@@ -188,6 +190,34 @@ public class ControlPeriod extends OpMode {
         } else {
             a_toggle = false;
         } // if
+
+        if (gamepad2.b) {
+            if (!b_toggle) {
+                wristUp = !wristUp;
+                b_toggle = true;
+            }
+        } else {
+            b_toggle = false;
+        }
+
+        if (gamepad2.x) {
+            if (!x2_toggle) {
+                hangReached = !hangReached;
+                x2_toggle =  true;
+            }
+        } else {
+            x2_toggle = false;
+        }
+
+        if (hangReached) {
+            clawWrist.setPosition(0.233);
+        } else {
+            if (wristUp) {
+                clawWrist.setPosition(0.799);
+            } else {
+                clawWrist.setPosition(0.288);
+            }
+        }
 
         if (gamepad1.x) {
             if (!x_toggle) {
@@ -228,31 +258,31 @@ public class ControlPeriod extends OpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         frontLeftMotor.setPower(frontLeftPower);
-        controlArm();
+        // controlArm();
 
         // Arm and Claw Manual control
-//        if (gamepad2.x) {
-//            clawServo1.setPosition(clawServo1.getPosition() + 0.002);
-//        } else if (gamepad2.b) {
-//            clawServo1.setPosition(clawServo1.getPosition() - 0.002);
-//        } // else if
-//
-//        if (gamepad2.right_bumper) {
-//            clawWrist.setPosition(clawWrist.getPosition() + 0.002);
-//        } else if (gamepad2.left_bumper) {
-//            clawWrist.setPosition(clawWrist.getPosition() - 0.002);
-//        } // else if
-//
-//        if (gamepad2.y) {
-//            armLiftMotor1.setPower(0.3);
-//            armLiftMotor2.setPower(0.3);
-//        } else if (gamepad2.a) {
-//            armLiftMotor1.setPower(-0.3);
-//            armLiftMotor2.setPower(-0.3);
-//        } else {
-//            armLiftMotor1.setPower(0);
-//            armLiftMotor2.setPower(0);
-//        } // else
+        if (gamepad2.left_bumper) {
+            clawServo1.setPosition(clawServo1.getPosition() + 0.002);
+        } else if (gamepad2.right_bumper) {
+            clawServo1.setPosition(clawServo1.getPosition() - 0.002);
+        } // else if
+
+        if (gamepad2.right_bumper) {
+            clawWrist.setPosition(clawWrist.getPosition() + 0.002);
+        } else if (gamepad2.left_bumper) {
+            clawWrist.setPosition(clawWrist.getPosition() - 0.002);
+        } // else if
+
+        if (gamepad2.y) {
+            armLiftMotor1.setPower(0.3);
+            armLiftMotor2.setPower(0.3);
+        } else if (gamepad2.a) {
+            armLiftMotor1.setPower(-0.3);
+            armLiftMotor2.setPower(-0.3);
+        } else {
+            armLiftMotor1.setPower(0);
+            armLiftMotor2.setPower(0);
+        } // else
 
         String arm = (armUp) ? "Up" : "Down";
         String claw = (clawOpen) ? "Open" : "Closed";

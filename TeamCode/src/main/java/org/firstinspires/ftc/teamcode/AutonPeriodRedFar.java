@@ -118,14 +118,24 @@ public class AutonPeriodRedFar extends LinearOpMode {
             dashboardTelemetry.update();
             telemetry.update();
 
-            if (propLocation.equals("right")) {
-                driveBack(0.5, 1000);
-                strafeRight(0.5, 550);
-                driveForward(.5, 300);
+            if (propLocation.equals("left")) {
+
+                strafeLeft(0.5, 575);
+                driveBack(0.5, 800);
+                stopAllMotors();
+                sleep(200);
                 dropPixel();
+
+
+
             } else if (propLocation.equals("center")) {
-                driveBack(0.5, 850);
+                driveBack(0.5, 1500);
+                driveForward(.25, 800);
+                stopAllMotors();
+                sleep(500);
                 dropPixel();
+                sleep(1000);
+                driveForward(.5, 700);
 //                driveForward(.5, 320);
 //                turnLeft(0.5, 830);
 //                driveBack(.5, 3800);
@@ -134,9 +144,9 @@ public class AutonPeriodRedFar extends LinearOpMode {
 //                driveBack(.5, 600);
 
             } else {
-                driveBack(0.5, 900);
-                turnLeft(0.5, 800);
-                driveBack(0.5, 60);
+                driveBack(0.5, 1000);
+                strafeRight(0.5, 550);
+                driveForward(.5, 300);
                 dropPixel();
 //                driveForward(0.5, 3000);
 //                turnRight(0.5, 1600);
