@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -28,6 +29,8 @@ import org.opencv.core.Size;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Disabled
 @Autonomous(name = "Encoder Test")
 public class EncoderTest extends LinearOpMode {
 
